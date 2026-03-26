@@ -1,0 +1,37 @@
+{
+  "launch_date": "Mar 22, 2026",
+  "skus": [
+    {
+      "dpci": "007105166",
+      "name": "Stellar Puffs, Cinna-Banana, 2 oz",
+      "stores": 1800,
+      "bear": 3.07,
+      "base": 3.833,
+      "bull": 4.6
+    },
+    {
+      "dpci": "007102732",
+      "name": "Fruit+Veggie Minis, Strawberry Banana, 1 oz",
+      "stores": 1800,
+      "bear": 1.84,
+      "base": 2.306,
+      "bull": 2.77
+    },
+    {
+      "dpci": "007106435",
+      "name": "Stellar Puffs, White Cheddar, 2 oz",
+      "stores": 1800,
+      "bear": 2.74,
+      "base": 3.419,
+      "bull": 4.1
+    },
+    {
+      "dpci": "007103137",
+      "name": "Fruit+Veggie Minis, Mango Blueberry, 1 oz",
+      "stores": 1800,
+      "bear": 1.72,
+      "base": 2.147,
+      "bull": 2.58
+    }
+  ]
+}

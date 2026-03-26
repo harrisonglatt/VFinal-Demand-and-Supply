@@ -1,0 +1,2754 @@
+{
+  "as_of_date": "Mar 24, 2026",
+  "lw_date": "Mar 16, 2026",
+  "cw_date": "Mar 23, 2026",
+  "weeks": [
+    "Dec 29, 2025",
+    "Jan 5, 2026",
+    "Jan 12, 2026",
+    "Jan 19, 2026",
+    "Jan 26, 2026",
+    "Feb 2, 2026",
+    "Feb 9, 2026",
+    "Feb 16, 2026",
+    "Feb 23, 2026",
+    "Mar 2, 2026",
+    "Mar 9, 2026",
+    "Mar 16, 2026"
+  ],
+  "weekly_totals": [
+    {
+      "week": "Dec 29, 2025",
+      "units": 113761,
+      "sales": 660169.74
+    },
+    {
+      "week": "Jan 5, 2026",
+      "units": 133145,
+      "sales": 747156.14
+    },
+    {
+      "week": "Jan 12, 2026",
+      "units": 134810,
+      "sales": 734383.31
+    },
+    {
+      "week": "Jan 19, 2026",
+      "units": 131867,
+      "sales": 741516.3
+    },
+    {
+      "week": "Jan 26, 2026",
+      "units": 124981,
+      "sales": 710835.93
+    },
+    {
+      "week": "Feb 2, 2026",
+      "units": 135038,
+      "sales": 802133.59
+    },
+    {
+      "week": "Feb 9, 2026",
+      "units": 147277,
+      "sales": 867952.55
+    },
+    {
+      "week": "Feb 16, 2026",
+      "units": 160611,
+      "sales": 915455.95
+    },
+    {
+      "week": "Feb 23, 2026",
+      "units": 152548,
+      "sales": 888226.73
+    },
+    {
+      "week": "Mar 2, 2026",
+      "units": 162381,
+      "sales": 919159.42
+    },
+    {
+      "week": "Mar 9, 2026",
+      "units": 153678,
+      "sales": 907605.33
+    },
+    {
+      "week": "Mar 16, 2026",
+      "units": 157099,
+      "sales": 932599.79
+    }
+  ],
+  "skus": {
+    "LS-DR01": {
+      "name": "Kale Apple Curls",
+      "dpci": "007102035",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 5015,
+          "sales": 24949.35,
+          "stores": 1513,
+          "upspw": 9.248
+        },
+        "Mar 16, 2026": {
+          "units": 18588,
+          "sales": 92040.62,
+          "stores": 1796,
+          "upspw": 9.774
+        },
+        "Mar 9, 2026": {
+          "units": 20846,
+          "sales": 94606.44,
+          "stores": 1753,
+          "upspw": 10.67
+        },
+        "Mar 2, 2026": {
+          "units": 20803,
+          "sales": 92434.89,
+          "stores": 1732,
+          "upspw": 10.699
+        },
+        "Feb 23, 2026": {
+          "units": 21342,
+          "sales": 94428.94,
+          "stores": 1740,
+          "upspw": 11.111
+        },
+        "Feb 16, 2026": {
+          "units": 20069,
+          "sales": 89568.02,
+          "stores": 1762,
+          "upspw": 10.638
+        },
+        "Feb 9, 2026": {
+          "units": 19288,
+          "sales": 86683.9,
+          "stores": 1763,
+          "upspw": 10.236
+        },
+        "Feb 2, 2026": {
+          "units": 16081,
+          "sales": 71942.62,
+          "stores": 1643,
+          "upspw": 8.545
+        },
+        "Jan 26, 2026": {
+          "units": 13528,
+          "sales": 60740.73,
+          "stores": 1586,
+          "upspw": 7.157
+        },
+        "Jan 19, 2026": {
+          "units": 16064,
+          "sales": 72139.83,
+          "stores": 1684,
+          "upspw": 8.536
+        },
+        "Jan 12, 2026": {
+          "units": 16055,
+          "sales": 71768.7,
+          "stores": 1709,
+          "upspw": 8.499
+        },
+        "Jan 5, 2026": {
+          "units": 16158,
+          "sales": 71060.75,
+          "stores": 1703,
+          "upspw": 8.563
+        },
+        "Dec 29, 2025": {
+          "units": 16187,
+          "sales": 72350.76,
+          "stores": 1704,
+          "upspw": 8.569
+        }
+      }
+    },
+    "LS-DR06": {
+      "name": "Blueberry Carrot Puffs LS-DR06",
+      "dpci": "007103297",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 3913,
+          "sales": 19450.26,
+          "stores": 1401,
+          "upspw": 7.455
+        },
+        "Mar 16, 2026": {
+          "units": 14619,
+          "sales": 72261.6,
+          "stores": 1738,
+          "upspw": 7.946
+        },
+        "Mar 9, 2026": {
+          "units": 11726,
+          "sales": 51535.47,
+          "stores": 1228,
+          "upspw": 6.343
+        },
+        "Mar 2, 2026": {
+          "units": 10517,
+          "sales": 44390.33,
+          "stores": 932,
+          "upspw": 5.697
+        },
+        "Feb 23, 2026": {
+          "units": 10786,
+          "sales": 45113.16,
+          "stores": 884,
+          "upspw": 7.602
+        },
+        "Feb 16, 2026": {
+          "units": 10175,
+          "sales": 42846.42,
+          "stores": 882,
+          "upspw": 10.291
+        },
+        "Feb 9, 2026": {
+          "units": 9745,
+          "sales": 41738,
+          "stores": 878,
+          "upspw": 10.032
+        },
+        "Feb 2, 2026": {
+          "units": 8534,
+          "sales": 36625.6,
+          "stores": 866,
+          "upspw": 8.738
+        },
+        "Jan 26, 2026": {
+          "units": 8051,
+          "sales": 34675.7,
+          "stores": 835,
+          "upspw": 8.333
+        },
+        "Jan 19, 2026": {
+          "units": 8688,
+          "sales": 37311.7,
+          "stores": 870,
+          "upspw": 8.921
+        },
+        "Jan 12, 2026": {
+          "units": 9458,
+          "sales": 40763.19,
+          "stores": 877,
+          "upspw": 9.832
+        },
+        "Jan 5, 2026": {
+          "units": 8078,
+          "sales": 34532.32,
+          "stores": 852,
+          "upspw": 8.545
+        },
+        "Dec 29, 2025": {
+          "units": 3588,
+          "sales": 15485.9,
+          "stores": 507,
+          "upspw": 3.799
+        }
+      }
+    },
+    "LS-DR02": {
+      "name": "Banana Pitaya Rings LS-DR02",
+      "dpci": "007100291",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 3899,
+          "sales": 19359.52,
+          "stores": 1456,
+          "upspw": 7.171
+        },
+        "Mar 16, 2026": {
+          "units": 14976,
+          "sales": 74074.8,
+          "stores": 1809,
+          "upspw": 7.855
+        },
+        "Mar 9, 2026": {
+          "units": 17648,
+          "sales": 80658.93,
+          "stores": 1752,
+          "upspw": 9.128
+        },
+        "Mar 2, 2026": {
+          "units": 17726,
+          "sales": 79647.89,
+          "stores": 1733,
+          "upspw": 9.148
+        },
+        "Feb 23, 2026": {
+          "units": 17936,
+          "sales": 80063.69,
+          "stores": 1752,
+          "upspw": 9.38
+        },
+        "Feb 16, 2026": {
+          "units": 17683,
+          "sales": 79676.41,
+          "stores": 1766,
+          "upspw": 9.383
+        },
+        "Feb 9, 2026": {
+          "units": 18483,
+          "sales": 84285.36,
+          "stores": 1775,
+          "upspw": 9.826
+        },
+        "Feb 2, 2026": {
+          "units": 14834,
+          "sales": 66768.69,
+          "stores": 1717,
+          "upspw": 7.912
+        },
+        "Jan 26, 2026": {
+          "units": 12845,
+          "sales": 58140.07,
+          "stores": 1698,
+          "upspw": 6.859
+        },
+        "Jan 19, 2026": {
+          "units": 14274,
+          "sales": 64359.67,
+          "stores": 1740,
+          "upspw": 7.564
+        },
+        "Jan 12, 2026": {
+          "units": 14064,
+          "sales": 63344.81,
+          "stores": 1732,
+          "upspw": 7.459
+        },
+        "Jan 5, 2026": {
+          "units": 13375,
+          "sales": 59801.55,
+          "stores": 1720,
+          "upspw": 7.086
+        },
+        "Dec 29, 2025": {
+          "units": 12556,
+          "sales": 56400.25,
+          "stores": 1700,
+          "upspw": 6.65
+        }
+      }
+    },
+    "LS-DR03": {
+      "name": "Organic Oatmeal Baby Cereal LS-DR03",
+      "dpci": "007109801",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 2267,
+          "sales": 12942.04,
+          "stores": 1116,
+          "upspw": 4.105
+        },
+        "Mar 16, 2026": {
+          "units": 8668,
+          "sales": 49379.04,
+          "stores": 1734,
+          "upspw": 4.486
+        },
+        "Mar 9, 2026": {
+          "units": 9483,
+          "sales": 52394.01,
+          "stores": 1678,
+          "upspw": 4.804
+        },
+        "Mar 2, 2026": {
+          "units": 9432,
+          "sales": 51602.88,
+          "stores": 1662,
+          "upspw": 4.83
+        },
+        "Feb 23, 2026": {
+          "units": 9117,
+          "sales": 49576.65,
+          "stores": 1689,
+          "upspw": 4.679
+        },
+        "Feb 16, 2026": {
+          "units": 9076,
+          "sales": 49870.4,
+          "stores": 1688,
+          "upspw": 4.707
+        },
+        "Feb 9, 2026": {
+          "units": 8444,
+          "sales": 46546.87,
+          "stores": 1655,
+          "upspw": 4.381
+        },
+        "Feb 2, 2026": {
+          "units": 8509,
+          "sales": 46461.37,
+          "stores": 1669,
+          "upspw": 4.405
+        },
+        "Jan 26, 2026": {
+          "units": 7626,
+          "sales": 41933.64,
+          "stores": 1658,
+          "upspw": 3.953
+        },
+        "Jan 19, 2026": {
+          "units": 8250,
+          "sales": 45317.15,
+          "stores": 1681,
+          "upspw": 4.299
+        },
+        "Jan 12, 2026": {
+          "units": 8042,
+          "sales": 44010.52,
+          "stores": 1639,
+          "upspw": 4.151
+        },
+        "Jan 5, 2026": {
+          "units": 8126,
+          "sales": 44214.9,
+          "stores": 1615,
+          "upspw": 4.205
+        },
+        "Dec 29, 2025": {
+          "units": 7262,
+          "sales": 39549.94,
+          "stores": 1587,
+          "upspw": 3.762
+        }
+      }
+    },
+    "LS-MR05": {
+      "name": "Berry Banana Blast",
+      "dpci": "211340231",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 2177,
+          "sales": 6740.13,
+          "stores": 881,
+          "upspw": 4.288
+        },
+        "Mar 16, 2026": {
+          "units": 8330,
+          "sales": 24226.83,
+          "stores": 1425,
+          "upspw": 4.688
+        },
+        "Mar 9, 2026": {
+          "units": 8170,
+          "sales": 27295.93,
+          "stores": 1516,
+          "upspw": 4.595
+        },
+        "Mar 2, 2026": {
+          "units": 11110,
+          "sales": 34689.23,
+          "stores": 1603,
+          "upspw": 6.256
+        },
+        "Feb 23, 2026": {
+          "units": 8609,
+          "sales": 28824.89,
+          "stores": 1535,
+          "upspw": 4.847
+        },
+        "Feb 16, 2026": {
+          "units": 11211,
+          "sales": 33554.27,
+          "stores": 1602,
+          "upspw": 6.327
+        },
+        "Feb 9, 2026": {
+          "units": 9313,
+          "sales": 31138.6,
+          "stores": 1567,
+          "upspw": 5.259
+        },
+        "Feb 2, 2026": {
+          "units": 7873,
+          "sales": 26856.59,
+          "stores": 1520,
+          "upspw": 4.443
+        },
+        "Jan 26, 2026": {
+          "units": 7961,
+          "sales": 23802.03,
+          "stores": 1526,
+          "upspw": 4.495
+        },
+        "Jan 19, 2026": {
+          "units": 7649,
+          "sales": 22162.24,
+          "stores": 1458,
+          "upspw": 4.319
+        },
+        "Jan 12, 2026": {
+          "units": 8818,
+          "sales": 23951.82,
+          "stores": 1534,
+          "upspw": 4.971
+        },
+        "Jan 5, 2026": {
+          "units": 7831,
+          "sales": 24014.63,
+          "stores": 1530,
+          "upspw": 4.414
+        },
+        "Dec 29, 2025": {
+          "units": 7636,
+          "sales": 25311.39,
+          "stores": 1479,
+          "upspw": 4.304
+        }
+      }
+    },
+    "LS-ZR03": {
+      "name": "Mini Turkey Kale Meatballs LS-ZR03",
+      "dpci": "270022902",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1982,
+          "sales": 19540.56,
+          "stores": 1047,
+          "upspw": 3.78
+        },
+        "Mar 16, 2026": {
+          "units": 9790,
+          "sales": 82712.86,
+          "stores": 1685,
+          "upspw": 5.335
+        },
+        "Mar 9, 2026": {
+          "units": 12659,
+          "sales": 111443.76,
+          "stores": 1768,
+          "upspw": 6.895
+        },
+        "Mar 2, 2026": {
+          "units": 13706,
+          "sales": 120431.26,
+          "stores": 1763,
+          "upspw": 7.469
+        },
+        "Feb 23, 2026": {
+          "units": 14348,
+          "sales": 125881.59,
+          "stores": 1778,
+          "upspw": 7.819
+        },
+        "Feb 16, 2026": {
+          "units": 14562,
+          "sales": 128740.69,
+          "stores": 1778,
+          "upspw": 7.962
+        },
+        "Feb 9, 2026": {
+          "units": 13498,
+          "sales": 119515.66,
+          "stores": 1768,
+          "upspw": 7.38
+        },
+        "Feb 2, 2026": {
+          "units": 12748,
+          "sales": 110997.83,
+          "stores": 1757,
+          "upspw": 6.974
+        },
+        "Jan 26, 2026": {
+          "units": 8809,
+          "sales": 73212.49,
+          "stores": 1606,
+          "upspw": 4.819
+        },
+        "Jan 19, 2026": {
+          "units": 8698,
+          "sales": 71260.88,
+          "stores": 1542,
+          "upspw": 4.922
+        },
+        "Jan 12, 2026": {
+          "units": 9119,
+          "sales": 75126.85,
+          "stores": 1556,
+          "upspw": 5.396
+        },
+        "Jan 5, 2026": {
+          "units": 10263,
+          "sales": 84862,
+          "stores": 1588,
+          "upspw": 6.127
+        },
+        "Dec 29, 2025": {
+          "units": 7167,
+          "sales": 65407.99,
+          "stores": 1534,
+          "upspw": 4.281
+        }
+      }
+    },
+    "LS-MR06": {
+      "name": "Strawberry Banana Shake LS-MR06",
+      "dpci": "211340230",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1937,
+          "sales": 6049.41,
+          "stores": 834,
+          "upspw": 3.815
+        },
+        "Mar 16, 2026": {
+          "units": 7357,
+          "sales": 21762.11,
+          "stores": 1408,
+          "upspw": 4.138
+        },
+        "Mar 9, 2026": {
+          "units": 7435,
+          "sales": 24972.03,
+          "stores": 1476,
+          "upspw": 4.182
+        },
+        "Mar 2, 2026": {
+          "units": 10190,
+          "sales": 32277.8,
+          "stores": 1563,
+          "upspw": 5.731
+        },
+        "Feb 23, 2026": {
+          "units": 8322,
+          "sales": 27963.18,
+          "stores": 1527,
+          "upspw": 4.686
+        },
+        "Feb 16, 2026": {
+          "units": 10377,
+          "sales": 31111.43,
+          "stores": 1572,
+          "upspw": 5.856
+        },
+        "Feb 9, 2026": {
+          "units": 8708,
+          "sales": 29116.59,
+          "stores": 1551,
+          "upspw": 4.917
+        },
+        "Feb 2, 2026": {
+          "units": 7985,
+          "sales": 27286.32,
+          "stores": 1546,
+          "upspw": 4.506
+        },
+        "Jan 26, 2026": {
+          "units": 7855,
+          "sales": 24142.84,
+          "stores": 1554,
+          "upspw": 4.435
+        },
+        "Jan 19, 2026": {
+          "units": 7427,
+          "sales": 22208.97,
+          "stores": 1477,
+          "upspw": 4.194
+        },
+        "Jan 12, 2026": {
+          "units": 8701,
+          "sales": 24485.76,
+          "stores": 1555,
+          "upspw": 4.908
+        },
+        "Jan 5, 2026": {
+          "units": 7804,
+          "sales": 24268.6,
+          "stores": 1543,
+          "upspw": 4.399
+        },
+        "Dec 29, 2025": {
+          "units": 7213,
+          "sales": 24036.33,
+          "stores": 1493,
+          "upspw": 4.066
+        }
+      }
+    },
+    "LS-ZR01": {
+      "name": "Super Chicken Dippers",
+      "dpci": "270020128",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1928,
+          "sales": 19005.21,
+          "stores": 1016,
+          "upspw": 3.522
+        },
+        "Mar 16, 2026": {
+          "units": 8910,
+          "sales": 75398.12,
+          "stores": 1706,
+          "upspw": 4.65
+        },
+        "Mar 9, 2026": {
+          "units": 9768,
+          "sales": 85926.52,
+          "stores": 1732,
+          "upspw": 5.098
+        },
+        "Mar 2, 2026": {
+          "units": 9463,
+          "sales": 83057.95,
+          "stores": 1723,
+          "upspw": 4.939
+        },
+        "Feb 23, 2026": {
+          "units": 8569,
+          "sales": 75222.49,
+          "stores": 1722,
+          "upspw": 4.472
+        },
+        "Feb 16, 2026": {
+          "units": 9608,
+          "sales": 84984.16,
+          "stores": 1751,
+          "upspw": 5.028
+        },
+        "Feb 9, 2026": {
+          "units": 9509,
+          "sales": 84117.03,
+          "stores": 1774,
+          "upspw": 4.976
+        },
+        "Feb 2, 2026": {
+          "units": 9578,
+          "sales": 83332.47,
+          "stores": 1742,
+          "upspw": 5.012
+        },
+        "Jan 26, 2026": {
+          "units": 8281,
+          "sales": 68446.09,
+          "stores": 1642,
+          "upspw": 4.333
+        },
+        "Jan 19, 2026": {
+          "units": 7997,
+          "sales": 65418.87,
+          "stores": 1597,
+          "upspw": 4.293
+        },
+        "Jan 12, 2026": {
+          "units": 7726,
+          "sales": 63341.35,
+          "stores": 1581,
+          "upspw": 4.287
+        },
+        "Jan 5, 2026": {
+          "units": 8545,
+          "sales": 69855.44,
+          "stores": 1616,
+          "upspw": 4.766
+        },
+        "Dec 29, 2025": {
+          "units": 5778,
+          "sales": 52873.18,
+          "stores": 1541,
+          "upspw": 3.224
+        }
+      }
+    },
+    "LS-KR10": {
+      "name": "Blueberry Muffin Oat Bakes",
+      "dpci": "071200966",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1736,
+          "sales": 10286.38,
+          "stores": 999,
+          "upspw": 3.362
+        },
+        "Mar 16, 2026": {
+          "units": 6933,
+          "sales": 41013.11,
+          "stores": 1589,
+          "upspw": 3.846
+        },
+        "Mar 9, 2026": {
+          "units": 8313,
+          "sales": 46325.34,
+          "stores": 1641,
+          "upspw": 4.695
+        },
+        "Mar 2, 2026": {
+          "units": 8375,
+          "sales": 45799.91,
+          "stores": 1616,
+          "upspw": 4.722
+        },
+        "Feb 23, 2026": {
+          "units": 8191,
+          "sales": 44419.22,
+          "stores": 1624,
+          "upspw": 4.618
+        },
+        "Feb 16, 2026": {
+          "units": 7624,
+          "sales": 41853.23,
+          "stores": 1601,
+          "upspw": 4.312
+        },
+        "Feb 9, 2026": {
+          "units": 7530,
+          "sales": 41451.01,
+          "stores": 1600,
+          "upspw": 4.273
+        },
+        "Feb 2, 2026": {
+          "units": 7507,
+          "sales": 40900.08,
+          "stores": 1569,
+          "upspw": 4.248
+        },
+        "Jan 26, 2026": {
+          "units": 7130,
+          "sales": 39189.59,
+          "stores": 1522,
+          "upspw": 4.048
+        },
+        "Jan 19, 2026": {
+          "units": 7590,
+          "sales": 41716.48,
+          "stores": 1557,
+          "upspw": 4.286
+        },
+        "Jan 12, 2026": {
+          "units": 7491,
+          "sales": 40959.82,
+          "stores": 1573,
+          "upspw": 4.219
+        },
+        "Jan 5, 2026": {
+          "units": 7396,
+          "sales": 39954.96,
+          "stores": 1528,
+          "upspw": 4.149
+        },
+        "Dec 29, 2025": {
+          "units": 6748,
+          "sales": 35726.37,
+          "stores": 1532,
+          "upspw": 3.792
+        }
+      }
+    },
+    "LS-MR01": {
+      "name": "Green Dream LS-MR01",
+      "dpci": "211340232",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1710,
+          "sales": 5252.42,
+          "stores": 765,
+          "upspw": 3.366
+        },
+        "Mar 16, 2026": {
+          "units": 6173,
+          "sales": 17872.87,
+          "stores": 1378,
+          "upspw": 3.47
+        },
+        "Mar 9, 2026": {
+          "units": 6043,
+          "sales": 20282.3,
+          "stores": 1414,
+          "upspw": 3.395
+        },
+        "Mar 2, 2026": {
+          "units": 8125,
+          "sales": 25242.84,
+          "stores": 1535,
+          "upspw": 4.57
+        },
+        "Feb 23, 2026": {
+          "units": 6641,
+          "sales": 22229.87,
+          "stores": 1470,
+          "upspw": 3.735
+        },
+        "Feb 16, 2026": {
+          "units": 8891,
+          "sales": 26611.78,
+          "stores": 1577,
+          "upspw": 5.012
+        },
+        "Feb 9, 2026": {
+          "units": 7033,
+          "sales": 23468.08,
+          "stores": 1497,
+          "upspw": 3.967
+        },
+        "Feb 2, 2026": {
+          "units": 6245,
+          "sales": 21287.37,
+          "stores": 1467,
+          "upspw": 3.52
+        },
+        "Jan 26, 2026": {
+          "units": 6202,
+          "sales": 18432.71,
+          "stores": 1455,
+          "upspw": 3.498
+        },
+        "Jan 19, 2026": {
+          "units": 6318,
+          "sales": 18135.81,
+          "stores": 1416,
+          "upspw": 3.563
+        },
+        "Jan 12, 2026": {
+          "units": 7332,
+          "sales": 19834.22,
+          "stores": 1530,
+          "upspw": 4.135
+        },
+        "Jan 5, 2026": {
+          "units": 6604,
+          "sales": 20178.83,
+          "stores": 1494,
+          "upspw": 3.723
+        },
+        "Dec 29, 2025": {
+          "units": 6413,
+          "sales": 21165.78,
+          "stores": 1454,
+          "upspw": 3.613
+        }
+      }
+    },
+    "LS-K013": {
+      "name": "Cinna-Banana Twist Stellar Puffs LS-K013",
+      "dpci": "007105166",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1614,
+          "sales": 8085.03,
+          "stores": 898,
+          "upspw": 3.165
+        },
+        "Mar 16, 2026": {
+          "units": 5099,
+          "sales": 25425.36,
+          "stores": 1302,
+          "upspw": 2.87
+        },
+        "Mar 9, 2026": {
+          "units": 1270,
+          "sales": 6365.71,
+          "stores": 369,
+          "upspw": 0.72
+        },
+        "Mar 2, 2026": {
+          "units": 10,
+          "sales": 49.93,
+          "stores": 5,
+          "upspw": 0.006
+        },
+        "Feb 23, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 16, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 9, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 2, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 26, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 19, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 12, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 5, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Dec 29, 2025": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        }
+      }
+    },
+    "LS-KR09": {
+      "name": "Chocolate Chip Oat Bakes",
+      "dpci": "071200965",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1581,
+          "sales": 9375.23,
+          "stores": 892,
+          "upspw": 3.058
+        },
+        "Mar 16, 2026": {
+          "units": 5881,
+          "sales": 34749.31,
+          "stores": 1545,
+          "upspw": 3.287
+        },
+        "Mar 9, 2026": {
+          "units": 7286,
+          "sales": 40594.7,
+          "stores": 1585,
+          "upspw": 4.1
+        },
+        "Mar 2, 2026": {
+          "units": 7510,
+          "sales": 41209.57,
+          "stores": 1579,
+          "upspw": 4.241
+        },
+        "Feb 23, 2026": {
+          "units": 7190,
+          "sales": 39199.02,
+          "stores": 1558,
+          "upspw": 4.056
+        },
+        "Feb 16, 2026": {
+          "units": 6885,
+          "sales": 37901.51,
+          "stores": 1548,
+          "upspw": 3.874
+        },
+        "Feb 9, 2026": {
+          "units": 6591,
+          "sales": 36457.37,
+          "stores": 1525,
+          "upspw": 3.737
+        },
+        "Feb 2, 2026": {
+          "units": 6929,
+          "sales": 37882.62,
+          "stores": 1551,
+          "upspw": 3.916
+        },
+        "Jan 26, 2026": {
+          "units": 6749,
+          "sales": 37042.84,
+          "stores": 1520,
+          "upspw": 3.818
+        },
+        "Jan 19, 2026": {
+          "units": 7146,
+          "sales": 39461.08,
+          "stores": 1566,
+          "upspw": 4.053
+        },
+        "Jan 12, 2026": {
+          "units": 7030,
+          "sales": 38554.25,
+          "stores": 1574,
+          "upspw": 3.97
+        },
+        "Jan 5, 2026": {
+          "units": 7049,
+          "sales": 38196.01,
+          "stores": 1558,
+          "upspw": 3.97
+        },
+        "Dec 29, 2025": {
+          "units": 6113,
+          "sales": 32638.74,
+          "stores": 1521,
+          "upspw": 3.444
+        }
+      }
+    },
+    "LS-K012": {
+      "name": "Cheesy White Cheddar Stellar Puffs LS-K012",
+      "dpci": "007106435",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1514,
+          "sales": 7585.79,
+          "stores": 858,
+          "upspw": 2.957
+        },
+        "Mar 16, 2026": {
+          "units": 4479,
+          "sales": 22422.55,
+          "stores": 1236,
+          "upspw": 2.524
+        },
+        "Mar 9, 2026": {
+          "units": 1116,
+          "sales": 5615.93,
+          "stores": 356,
+          "upspw": 0.632
+        },
+        "Mar 2, 2026": {
+          "units": 11,
+          "sales": 55.14,
+          "stores": 5,
+          "upspw": 0.006
+        },
+        "Feb 23, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 16, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 9, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 2, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 26, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 19, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 12, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 5, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Dec 29, 2025": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        }
+      }
+    },
+    "LS-ZR02": {
+      "name": "Chicken Veggie Sliders LS-ZR02",
+      "dpci": "270028577",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1408,
+          "sales": 13875.66,
+          "stores": 830,
+          "upspw": 2.702
+        },
+        "Mar 16, 2026": {
+          "units": 6544,
+          "sales": 54651.01,
+          "stores": 1546,
+          "upspw": 3.588
+        },
+        "Mar 9, 2026": {
+          "units": 8530,
+          "sales": 74934.49,
+          "stores": 1698,
+          "upspw": 4.671
+        },
+        "Mar 2, 2026": {
+          "units": 9566,
+          "sales": 84054.73,
+          "stores": 1726,
+          "upspw": 5.245
+        },
+        "Feb 23, 2026": {
+          "units": 9376,
+          "sales": 82424.12,
+          "stores": 1724,
+          "upspw": 5.14
+        },
+        "Feb 16, 2026": {
+          "units": 9381,
+          "sales": 83073.42,
+          "stores": 1719,
+          "upspw": 5.152
+        },
+        "Feb 9, 2026": {
+          "units": 8636,
+          "sales": 76479.59,
+          "stores": 1702,
+          "upspw": 4.742
+        },
+        "Feb 2, 2026": {
+          "units": 8042,
+          "sales": 70169.93,
+          "stores": 1662,
+          "upspw": 4.419
+        },
+        "Jan 26, 2026": {
+          "units": 6026,
+          "sales": 49310.31,
+          "stores": 1399,
+          "upspw": 3.309
+        },
+        "Jan 19, 2026": {
+          "units": 6043,
+          "sales": 48565.1,
+          "stores": 1331,
+          "upspw": 3.483
+        },
+        "Jan 12, 2026": {
+          "units": 6053,
+          "sales": 48984.06,
+          "stores": 1323,
+          "upspw": 4.014
+        },
+        "Jan 5, 2026": {
+          "units": 6307,
+          "sales": 50983.25,
+          "stores": 1329,
+          "upspw": 4.241
+        },
+        "Dec 29, 2025": {
+          "units": 4349,
+          "sales": 39690.18,
+          "stores": 1250,
+          "upspw": 2.931
+        }
+      }
+    },
+    "LS-MR19": {
+      "name": "Strawberry Banana Shake–4 count",
+      "dpci": "211340238",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1317,
+          "sales": 13014.94,
+          "stores": 801,
+          "upspw": 2.814
+        },
+        "Mar 16, 2026": {
+          "units": 4510,
+          "sales": 45137.92,
+          "stores": 1336,
+          "upspw": 2.753
+        },
+        "Mar 9, 2026": {
+          "units": 3148,
+          "sales": 36107.78,
+          "stores": 1203,
+          "upspw": 1.923
+        },
+        "Mar 2, 2026": {
+          "units": 4412,
+          "sales": 44251.95,
+          "stores": 1339,
+          "upspw": 2.694
+        },
+        "Feb 23, 2026": {
+          "units": 3597,
+          "sales": 40389.27,
+          "stores": 1268,
+          "upspw": 2.196
+        },
+        "Feb 16, 2026": {
+          "units": 4044,
+          "sales": 41542.87,
+          "stores": 1295,
+          "upspw": 2.476
+        },
+        "Feb 9, 2026": {
+          "units": 3232,
+          "sales": 37090.17,
+          "stores": 1194,
+          "upspw": 1.977
+        },
+        "Feb 2, 2026": {
+          "units": 3144,
+          "sales": 36443.74,
+          "stores": 1185,
+          "upspw": 1.924
+        },
+        "Jan 26, 2026": {
+          "units": 3145,
+          "sales": 33775.75,
+          "stores": 1166,
+          "upspw": 1.926
+        },
+        "Jan 19, 2026": {
+          "units": 3637,
+          "sales": 38179.39,
+          "stores": 1225,
+          "upspw": 2.226
+        },
+        "Jan 12, 2026": {
+          "units": 3255,
+          "sales": 35264.47,
+          "stores": 1208,
+          "upspw": 1.993
+        },
+        "Jan 5, 2026": {
+          "units": 3540,
+          "sales": 38839.32,
+          "stores": 1263,
+          "upspw": 2.165
+        },
+        "Dec 29, 2025": {
+          "units": 3490,
+          "sales": 39330.54,
+          "stores": 1233,
+          "upspw": 2.137
+        }
+      }
+    },
+    "LS-K018": {
+      "name": "Banana, Strawberry, Butternut Squash Minis",
+      "dpci": "007102732",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1177,
+          "sales": 10514.02,
+          "stores": 734,
+          "upspw": 2.324
+        },
+        "Mar 16, 2026": {
+          "units": 3501,
+          "sales": 31171.35,
+          "stores": 1153,
+          "upspw": 1.97
+        },
+        "Mar 9, 2026": {
+          "units": 674,
+          "sales": 5812.7,
+          "stores": 256,
+          "upspw": 0.383
+        },
+        "Mar 2, 2026": {
+          "units": 14,
+          "sales": 71.06,
+          "stores": 7,
+          "upspw": 0.008
+        },
+        "Feb 23, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 16, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 9, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 2, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 26, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 19, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 12, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 5, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Dec 29, 2025": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        }
+      }
+    },
+    "LS-YR05": {
+      "name": "Strawberry Bananza YoGos–4 count",
+      "dpci": "284104983",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1174,
+          "sales": 11533.3,
+          "stores": 710,
+          "upspw": 2.555
+        },
+        "Mar 16, 2026": {
+          "units": 3899,
+          "sales": 44300.69,
+          "stores": 1274,
+          "upspw": 2.425
+        },
+        "Mar 9, 2026": {
+          "units": 3453,
+          "sales": 40883.3,
+          "stores": 1265,
+          "upspw": 2.146
+        },
+        "Mar 2, 2026": {
+          "units": 4320,
+          "sales": 43224.54,
+          "stores": 1325,
+          "upspw": 2.69
+        },
+        "Feb 23, 2026": {
+          "units": 3817,
+          "sales": 42994.42,
+          "stores": 1240,
+          "upspw": 2.38
+        },
+        "Feb 16, 2026": {
+          "units": 4488,
+          "sales": 46069.93,
+          "stores": 1311,
+          "upspw": 2.807
+        },
+        "Feb 9, 2026": {
+          "units": 3236,
+          "sales": 37205.29,
+          "stores": 1175,
+          "upspw": 2.029
+        },
+        "Feb 2, 2026": {
+          "units": 2675,
+          "sales": 31323.26,
+          "stores": 1077,
+          "upspw": 1.676
+        },
+        "Jan 26, 2026": {
+          "units": 4382,
+          "sales": 44769.62,
+          "stores": 1285,
+          "upspw": 2.751
+        },
+        "Jan 19, 2026": {
+          "units": 4897,
+          "sales": 48485.37,
+          "stores": 1341,
+          "upspw": 3.074
+        },
+        "Jan 12, 2026": {
+          "units": 4297,
+          "sales": 41993.58,
+          "stores": 1296,
+          "upspw": 2.696
+        },
+        "Jan 5, 2026": {
+          "units": 4244,
+          "sales": 41143.92,
+          "stores": 1280,
+          "upspw": 2.662
+        },
+        "Dec 29, 2025": {
+          "units": 3598,
+          "sales": 39899.96,
+          "stores": 1279,
+          "upspw": 2.259
+        }
+      }
+    },
+    "LS-KR11": {
+      "name": "Apple Pie Oat Bakes",
+      "dpci": "071200967",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1060,
+          "sales": 6265.82,
+          "stores": 700,
+          "upspw": 2.053
+        },
+        "Mar 16, 2026": {
+          "units": 4303,
+          "sales": 25483.62,
+          "stores": 1412,
+          "upspw": 2.407
+        },
+        "Mar 9, 2026": {
+          "units": 5586,
+          "sales": 30778.17,
+          "stores": 1495,
+          "upspw": 3.141
+        },
+        "Mar 2, 2026": {
+          "units": 5747,
+          "sales": 31090.32,
+          "stores": 1517,
+          "upspw": 3.239
+        },
+        "Feb 23, 2026": {
+          "units": 5588,
+          "sales": 30039.77,
+          "stores": 1481,
+          "upspw": 3.15
+        },
+        "Feb 16, 2026": {
+          "units": 5269,
+          "sales": 28563.98,
+          "stores": 1466,
+          "upspw": 2.971
+        },
+        "Feb 9, 2026": {
+          "units": 5276,
+          "sales": 28786.59,
+          "stores": 1444,
+          "upspw": 2.994
+        },
+        "Feb 2, 2026": {
+          "units": 5404,
+          "sales": 29216.23,
+          "stores": 1481,
+          "upspw": 3.054
+        },
+        "Jan 26, 2026": {
+          "units": 5367,
+          "sales": 29248.44,
+          "stores": 1492,
+          "upspw": 3.035
+        },
+        "Jan 19, 2026": {
+          "units": 5755,
+          "sales": 31373.89,
+          "stores": 1496,
+          "upspw": 3.258
+        },
+        "Jan 12, 2026": {
+          "units": 5497,
+          "sales": 29823.91,
+          "stores": 1481,
+          "upspw": 3.111
+        },
+        "Jan 5, 2026": {
+          "units": 5512,
+          "sales": 29616.5,
+          "stores": 1491,
+          "upspw": 3.112
+        },
+        "Dec 29, 2025": {
+          "units": 4770,
+          "sales": 25033.17,
+          "stores": 1412,
+          "upspw": 2.68
+        }
+      }
+    },
+    "LS-K019": {
+      "name": "Mango, Blueberry, Zucchini, Banana Minis",
+      "dpci": "007103137",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 1059,
+          "sales": 9453.99,
+          "stores": 696,
+          "upspw": 2.102
+        },
+        "Mar 16, 2026": {
+          "units": 3368,
+          "sales": 29979.63,
+          "stores": 1135,
+          "upspw": 1.91
+        },
+        "Mar 9, 2026": {
+          "units": 631,
+          "sales": 5432.63,
+          "stores": 255,
+          "upspw": 0.361
+        },
+        "Mar 2, 2026": {
+          "units": 8,
+          "sales": 40.22,
+          "stores": 4,
+          "upspw": 0.005
+        },
+        "Feb 23, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 16, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 9, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 2, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 26, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 19, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 12, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 5, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Dec 29, 2025": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        }
+      }
+    },
+    "LS-YR07": {
+      "name": "Apple Berry Blast YoGos–4 count",
+      "dpci": "284108661",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 734,
+          "sales": 7229.84,
+          "stores": 497,
+          "upspw": 1.606
+        },
+        "Mar 16, 2026": {
+          "units": 2263,
+          "sales": 25628.05,
+          "stores": 952,
+          "upspw": 1.413
+        },
+        "Mar 9, 2026": {
+          "units": 2122,
+          "sales": 25169.59,
+          "stores": 932,
+          "upspw": 1.325
+        },
+        "Mar 2, 2026": {
+          "units": 2033,
+          "sales": 20377.79,
+          "stores": 911,
+          "upspw": 1.271
+        },
+        "Feb 23, 2026": {
+          "units": 1772,
+          "sales": 20007.08,
+          "stores": 836,
+          "upspw": 1.107
+        },
+        "Feb 16, 2026": {
+          "units": 2771,
+          "sales": 28324.13,
+          "stores": 1108,
+          "upspw": 1.735
+        },
+        "Feb 9, 2026": {
+          "units": 2595,
+          "sales": 29928.54,
+          "stores": 1092,
+          "upspw": 1.625
+        },
+        "Feb 2, 2026": {
+          "units": 2673,
+          "sales": 31220.8,
+          "stores": 1113,
+          "upspw": 1.674
+        },
+        "Jan 26, 2026": {
+          "units": 3773,
+          "sales": 38341.2,
+          "stores": 1242,
+          "upspw": 2.366
+        },
+        "Jan 19, 2026": {
+          "units": 3819,
+          "sales": 37643.29,
+          "stores": 1266,
+          "upspw": 2.391
+        },
+        "Jan 12, 2026": {
+          "units": 3632,
+          "sales": 35474.43,
+          "stores": 1262,
+          "upspw": 2.277
+        },
+        "Jan 5, 2026": {
+          "units": 3577,
+          "sales": 34664.06,
+          "stores": 1254,
+          "upspw": 2.241
+        },
+        "Dec 29, 2025": {
+          "units": 3179,
+          "sales": 35125.4,
+          "stores": 1206,
+          "upspw": 1.994
+        }
+      }
+    },
+    "LS-MR14": {
+      "name": "Tropical Avocado Greens",
+      "dpci": "211340237",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 599,
+          "sales": 1818.82,
+          "stores": 271,
+          "upspw": 3.868
+        },
+        "Mar 16, 2026": {
+          "units": 2329,
+          "sales": 6655.3,
+          "stores": 486,
+          "upspw": 4.281
+        },
+        "Mar 9, 2026": {
+          "units": 1756,
+          "sales": 5818.59,
+          "stores": 441,
+          "upspw": 3.204
+        },
+        "Mar 2, 2026": {
+          "units": 2097,
+          "sales": 6433.51,
+          "stores": 448,
+          "upspw": 3.834
+        },
+        "Feb 23, 2026": {
+          "units": 1454,
+          "sales": 4813.77,
+          "stores": 404,
+          "upspw": 2.653
+        },
+        "Feb 16, 2026": {
+          "units": 1899,
+          "sales": 5650.48,
+          "stores": 400,
+          "upspw": 3.497
+        },
+        "Feb 9, 2026": {
+          "units": 1464,
+          "sales": 4865.48,
+          "stores": 387,
+          "upspw": 2.701
+        },
+        "Feb 2, 2026": {
+          "units": 1554,
+          "sales": 5278.79,
+          "stores": 404,
+          "upspw": 2.862
+        },
+        "Jan 26, 2026": {
+          "units": 1705,
+          "sales": 4966.09,
+          "stores": 417,
+          "upspw": 3.123
+        },
+        "Jan 19, 2026": {
+          "units": 1518,
+          "sales": 4295.16,
+          "stores": 402,
+          "upspw": 2.79
+        },
+        "Jan 12, 2026": {
+          "units": 2017,
+          "sales": 5257.31,
+          "stores": 448,
+          "upspw": 3.721
+        },
+        "Jan 5, 2026": {
+          "units": 1805,
+          "sales": 5433.71,
+          "stores": 452,
+          "upspw": 3.33
+        },
+        "Dec 29, 2025": {
+          "units": 1793,
+          "sales": 5905.2,
+          "stores": 434,
+          "upspw": 3.308
+        }
+      }
+    },
+    "LS-MR22": {
+      "name": "Berry Banana Blast–4 count",
+      "dpci": "211340239",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 425,
+          "sales": 4114.19,
+          "stores": 251,
+          "upspw": 2.447
+        },
+        "Mar 16, 2026": {
+          "units": 1518,
+          "sales": 14862.42,
+          "stores": 481,
+          "upspw": 2.497
+        },
+        "Mar 9, 2026": {
+          "units": 1168,
+          "sales": 13320.4,
+          "stores": 441,
+          "upspw": 1.921
+        },
+        "Mar 2, 2026": {
+          "units": 1553,
+          "sales": 15384.36,
+          "stores": 490,
+          "upspw": 2.558
+        },
+        "Feb 23, 2026": {
+          "units": 1253,
+          "sales": 14039.27,
+          "stores": 452,
+          "upspw": 2.068
+        },
+        "Feb 16, 2026": {
+          "units": 1359,
+          "sales": 13982.72,
+          "stores": 470,
+          "upspw": 2.261
+        },
+        "Feb 9, 2026": {
+          "units": 1124,
+          "sales": 12860.93,
+          "stores": 430,
+          "upspw": 1.864
+        },
+        "Feb 2, 2026": {
+          "units": 1009,
+          "sales": 11671.17,
+          "stores": 407,
+          "upspw": 1.676
+        },
+        "Jan 26, 2026": {
+          "units": 1149,
+          "sales": 11913.7,
+          "stores": 431,
+          "upspw": 1.909
+        },
+        "Jan 19, 2026": {
+          "units": 1336,
+          "sales": 13373.1,
+          "stores": 457,
+          "upspw": 2.227
+        },
+        "Jan 12, 2026": {
+          "units": 1049,
+          "sales": 11271.55,
+          "stores": 416,
+          "upspw": 1.743
+        },
+        "Jan 5, 2026": {
+          "units": 1180,
+          "sales": 12775.92,
+          "stores": 445,
+          "upspw": 1.963
+        },
+        "Dec 29, 2025": {
+          "units": 1155,
+          "sales": 12845.33,
+          "stores": 434,
+          "upspw": 1.922
+        }
+      }
+    },
+    "LS-YR04": {
+      "name": "Tropical Mango Twist YoGos",
+      "dpci": "284100310",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 364,
+          "sales": 1109.85,
+          "stores": 167,
+          "upspw": 2.338
+        },
+        "Mar 16, 2026": {
+          "units": 1190,
+          "sales": 3978.56,
+          "stores": 321,
+          "upspw": 2.183
+        },
+        "Mar 9, 2026": {
+          "units": 960,
+          "sales": 3300.83,
+          "stores": 318,
+          "upspw": 1.761
+        },
+        "Mar 2, 2026": {
+          "units": 1292,
+          "sales": 4026.16,
+          "stores": 343,
+          "upspw": 2.379
+        },
+        "Feb 23, 2026": {
+          "units": 1240,
+          "sales": 4154.22,
+          "stores": 347,
+          "upspw": 2.275
+        },
+        "Feb 16, 2026": {
+          "units": 1566,
+          "sales": 4702.71,
+          "stores": 363,
+          "upspw": 2.889
+        },
+        "Feb 9, 2026": {
+          "units": 559,
+          "sales": 1837.71,
+          "stores": 207,
+          "upspw": 1.031
+        },
+        "Feb 2, 2026": {
+          "units": 339,
+          "sales": 1160.13,
+          "stores": 127,
+          "upspw": 0.623
+        },
+        "Jan 26, 2026": {
+          "units": 537,
+          "sales": 1557.81,
+          "stores": 172,
+          "upspw": 0.993
+        },
+        "Jan 19, 2026": {
+          "units": 702,
+          "sales": 1962.86,
+          "stores": 213,
+          "upspw": 1.293
+        },
+        "Jan 12, 2026": {
+          "units": 875,
+          "sales": 2312.81,
+          "stores": 248,
+          "upspw": 1.608
+        },
+        "Jan 5, 2026": {
+          "units": 1270,
+          "sales": 3291.07,
+          "stores": 332,
+          "upspw": 2.339
+        },
+        "Dec 29, 2025": {
+          "units": 1247,
+          "sales": 4007.16,
+          "stores": 352,
+          "upspw": 2.263
+        }
+      }
+    },
+    "LS-MR15": {
+      "name": "Pineapple Guava Punch",
+      "dpci": "211340236",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 358,
+          "sales": 1077.46,
+          "stores": 143,
+          "upspw": 4.838
+        },
+        "Mar 16, 2026": {
+          "units": 1136,
+          "sales": 3231.32,
+          "stores": 216,
+          "upspw": 4.369
+        },
+        "Mar 9, 2026": {
+          "units": 765,
+          "sales": 2517.7,
+          "stores": 188,
+          "upspw": 2.977
+        },
+        "Mar 2, 2026": {
+          "units": 887,
+          "sales": 2721.16,
+          "stores": 192,
+          "upspw": 3.548
+        },
+        "Feb 23, 2026": {
+          "units": 584,
+          "sales": 1919.72,
+          "stores": 161,
+          "upspw": 2.355
+        },
+        "Feb 16, 2026": {
+          "units": 733,
+          "sales": 2181.99,
+          "stores": 141,
+          "upspw": 3.016
+        },
+        "Feb 9, 2026": {
+          "units": 652,
+          "sales": 2135.93,
+          "stores": 160,
+          "upspw": 2.694
+        },
+        "Feb 2, 2026": {
+          "units": 844,
+          "sales": 2849.43,
+          "stores": 181,
+          "upspw": 3.459
+        },
+        "Jan 26, 2026": {
+          "units": 959,
+          "sales": 2807.26,
+          "stores": 190,
+          "upspw": 3.93
+        },
+        "Jan 19, 2026": {
+          "units": 923,
+          "sales": 2620.67,
+          "stores": 185,
+          "upspw": 3.798
+        },
+        "Jan 12, 2026": {
+          "units": 1134,
+          "sales": 2966.87,
+          "stores": 194,
+          "upspw": 4.667
+        },
+        "Jan 5, 2026": {
+          "units": 902,
+          "sales": 2714.29,
+          "stores": 200,
+          "upspw": 3.697
+        },
+        "Dec 29, 2025": {
+          "units": 764,
+          "sales": 2493.5,
+          "stores": 181,
+          "upspw": 3.144
+        }
+      }
+    },
+    "LS-YR01": {
+      "name": "Strawberry Bananza YoGos",
+      "dpci": "284101821",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 281,
+          "sales": 865.06,
+          "stores": 139,
+          "upspw": 1.681
+        },
+        "Mar 16, 2026": {
+          "units": 915,
+          "sales": 3071.47,
+          "stores": 314,
+          "upspw": 1.556
+        },
+        "Mar 9, 2026": {
+          "units": 914,
+          "sales": 3157.18,
+          "stores": 325,
+          "upspw": 1.554
+        },
+        "Mar 2, 2026": {
+          "units": 1290,
+          "sales": 4060,
+          "stores": 359,
+          "upspw": 2.201
+        },
+        "Feb 23, 2026": {
+          "units": 1057,
+          "sales": 3576.14,
+          "stores": 365,
+          "upspw": 1.801
+        },
+        "Feb 16, 2026": {
+          "units": 1294,
+          "sales": 3886.72,
+          "stores": 364,
+          "upspw": 2.19
+        },
+        "Feb 9, 2026": {
+          "units": 649,
+          "sales": 2161.83,
+          "stores": 252,
+          "upspw": 1.104
+        },
+        "Feb 2, 2026": {
+          "units": 667,
+          "sales": 2267.41,
+          "stores": 245,
+          "upspw": 1.129
+        },
+        "Jan 26, 2026": {
+          "units": 1012,
+          "sales": 2972.69,
+          "stores": 276,
+          "upspw": 1.715
+        },
+        "Jan 19, 2026": {
+          "units": 1143,
+          "sales": 3275.07,
+          "stores": 291,
+          "upspw": 1.944
+        },
+        "Jan 12, 2026": {
+          "units": 1283,
+          "sales": 3451.97,
+          "stores": 321,
+          "upspw": 2.178
+        },
+        "Jan 5, 2026": {
+          "units": 1485,
+          "sales": 3920.55,
+          "stores": 370,
+          "upspw": 2.5
+        },
+        "Dec 29, 2025": {
+          "units": 1040,
+          "sales": 3376.85,
+          "stores": 327,
+          "upspw": 1.733
+        }
+      }
+    },
+    "LS-KR12": {
+      "name": "Mac + Cheesy Veggie Loops LS-KR12",
+      "dpci": "071060658",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 206,
+          "sales": 1081.74,
+          "stores": 144,
+          "upspw": 0.75
+        },
+        "Mar 16, 2026": {
+          "units": 740,
+          "sales": 3893.82,
+          "stores": 388,
+          "upspw": 0.657
+        },
+        "Mar 9, 2026": {
+          "units": 967,
+          "sales": 4903.92,
+          "stores": 453,
+          "upspw": 0.841
+        },
+        "Mar 2, 2026": {
+          "units": 920,
+          "sales": 4695.51,
+          "stores": 450,
+          "upspw": 0.764
+        },
+        "Feb 23, 2026": {
+          "units": 743,
+          "sales": 3978.21,
+          "stores": 376,
+          "upspw": 0.614
+        },
+        "Feb 16, 2026": {
+          "units": 697,
+          "sales": 4042.32,
+          "stores": 370,
+          "upspw": 0.578
+        },
+        "Feb 9, 2026": {
+          "units": 749,
+          "sales": 3768.32,
+          "stores": 381,
+          "upspw": 0.621
+        },
+        "Feb 2, 2026": {
+          "units": 846,
+          "sales": 4087.6,
+          "stores": 395,
+          "upspw": 0.701
+        },
+        "Jan 26, 2026": {
+          "units": 790,
+          "sales": 4186.01,
+          "stores": 385,
+          "upspw": 0.656
+        },
+        "Jan 19, 2026": {
+          "units": 866,
+          "sales": 4688.77,
+          "stores": 390,
+          "upspw": 0.719
+        },
+        "Jan 12, 2026": {
+          "units": 811,
+          "sales": 4315.3,
+          "stores": 382,
+          "upspw": 0.672
+        },
+        "Jan 5, 2026": {
+          "units": 882,
+          "sales": 4699.86,
+          "stores": 411,
+          "upspw": 0.733
+        },
+        "Dec 29, 2025": {
+          "units": 693,
+          "sales": 3916.78,
+          "stores": 366,
+          "upspw": 0.575
+        }
+      }
+    },
+    "LS-KR13": {
+      "name": "Pizzalicious Veggie Loops LS-KR13",
+      "dpci": "071060659",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 205,
+          "sales": 1062.76,
+          "stores": 149,
+          "upspw": 0.745
+        },
+        "Mar 16, 2026": {
+          "units": 737,
+          "sales": 3878.86,
+          "stores": 402,
+          "upspw": 0.656
+        },
+        "Mar 9, 2026": {
+          "units": 1039,
+          "sales": 5241.11,
+          "stores": 471,
+          "upspw": 0.9
+        },
+        "Mar 2, 2026": {
+          "units": 950,
+          "sales": 4823.14,
+          "stores": 446,
+          "upspw": 0.789
+        },
+        "Feb 23, 2026": {
+          "units": 752,
+          "sales": 4022.29,
+          "stores": 360,
+          "upspw": 0.621
+        },
+        "Feb 16, 2026": {
+          "units": 674,
+          "sales": 3912.61,
+          "stores": 366,
+          "upspw": 0.559
+        },
+        "Feb 9, 2026": {
+          "units": 734,
+          "sales": 3697.19,
+          "stores": 370,
+          "upspw": 0.609
+        },
+        "Feb 2, 2026": {
+          "units": 846,
+          "sales": 4089.38,
+          "stores": 398,
+          "upspw": 0.702
+        },
+        "Jan 26, 2026": {
+          "units": 804,
+          "sales": 4214.09,
+          "stores": 386,
+          "upspw": 0.667
+        },
+        "Jan 19, 2026": {
+          "units": 799,
+          "sales": 4283.98,
+          "stores": 384,
+          "upspw": 0.663
+        },
+        "Jan 12, 2026": {
+          "units": 796,
+          "sales": 4189.36,
+          "stores": 381,
+          "upspw": 0.66
+        },
+        "Jan 5, 2026": {
+          "units": 880,
+          "sales": 4624.21,
+          "stores": 401,
+          "upspw": 0.731
+        },
+        "Dec 29, 2025": {
+          "units": 688,
+          "sales": 3862.23,
+          "stores": 372,
+          "upspw": 0.57
+        }
+      }
+    },
+    "LS-MR20": {
+      "name": "Green Dream–4 count",
+      "dpci": "211340240",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 109,
+          "sales": 1064.61,
+          "stores": 88,
+          "upspw": 1.508
+        },
+        "Mar 16, 2026": {
+          "units": 343,
+          "sales": 3336.59,
+          "stores": 169,
+          "upspw": 1.356
+        },
+        "Mar 9, 2026": {
+          "units": 200,
+          "sales": 2202.78,
+          "stores": 118,
+          "upspw": 0.794
+        },
+        "Mar 2, 2026": {
+          "units": 313,
+          "sales": 3011.36,
+          "stores": 153,
+          "upspw": 1.257
+        },
+        "Feb 23, 2026": {
+          "units": 264,
+          "sales": 2945.75,
+          "stores": 144,
+          "upspw": 1.06
+        },
+        "Feb 16, 2026": {
+          "units": 273,
+          "sales": 2796.77,
+          "stores": 143,
+          "upspw": 1.123
+        },
+        "Feb 9, 2026": {
+          "units": 229,
+          "sales": 2616.51,
+          "stores": 133,
+          "upspw": 0.942
+        },
+        "Feb 2, 2026": {
+          "units": 172,
+          "sales": 2014.16,
+          "stores": 108,
+          "upspw": 0.705
+        },
+        "Jan 26, 2026": {
+          "units": 294,
+          "sales": 3010.74,
+          "stores": 152,
+          "upspw": 1.215
+        },
+        "Jan 19, 2026": {
+          "units": 327,
+          "sales": 3273.48,
+          "stores": 157,
+          "upspw": 1.346
+        },
+        "Jan 12, 2026": {
+          "units": 275,
+          "sales": 2936.4,
+          "stores": 152,
+          "upspw": 1.127
+        },
+        "Jan 5, 2026": {
+          "units": 327,
+          "sales": 3492.13,
+          "stores": 161,
+          "upspw": 1.351
+        },
+        "Dec 29, 2025": {
+          "units": 338,
+          "sales": 3750.66,
+          "stores": 166,
+          "upspw": 1.397
+        }
+      }
+    },
+    "LS-YR02": {
+      "name": "Apple Berry Blast YoGos",
+      "dpci": "284104013",
+      "weeks": {
+        "Mar 23, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Mar 16, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Mar 9, 2026": {
+          "units": 2,
+          "sales": 7.09,
+          "stores": 2,
+          "upspw": 0.033
+        },
+        "Mar 2, 2026": {
+          "units": 1,
+          "sales": 3.99,
+          "stores": 1,
+          "upspw": 0.017
+        },
+        "Feb 23, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 16, 2026": {
+          "units": 2,
+          "sales": 6.98,
+          "stores": 1,
+          "upspw": 0.035
+        },
+        "Feb 9, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Feb 2, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 26, 2026": {
+          "units": 1,
+          "sales": 3.49,
+          "stores": 1,
+          "upspw": 0.018
+        },
+        "Jan 19, 2026": {
+          "units": 1,
+          "sales": 3.49,
+          "stores": 1,
+          "upspw": 0.019
+        },
+        "Jan 12, 2026": {
+          "units": 0,
+          "sales": 0,
+          "stores": 0,
+          "upspw": 0
+        },
+        "Jan 5, 2026": {
+          "units": 5,
+          "sales": 17.36,
+          "stores": 2,
+          "upspw": 0.102
+        },
+        "Dec 29, 2025": {
+          "units": -4,
+          "sales": -13.85,
+          "stores": 2,
+          "upspw": -0.091
+        }
+      }
+    }
+  },
+  "cw_daily": [
+    {
+      "sku": "LS-DR01",
+      "name": "Kale Apple Curls",
+      "dpci": "007102035",
+      "units": 2502,
+      "sales": 12452.88,
+      "stores": 1162
+    },
+    {
+      "sku": "LS-DR06",
+      "name": "Blueberry Carrot Puffs",
+      "dpci": "007103297",
+      "units": 1997,
+      "sales": 9907.45,
+      "stores": 1037
+    },
+    {
+      "sku": "LS-DR02",
+      "name": "Banana Pitaya Rings",
+      "dpci": "007100291",
+      "units": 1938,
+      "sales": 9627.89,
+      "stores": 1036
+    },
+    {
+      "sku": "LS-DR03",
+      "name": "Organic Oatmeal Baby Cereal",
+      "dpci": "007109801",
+      "units": 1137,
+      "sales": 6496.95,
+      "stores": 716
+    },
+    {
+      "sku": "LS-MR05",
+      "name": "Berry Banana Blast",
+      "dpci": "211340231",
+      "units": 1038,
+      "sales": 3206.75,
+      "stores": 528
+    },
+    {
+      "sku": "LS-ZR03",
+      "name": "Mini Turkey Kale Meatballs",
+      "dpci": "270022902",
+      "units": 967,
+      "sales": 9528.67,
+      "stores": 684
+    },
+    {
+      "sku": "LS-MR06",
+      "name": "Strawberry Banana Shake",
+      "dpci": "211340230",
+      "units": 946,
+      "sales": 2954.91,
+      "stores": 517
+    },
+    {
+      "sku": "LS-ZR01",
+      "name": "Super Chicken Dippers",
+      "dpci": "270020128",
+      "units": 944,
+      "sales": 9288.88,
+      "stores": 631
+    },
+    {
+      "sku": "LS-KR10",
+      "name": "Blueberry Muffin Oat Bakes",
+      "dpci": "071200966",
+      "units": 819,
+      "sales": 4863.39,
+      "stores": 603
+    },
+    {
+      "sku": "LS-MR01",
+      "name": "Green Dream",
+      "dpci": "211340232",
+      "units": 807,
+      "sales": 2459.94,
+      "stores": 440
+    },
+    {
+      "sku": "LS-K013",
+      "name": "Cinna-Banana Twist Stellar Puffs",
+      "dpci": "007105166",
+      "units": 800,
+      "sales": 4014.39,
+      "stores": 562
+    },
+    {
+      "sku": "LS-K012",
+      "name": "Cheesy White Cheddar Stellar Puffs",
+      "dpci": "007106435",
+      "units": 766,
+      "sales": 3844.93,
+      "stores": 542
+    },
+    {
+      "sku": "LS-KR09",
+      "name": "Chocolate Chip Oat Bakes",
+      "dpci": "071200965",
+      "units": 762,
+      "sales": 4529.71,
+      "stores": 529
+    },
+    {
+      "sku": "LS-ZR02",
+      "name": "Chicken Veggie Sliders",
+      "dpci": "270028577",
+      "units": 682,
+      "sales": 6730.95,
+      "stores": 479
+    },
+    {
+      "sku": "LS-MR19",
+      "name": "Strawberry Banana Shake–4ct",
+      "dpci": "211340238",
+      "units": 614,
+      "sales": 6051.32,
+      "stores": 445
+    },
+    {
+      "sku": "LS-K018",
+      "name": "Banana Strawberry Butternut Squash Minis",
+      "dpci": "007102732",
+      "units": 576,
+      "sales": 5145.93,
+      "stores": 452
+    },
+    {
+      "sku": "LS-YR05",
+      "name": "Strawberry Bananza YoGos–4ct",
+      "dpci": "284104983",
+      "units": 551,
+      "sales": 5415.53,
+      "stores": 403
+    },
+    {
+      "sku": "LS-K019",
+      "name": "Mango Blueberry Zucchini Banana Minis",
+      "dpci": "007103137",
+      "units": 518,
+      "sales": 4623.87,
+      "stores": 425
+    },
+    {
+      "sku": "LS-KR11",
+      "name": "Apple Pie Oat Bakes",
+      "dpci": "071200967",
+      "units": 507,
+      "sales": 2994.09,
+      "stores": 395
+    },
+    {
+      "sku": "LS-YR07",
+      "name": "Apple Berry Blast YoGos–4ct",
+      "dpci": "284108661",
+      "units": 347,
+      "sales": 3417.05,
+      "stores": 275
+    },
+    {
+      "sku": "LS-MR14",
+      "name": "Tropical Avocado Greens",
+      "dpci": "211340237",
+      "units": 294,
+      "sales": 896.3,
+      "stores": 175
+    },
+    {
+      "sku": "LS-MR22",
+      "name": "Berry Banana Blast–4ct",
+      "dpci": "211340239",
+      "units": 206,
+      "sales": 1992.84,
+      "stores": 151
+    },
+    {
+      "sku": "LS-YR04",
+      "name": "Tropical Mango Twist YoGos",
+      "dpci": "284100310",
+      "units": 172,
+      "sales": 523.01,
+      "stores": 92
+    },
+    {
+      "sku": "LS-MR15",
+      "name": "Pineapple Guava Punch",
+      "dpci": "211340236",
+      "units": 169,
+      "sales": 514.05,
+      "stores": 94
+    },
+    {
+      "sku": "LS-YR01",
+      "name": "Strawberry Bananza YoGos",
+      "dpci": "284101821",
+      "units": 133,
+      "sales": 412.47,
+      "stores": 85
+    },
+    {
+      "sku": "LS-KR13",
+      "name": "Pizzalicious Veggie Loops",
+      "dpci": "071060659",
+      "units": 106,
+      "sales": 552.15,
+      "stores": 80
+    },
+    {
+      "sku": "LS-KR12",
+      "name": "Mac + Cheesy Veggie Loops",
+      "dpci": "071060658",
+      "units": 89,
+      "sales": 479.87,
+      "stores": 71
+    },
+    {
+      "sku": "LS-MR20",
+      "name": "Green Dream–4ct",
+      "dpci": "211340240",
+      "units": 61,
+      "sales": 593.01,
+      "stores": 58
+    }
+  ],
+  "lw_summary": {
+    "units": 157099,
+    "sales": 932599.79
+  },
+  "cw_summary": {
+    "units": 20448,
+    "sales": 123519.18,
+    "note": "Week in progress (2 days)"
+  }
+}

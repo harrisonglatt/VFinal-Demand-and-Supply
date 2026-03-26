@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Little Spoon · Target Demand Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script type="module" src="/src/main.js"></script>
+</head>
+<body>
+<header class="hdr" style="border-bottom:2px solid rgba(0,227,205,.3);">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;margin-right:2px;" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="10" cy="5.5" rx="5" ry="5" fill="#00E3CD" opacity=".9"/>
+    <rect x="9" y="9.5" width="2.2" height="8" rx="1.1" fill="#00E3CD" opacity=".7"/>
+  </svg>
+  <div class="hdr-logo">Little Spoon</div>
+  <div class="hdr-sub-label">× Target</div>
+  <div class="badge">Demand Intelligence</div>
+  <div class="badge gr">Week of Mar 22, 2026</div>
+  <div class="badge yw">⚡ CW In Progress</div>
+  <div class="hdr-r">
+    <span class="omni-tag">🔵 Omni Live · Mar 24</span>
+    <span class="live"><span class="dot"></span>Auto-Refresh</span>
+  </div>
+</header>
+
+<nav class="sb">
+  <div class="nav-sec">Core</div>
+  <div class="nav-it active" data-page="exec"><span class="ni">🎯</span>Executive Summary<span class="nb g">Live</span></div>
+  <div class="nav-it" data-page="overview"><span class="ni">📊</span>Overview</div>
+  <div class="nav-it" data-page="demand"><span class="ni">📈</span>Demand Plan</div>
+  <div class="nav-it" data-page="daily"><span class="ni">📅</span>Daily Performance<span class="nb g">Live</span></div>
+  <div class="nav-it" data-page="avf"><span class="ni">🎯</span>Actuals vs Forecast<span class="nb y">-8%</span></div>
+  <div class="nav-sec">Inventory</div>
+  <div class="nav-it" data-page="inventory"><span class="ni">📦</span>Inventory Intel<span class="nb">12 OOS</span></div>
+  <div class="nav-it" data-page="shipment"><span class="ni">🚚</span>Shipment Plan</div>
+  <div class="nav-it" data-page="pofc"><span class="ni">📦</span>PO Forecast<span class="nb b">13wk</span></div>
+  <div class="nav-sec">Planning</div>
+  <div class="nav-it" data-page="promo"><span class="ni">🗓</span>Promo Calendar<span class="nb g">35</span></div>
+  <div class="nav-it" data-page="launch"><span class="ni">🚀</span>Launch Ramp<span class="nb b">4 SKUs</span></div>
+  <div class="nav-it" data-page="historical"><span class="ni">📅</span>Historical S/T</div>
+  <div class="nav-sec">Tools</div>
+  <div class="nav-it" data-page="scenario"><span class="ni">🔮</span>Scenario Analysis</div>
+  <div class="nav-it" data-page="endcap"><span class="ni">📐</span>Endcap Lift</div>
+  <div class="nav-it" data-page="assumptions"><span class="ni">⚙️</span>Assumptions</div>
+  <div class="nav-sep" style="height:1px;background:rgba(255,255,255,.06);margin:6px 8px"></div>
+  <div class="nav-it" data-page="fcastver"><span class="ni">🔒</span>Forecast Versions</div>
+  <div class="nav-it" data-page="backtest"><span class="ni">🔬</span>Backtest Lab</div>
+  <div class="nav-it" data-page="modellearn"><span class="ni">🧠</span>Model Learning</div>
+    <div class="nav-sep" style="height:1px;background:rgba(255,255,255,.06);margin:6px 8px"></div>
+  <div class="nav-it" data-page="addsku"><span class="ni">➕</span>Add SKU</div>
+  <div class="nav-sep"></div>
+  <div class="nav-sec">Risk OS</div>
+  <div class="nav-it" data-page="riskos"><span class="ni">🚨</span>Risk Operating Center<span class="nb" style="background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)">$573K risk</span></div>
+  <div class="nav-it" data-page="actuals"><span class="ni">📈</span>Actuals Tracking</div>
+  <div class="nav-sep" style="height:1px;background:rgba(255,255,255,.06);margin:6px 8px"></div>
+  <div class="nav-it" data-page="guide"><span class="ni">📋</span>Model Guide</div>
+</nav>
+
+<main class="main">
+
+<!-- EXECUTIVE SUMMARY ─────────────────────────────────────────── -->
+<div class="pg active" id="pg-exec">
+  <div class="ph">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div class="pt">Executive Summary</div>
+        <div class="ps">Decision Dashboard · Week of Mar 22, 2026 · Omni actuals through Mar 24 · Forward model through Mar 14, 2027 · 4 launch SKUs activated</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="omni-tag">🔵 Omni Live · Mar 24</span>
+        <div class="bg" id="exec-sc-tog">
+          <button class="btn on" data-scenario="base" data-action="execScen" style="font-size:11px;padding:5px 12px">📊 Base (Model)</button>
+          <button class="btn" data-scenario="bear" data-action="execScen" style="font-size:11px;padding:5px 12px">▼ Bear (−20% assumed)</button>
+          <button class="btn" data-scenario="bull" data-action="execScen" style="font-size:11px;padding:5px 12px">▲ Bull (+20% assumed)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpis k4" id="exec-kpis"></div>
+  <div id="exec-risk-summary"></div>
+
+  <div class="g2">
+    <div class="cc">
+      <div class="ct" style="display:flex;align-items:center">
+        🔮 13-Week Scenario Range
+        <span style="font-size:10.5px;color:var(--tx3);margin-left:auto">Bear · Base · Bull</span>
+      </div>
+      <div id="exec-scen-bars" style="padding:4px 0 2px"></div>
+      <div id="exec-scen-meta" style="margin-top:10px;font-size:11px;color:var(--tx3);line-height:1.9;border-top:1px solid var(--bd);padding-top:10px" title="Bear/Bull ±20% are illustrative scenario ranges, not confidence intervals. Per-SKU confidence bands use actual MAPE from model."></div>
+    </div>
+    <div class="cc">
+      <div class="ct">📅 Next 4 Weeks — Active Events</div>
+      <div id="exec-events"></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="cc">
+      <div class="ct" style="display:flex;align-items:center;gap:8px">
+        ⚠️ SKU Risk Watchlist
+        <span id="exec-risk-count" style="font-size:10.5px;color:var(--tx3);margin-left:auto"></span>
+      </div>
+      <div id="exec-risk"></div>
+    </div>
+    <div class="cc">
+      <div class="ct">💡 Auto-Generated Insights</div>
+      <div id="exec-callouts"></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ct" style="display:flex;align-items:center;justify-content:space-between">
+      <span>📊 13-Week Category Forecast Coverage vs Plan</span>
+      <span style="font-size:10.5px;color:var(--tx3)">■ PO+Forecast &nbsp;□ Plan target</span>
+    </div>
+    <div id="exec-cat-snap" style="padding:6px 0"></div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="pg" id="pg-overview">
+  <div class="ph">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="pt">Overview</div>
+      <span class="omni-tag">🔵 Omni Analytics · as of Mar 24, 2026</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="bg" id="ov-unit-tog" style="display:flex;gap:4px">
+        <button class="btn on" data-unit="units" data-action="setOvUnit" style="font-size:11px;padding:4px 10px">Units</button>
+        <button class="btn" data-unit="cases" data-action="setOvUnit" style="font-size:11px;padding:4px 10px">Cases</button>
+      </div>
+      <div class="ps" style="margin:0">28 active SKUs · LW = week ending Mar 16 · CW = Mar 22 in progress (2 days)</div>
+    </div>
+  </div>
+  <div class="kpis k4" id="ov-kpis"></div>
+  <div class="cc">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="ct" style="margin:0">💰 Weekly Revenue — Omni Actuals + Demand Plan Forecast</div>
+      <div style="display:flex;gap:16px;font-size:11px;color:var(--tx2);align-items:center">
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:18px;height:2px;background:#3b82f6;display:inline-block"></span>Actual</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:18px;height:0;border-top:2px dashed #10b981;display:inline-block"></span>Forecast</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:9px solid #f59e0b;display:inline-block"></span>Promo</span>
+        <span id="ov-rev-total" style="color:var(--ac2);font-weight:600"></span>
+      </div>
+    </div>
+    <div class="cw" style="position:relative"><canvas id="ch-rev" style="max-height:200px"></canvas></div>
+  </div>
+  <div class="g2">
+    <div class="cc"><div class="ct" id="ov-trend-title">📦 Weekly Units Trend (Omni Actuals)</div><div class="cw"><canvas id="ch-trend"></canvas></div></div>
+    <div class="cc"><div class="ct">🎯 LW Actuals vs Model Forecast by Category</div><div class="cw"><canvas id="ch-avf"></canvas></div></div>
+  </div>
+  <div class="g2">
+    <div class="cc"><div class="ct">⚠️ Inventory Risk Distribution</div><div class="cw"><canvas id="ch-inv"></canvas></div></div>
+    <div class="cc"><div class="ct">🗓 Upcoming Promos</div><div id="ov-promo"></div></div>
+  </div>
+</div>
+
+<!-- DEMAND PLAN -->
+<div class="pg" id="pg-demand">
+  <div class="ph"><div class="pt">52-Week Demand Plan</div><div class="ps">Base scenario · Mar 22, 2026 – Mar 14, 2027 · Amber = promo week</div></div>
+  <div class="ch" style="margin:0 0 12px;font-size:11px;border-left:3px solid var(--yw);background:rgba(255,199,17,.05);padding:8px 14px">
+    &#128204; <b>TPC Note:</b> Wks 1&ndash;2 and Wks 7&ndash;10 have confirmed TPC promotions that are <b>not modeled as lift</b> in this forecast. Actual may exceed forecast by +20&ndash;25% on those weeks. See Promo Calendar for full event details.
+  </div>
+  <div class="fb">
+    <div class="bg" id="dp-ut"><button class="btn on" data-unit="units" data-action="dpUnit">Units</button><button class="btn" data-unit="cases" data-action="dpUnit">Cases</button></div>
+    <div class="bg" id="dp-sc"><button class="btn" data-scenario="bear" data-action="dpScen">🐻 Bear</button><button class="btn on" data-scenario="base" data-action="dpScen">📊 Base</button><button class="btn" data-scenario="bull" data-action="dpScen">🐂 Bull</button></div>
+    <select id="dp-cat" data-change="renderDP"><option value="">All Categories</option></select>
+    <input class="si" id="dp-q" placeholder="Search SKUs…" data-input="renderDP">
+    <span class="fm" id="dp-meta"></span>
+  </div>
+  <div class="tc"><div class="ts"><table id="dp-tbl"></table></div></div>
+</div>
+
+<!-- ACTUALS vs FORECAST -->
+<div class="pg" id="pg-avf">
+  <div class="ph">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="pt">Actuals vs Forecast</div>
+      <span class="omni-tag">🔵 Omni Live · LW = Mar 16</span>
+    </div>
+    <div class="ps">Omni actuals (week ending Mar 16) vs Mar 22 Model Forecast · 28 SKUs</div>
+  </div>
+  <div class="kpis k4" id="avf-kpis"></div>
+  <div class="fb">
+    <select id="avf-cat" data-change="renderAVF"><option value="">All Categories</option></select>
+    <select id="avf-st" data-change="renderAVF">
+      <option value="">All</option>
+      <option value="miss">Big Miss (&lt;-25%)</option>
+      <option value="beat">Beat (&gt;+10%)</option>
+      <option value="ok">Within Range</option>
+    </select>
+    <input class="si" id="avf-q" placeholder="Search…" data-input="renderAVF">
+    <span class="fm" id="avf-meta"></span>
+  </div>
+  <div class="tc"><div class="ts" id="avf-ts"></div></div>
+</div>
+
+<!-- INVENTORY -->
+<div class="pg" id="pg-inventory">
+  <div class="ph"><div class="pt">Inventory Intelligence</div><div class="ps">LS Warehouse OOS analysis + Target DC inventory · Omni live data</div></div>
+  <div class="kpis k4" id="inv-kpis"></div>
+  <div class="fb">
+    <div class="bg" id="inv-vw">
+      <button class="btn on" data-view="ls" data-action="invView">🏭 LS Warehouse</button>
+      <button class="btn" data-view="dc" data-action="invView">🏪 Target DC</button>
+    </div>
+    <select id="inv-rf" data-change="renderINV"><option value="">All Risk Flags</option><option value="OOS">🔴 OOS Alert</option><option value="Watch">🟡 Watch</option></select>
+    <input class="si" id="inv-q" placeholder="Search…" data-input="renderINV">
+    <select id="inv-so" data-change="renderINV"><option value="lost">Lost $/Wk</option><option value="oos">OOS %</option><option value="wos">WOS</option></select>
+    <span class="fm" id="inv-meta"></span>
+  </div>
+  <div class="tc"><div class="ts" id="inv-ts"></div></div>
+</div>
+
+<!-- SHIPMENT -->
+<div class="pg" id="pg-shipment">
+  <div class="ph"><div class="pt">Shipment Plan</div><div class="ps">Cases to Target DC · Actualized through 3/8 · Forecast through 6/14</div></div>
+  <div class="kpis k3" id="ship-kpis"></div>
+  <div class="fb">
+    <select id="sh-cat" data-change="renderSHIP"><option value="">All Categories</option></select>
+    <input class="si" id="sh-q" placeholder="Search…" data-input="renderSHIP">
+    <select id="sh-vw" data-change="renderSHIP"><option value="all">All Weeks</option><option value="act">Actualized</option><option value="fct">Forecast</option></select>
+  </div>
+  <div class="tc"><div class="ts" id="sh-ts"></div></div>
+</div>
+
+<!-- PROMO -->
+<div class="pg" id="pg-promo">
+  <div class="ph"><div class="pt">Promo Calendar 2026</div><div class="ps">35 forward events + 9 historical events with actuals · TPCs, Endcaps, DWA, Circle</div>
+  <div class="ch cy2" style="margin:8px 0 18px;font-size:11.5px">⚠️ <b>Stacking Rule:</b> When DWA + BOGO overlap (e.g., Apr 19), apply the <b>higher single mechanic only</b> — not multiplicative. When endcap + BOGO overlap (e.g., Apr 12 Frozen), apply Base × endcap × 1.35x incremental BOGO. Never stack TPC + BOGO on the same SKU/week.</div>
+  <div class="ch" style="margin:0 0 18px;font-size:11.5px;border-left:3px solid var(--yw);background:rgba(255,199,17,.06);padding:10px 14px">
+    &#128204; <b>TPC Events — Not Modeled as Incremental Lift:</b> Weeks 1&ndash;2 (Mar 22 &amp; Mar 29) and Weeks 7&ndash;10 (Apr 26&ndash;May 17) include confirmed TPC (Temporary Price Change) promotions. <b>These are NOT reflected as incremental lift in the base forecast</b> &mdash; those weeks show baseline velocity only. Actual units may run +20&ndash;25% above forecast on TPC weeks. Treat as upside potential, not a model miss.
+  </div></div>
+  <div class="fb" style="flex-wrap:wrap;gap:8px">
+    <div class="bg" id="pr-view-tog">
+      <button class="btn on" data-view="forward" data-action="prView">📅 Forward Calendar</button>
+      <button class="btn" data-view="historical" data-action="prView">📖 Historical — What Happened</button>
+    </div>
+    <select id="pr-cat" data-change="renderPROMO"><option value="">All Categories</option></select>
+    <select id="pr-tp" data-change="renderPROMO"><option value="">All Types</option><option>TPC</option><option>Endcap</option><option>Digital</option><option>Clearance</option></select>
+    <select id="pr-st" data-change="renderPROMO"><option value="">All Status</option><option value="Confirm">✓ Confirmed</option><option value="Tentative">⏳ Tentative</option></select>
+    <span class="fm" id="pr-meta"></span>
+  </div>
+  <div id="pr-list"></div>
+  <div id="pr-hist-list" style="display:none"></div>
+</div>
+
+<!-- LAUNCH -->
+<div class="pg" id="pg-launch">
+  <div class="ph"><div class="pt">Launch Ramp Analysis</div><div class="ps">4 new chain-wide SKUs · Launch Mar 22, 2026 · 1,800 stores · 13-week ramp</div></div>
+  <div class="fb">
+    <div class="bg" id="la-sc">
+      <button class="btn" data-scenario="bear" data-action="laScen">🐻 Bear</button>
+      <button class="btn on" data-scenario="base" data-action="laScen">📊 Base</button>
+      <button class="btn" data-scenario="bull" data-action="laScen">🐂 Bull</button>
+    </div>
+  </div>
+  <div class="lg" id="la-cards"></div>
+  <div class="cc"><div class="ct">📈 13-Week Ramp — All 4 SKUs</div><div class="cw"><canvas id="ch-launch"></canvas></div></div>
+</div>
+
+<!-- HISTORICAL -->
+<div class="pg" id="pg-historical">
+  <div class="ph"><div class="pt">Historical Sell-Through</div><div class="ps">Jul 20, 2025 – Mar 15, 2026 · 35 weeks · Weekly Target units sold</div></div>
+  <div class="fb">
+    <select id="hi-pl" data-change="renderHIST"><option value="">All Product Lines</option></select>
+    <input class="si" id="hi-q" placeholder="Search…" data-input="renderHIST">
+    <div class="bg" id="hi-vt"><button class="btn on" data-view="units" data-action="hiView">Units</button><button class="btn" data-view="heat" data-action="hiView">Heatmap</button></div>
+    <span class="fm" id="hi-meta"></span>
+  </div>
+  <div class="tc"><div class="ts" id="hi-ts"></div></div>
+</div>
+
+
+<!-- DAILY PERFORMANCE -->
+<div class="pg" id="pg-daily">
+  <div class="ph">
+    <div class="pt">📅 Daily Performance</div>
+    <div class="ps">Week of Mar 23, 2026 · <span class="omni-tag">🔵 Omni Live</span> · Updated through Mar 24 (Tue) · 3 days in (Sun–Tue) · vs LW Mar 15–21</div>
+  </div>
+  <div class="kpis k4" id="dp2-kpis"></div>
+  <div class="fb">
+    <div class="bg" id="dp2-vw">
+      <button class="btn on" data-view="wow" data-action="dp2View">📊 WoW by Day</button>
+      <button class="btn" data-view="trend" data-action="dp2View">📈 14-Day Trend</button>
+      <button class="btn" data-view="product" data-action="dp2View">🍩 By Product</button>
+      <button class="btn" data-view="sku" data-action="dp2View">🔍 SKU Table</button>
+    </div>
+    <select id="dp2-cat" data-change="renderDP2SKU"><option value="">All Categories</option></select>
+    <input class="si" id="dp2-q" placeholder="Search SKUs…" data-input="renderDP2SKU" style="min-width:160px">
+    <span class="fm" id="dp2-meta"></span>
+  </div>
+
+  <!-- WoW by Day -->
+  <div id="dp2-wow-view">
+    <div class="g2">
+      <div class="cc">
+        <div class="ct" style="display:flex;align-items:center;gap:8px">📦 Daily Units — CW vs LW
+          <span style="font-size:11px;color:var(--tx3);margin-left:auto">🔵 CW &nbsp;⬜ LW</span>
+        </div>
+        <div class="cw" style="max-height:220px"><canvas id="ch-dp2-units"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="ct" style="display:flex;align-items:center;gap:8px">💰 Daily Revenue — CW vs LW
+          <span style="font-size:11px;color:var(--tx3);margin-left:auto">🟢 CW &nbsp;⬜ LW</span>
+        </div>
+        <div class="cw" style="max-height:220px"><canvas id="ch-dp2-rev"></canvas></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ct">Day-by-Day Comparison · CW vs LW · Same Day of Week (Sun–Sat)</div>
+      <div id="dp2-dow-tbl"></div>
+    </div>
+  </div>
+
+  <!-- 14-Day Trend -->
+  <div id="dp2-trend-view" style="display:none">
+    <div class="g2">
+      <div class="cc">
+        <div class="ct">📈 14-Day Units Trend</div>
+        <div class="cw" style="max-height:240px"><canvas id="ch-dp2-trend-u"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="ct">💰 14-Day Revenue Trend</div>
+        <div class="cw" style="max-height:240px"><canvas id="ch-dp2-trend-r"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- By Product -->
+  <div id="dp2-product-view" style="display:none">
+    <div class="g2">
+      <div class="cc">
+        <div class="ct">💰 CW Revenue by Category</div>
+        <div class="cw" style="max-height:260px"><canvas id="ch-dp2-donut"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="ct">📦 CW Units by Category</div>
+        <div class="cw" style="max-height:260px"><canvas id="ch-dp2-cat-bar"></canvas></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ct">Sales by Product · CW to Date vs LW Same Days</div>
+      <div id="dp2-prod-tbl"></div>
+    </div>
+  </div>
+
+  <!-- SKU Table -->
+  <div id="dp2-sku-view" style="display:none">
+    <div class="cc">
+      <div class="ct">SKU Detail · CW to Date vs LW Same 2 Days</div>
+      <div id="dp2-sku-tbl"></div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" id="pg-scenario">
+  <div class="ph"><div class="pt">🔮 Scenario Analysis</div>
+    <div class="ps">Bear / Base / Bull projection · 52-week revenue &amp; unit impact · Built on live Omni baseline</div></div>
+  <div class="fb">
+    <div class="bg" id="sc-sc">
+      <button class="btn" data-scenario="bear" data-action="scScen">🐻 Bear −20%</button>
+      <button class="btn on" data-scenario="base" data-action="scScen">📊 Base Model</button>
+      <button class="btn" data-scenario="bull" data-action="scScen">🚀 Bull +20%</button>
+    </div>
+    <span class="badge yw" id="sc-badge">Base: ×1.00</span>
+    <span class="fm" id="sc-meta"></span>
+  </div>
+  <div class="kpis k4" id="sc-kpis"></div>
+  <div class="g2">
+    <div class="cc"><div class="ct">26-Week Revenue · All Scenarios</div>
+      <div class="cw" style="max-height:210px"><canvas id="ch-scen-rev"></canvas></div></div>
+    <div class="cc"><div class="ct">Weekly Units · Bear / Base / Bull Band</div>
+      <div class="cw" style="max-height:210px"><canvas id="ch-scen-units"></canvas></div></div>
+  </div>
+  <div class="cc">
+    <div class="ct" style="display:flex;align-items:center;gap:10px">Weekly Forecast Comparison
+      <span style="font-size:11px;color:var(--tx3);margin-left:auto">🟡 = promo week</span></div>
+    <div class="ts" id="sc-tbl"></div>
+  </div>
+</div>
+
+<div class="pg" id="pg-endcap">
+  <div class="ph"><div class="pt">📐 Endcap Lift Analysis</div>
+    <div class="ps">Co-space &amp; endcap placements · Modeled incremental units &amp; revenue vs baseline</div></div>
+  <div class="kpis k4" id="ec-kpis"></div>
+  <div class="g2">
+    <div class="cc"><div class="ct">Incremental Revenue by Event</div>
+      <div class="cw" style="max-height:210px"><canvas id="ch-ec-lift"></canvas></div></div>
+    <div class="cc"><div class="ct">Confirmed vs Proposed Lift Value</div>
+      <div class="cw" style="max-height:210px"><canvas id="ch-ec-split"></canvas></div></div>
+  </div>
+  <div class="tc"><div class="ts" id="ec-tbl"></div></div>
+</div>
+
+<div class="pg" id="pg-assumptions">
+  <div class="ph">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div class="pt">⚙️ Model Assumptions</div>
+        <div class="ps">Promo lift multipliers · Velocity anchors · UPC overrides · Any change instantly updates Exec Summary, Shipment, POFC &amp; Scenario</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <div id="assump-change-count" style="font-size:11px;color:var(--tx3);padding:4px 10px;background:var(--s2);border-radius:6px;border:1px solid var(--bd)">No overrides active</div>
+        <button class="btn" data-action="refreshDependentViews" style="background:rgba(0,207,146,.12);border-color:rgba(0,207,146,.4);color:var(--gr);font-weight:700;padding:6px 14px">↻ Apply All Changes</button>
+        <button class="btn" data-action="resetAllAssumptions" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:#ef4444;font-weight:700;padding:6px 14px">↺ Reset to Baseline</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" id="pg-guide">
+  <div class="ph"><div class="pt">📋 Model Guide</div>
+    <div class="ps">Data sources · Methodology · KPI definitions · Refresh schedule</div></div>
+  <div class="g2">
+    <div class="cc"><div class="ct">📡 Data Sources</div><div id="guide-sources"></div></div>
+    <div class="cc"><div class="ct">📅 Refresh Schedule</div><div id="guide-sched"></div></div>
+  </div>
+  <div class="cc"><div class="ct">📖 KPI Definitions</div><div id="guide-kpis"></div></div>
+  <div class="cc"><div class="ct">🧮 Methodology</div><div id="guide-method"></div></div>
+</div>
+
+<div class="pg" id="pg-pofc">
+  <div class="ph">
+    <div class="pt">📦 PO Forecast — Case-Level Shipment Plan</div>
+    <div class="ps">13-week forward · As of Mar 24, 2026 · Two models: Order/Sales Ratio + Coverage-Based (5 WoS target) · vs existing plan</div>
+  </div>
+  <div class="kpis k4" id="pofc-kpis"></div>
+  <div class="fb">
+    <div class="bg" id="pofc-vw">
+      <button class="btn on" data-view="sku" data-action="pofcView">📋 SKU Summary</button>
+      <button class="btn" data-view="wbw" data-action="pofcView">📅 Week-by-Week</button>
+      <button class="btn" data-view="cat" data-action="pofcView">🍩 By Category</button><button class="btn" data-view="mth" data-action="pofcView">📅 Monthly Tracker</button>
+    </div>
+    <select id="pofc-cat" data-change="renderPOFCSku"><option value="">All Categories</option></select>
+    <input class="si" id="pofc-q" placeholder="Search SKUs…" data-input="renderPOFCSku" style="min-width:140px">
+    <span class="fm" id="pofc-meta"></span>
+  </div>
+
+  <!-- SKU Summary -->
+  <div id="pofc-mth-view" style="display:none"><div id="pofc-mth-body" style="padding:0 2px 12px"></div></div>
+  <div id="pofc-sku-view">
+    <div class="cc"><div id="pofc-sku-tbl"></div></div>
+  </div>
+
+  <!-- Week-by-Week -->
+  <div id="pofc-wbw-view" style="display:none">
+    <div class="fb" style="margin-bottom:8px">
+      <div class="bg" id="pofc-model-vw">
+        <button class="btn on" data-model="plan" data-action="pofcModel">📋 Current Plan</button>
+        <button class="btn" data-model="ratio" data-action="pofcModel">📊 O/S Ratio Model</button>
+        <button class="btn" data-model="cov" data-action="pofcModel">🎯 Coverage Model</button>
+      </div>
+    </div>
+    <div class="cc"><div id="pofc-wbw-tbl" style="overflow-x:auto"></div></div>
+  </div>
+
+  <!-- By Category -->
+  <div id="pofc-cat-view" style="display:none">
+    <div class="g2">
+      <div class="cc"><div class="ct">13-Week Total Cases by Category</div>
+        <div class="cw" style="max-height:260px"><canvas id="ch-pofc-cat"></canvas></div></div>
+      <div class="cc"><div class="ct">Ratio Model vs Plan — Case Gap by SKU</div>
+        <div class="cw" style="max-height:260px"><canvas id="ch-pofc-gap"></canvas></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FORECAST VERSIONS -->
+<div class="pg" id="pg-fcastver">
+  <div class="ph">
+    <div class="pt">🔒 Forecast Versions</div>
+    <div class="ps">Lock forecast snapshots · Track model drift · Compare scenarios · Export for finance</div>
+  </div>
+  <div id="fcastver-kpis" style="display:flex;flex-wrap:wrap;gap:14px;padding:0 20px 4px"></div>
+  <div id="fcastver-content" style="padding:0 20px 30px"></div>
+</div>
+
+<!-- BACKTEST LAB -->
+<div class="pg" id="pg-backtest">
+  <div class="ph">
+    <div class="pt">🔬 Backtest Lab</div>
+    <div class="ps">Walk-forward validation · Replay any historical point · Compare model forecast vs actuals</div>
+  </div>
+  <div id="backtest-ramp-warn" style="display:none"></div>
+  <div id="backtest-kpis" style="display:flex;flex-wrap:wrap;gap:14px;padding:0 20px 4px"></div>
+  <div id="backtest-content" style="padding:0 20px 30px"></div>
+  <div style="padding:0 20px 20px">
+    <canvas id="ch-backtest-main" style="max-height:260px"></canvas>
+  </div>
+</div>
+
+<!-- MODEL LEARNING -->
+<div class="pg" id="pg-modellearn">
+  <div class="ph">
+    <div class="pt">🧠 Model Learning</div>
+    <div class="ps">Calibrate lifts from actuals · Detect bias · Tighten confidence bands · Build forecast trust</div>
+  </div>
+  <div id="modellearn-kpis" style="display:flex;flex-wrap:wrap;gap:14px;padding:0 20px 4px"></div>
+  <div id="modellearn-content" style="padding:0 20px 30px"></div>
+  <div style="padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div><canvas id="ch-ml-lift" style="max-height:220px"></canvas></div>
+    <div><canvas id="ch-ml-mape" style="max-height:220px"></canvas></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- PAGE: Risk Operating Center                                      -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="pg" id="pg-riskos">
+  <div class="ph">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="pt">⚠️ Risk Operating Center</div>
+      <span style="font-size:11px;background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.3);border-radius:20px;padding:3px 10px;font-weight:700">LIVE · Mar 24, 2026</span>
+    </div>
+    <div class="ps">Forecast → Actuals → Inventory → Exposure · Stop-ship tracking · Decision support · This is the operating system</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;font-size:10.5px;color:var(--tx3);background:var(--s2);border-radius:8px;padding:8px 14px;border:1px solid var(--bd)">
+      <span>📐 <b>Bear scenario</b>: base fcast × 0.80 (illustrative −20%)</span>
+      <span>📐 <b>Bull scenario</b>: base fcast × 1.20 (illustrative +20%)</span>
+      <span>📐 <b>Confidence bands</b>: base ± per-SKU MAPE L4W</span>
+      <span>📐 <b>New SKU forecasts</b>: analog-based estimates with higher uncertainty</span>
+      <span>📐 <b>Data as of</b>: Mar 24, 2026</span>
+    </div>
+  </div>
+  <div id="ros-kpis" class="kpis k4" style="padding:0 0 4px"></div>
+  <div id="ros-exec-alert" style="margin-bottom:16px"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <div class="cc">
+      <div class="ct">📊 Forecast Accuracy — L4W Model Performance</div>
+      <div id="ros-accuracy-summary" style="padding:8px 0"></div>
+    </div>
+    <div class="cc">
+      <div class="ct" title="Category-level risk: combines inventory exposure with sales pace. RED = action needed.">🎯 Category Risk Map <span style="font-size:10px;color:var(--tx3);font-weight:400">(Inventory exposure + pacing)</span></div>
+      <div id="ros-cat-risk" style="padding:8px 0"></div>
+    </div>
+  </div>
+  <div class="cc">
+    <div class="ct" style="display:flex;align-items:center;gap:10px;justify-content:space-between">
+      <div>
+        <span>⚠️ Stop-Ship Exposure — Inventory at Risk</span>
+        <span style="font-size:10px;color:var(--tx3);margin-left:8px">Sorted by $ exposure · Highest risk first</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn on" data-filter="all" data-action="rosFilter" id="ros-filter-all">All SKUs</button>
+        <button class="btn" data-filter="high" data-action="rosFilter" id="ros-filter-high">🔴 High Only</button>
+        <button class="btn" data-filter="medium" data-action="rosFilter" id="ros-filter-med">🟡 Medium Only</button>
+      </div>
+    </div>
+    <div id="ros-stopship-table" style="overflow-x:auto"></div>
+  </div>
+  <!-- PART 4: Decision action cards for at-risk SKUs -->
+  <div class="cc" style="margin-top:16px" id="ros-decision-section">
+    <div class="ct" style="display:flex;align-items:center;gap:8px">
+      🎯 Decision Required — High &amp; Medium Risk SKUs
+      <span style="font-size:10px;color:var(--tx3);margin-left:auto">Actions ranked by financial impact</span>
+    </div>
+    <div id="ros-decision-cards" style="padding:4px 0"></div>
+  </div>
+  <div class="cc" style="margin-top:16px">
+    <div class="ct">🔗 Integrated View — All SKUs <span style="font-size:10px;color:var(--tx3);font-weight:400">Sorted by risk · Forecast bands · Actuals · MAPE · Trust</span></div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <select id="ros-cat-filter" data-change="renderRosIntegrated" style="background:var(--s2);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:12px">
+        <option value="">All Categories</option>
+      </select>
+      <select id="ros-trust-filter" data-change="renderRosIntegrated" style="background:var(--s2);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:12px">
+        <option value="">All Trust Levels</option>
+        <option value="High">High Trust</option>
+        <option value="Medium">Medium Trust</option>
+        <option value="Low">Low Trust</option>
+      </select>
+    </div>
+    <div id="ros-integrated-table" style="overflow-x:auto"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+    <div class="cc">
+      <div class="ct">📈 MAPE by Category <span style="font-size:10px;color:var(--tx3);font-weight:400">L4W · lower = better · &lt;12% ✅ · 12–22% ⚠️ · &gt;22% 🔴</span></div>
+      <canvas id="ch-ros-mape" style="max-height:200px"></canvas>
+    </div>
+    <div class="cc">
+      <div class="ct">💰 $ Inventory Exposure by Scenario <span style="font-size:10px;color:var(--tx3);font-weight:400">High-risk SKUs only · Bear/Base/Bull</span></div>
+      <canvas id="ch-ros-exposure" style="max-height:200px"></canvas>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- PAGE: Add SKU                                                    -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="pg" id="pg-addsku">
+  <div class="ph">
+    <div class="pt">➕ Add SKU</div>
+    <div class="ps">New launches · Line extensions · Replacement SKUs · Analog-based forecasting</div>
+  </div>
+
+  <!-- KPI summary row -->
+  <div class="kpis k4" id="addsku-kpis" style="margin-bottom:16px"></div>
+
+  <!-- TWO-PANEL LAYOUT: form left, SKU list right -->
+  <div style="display:flex;gap:16px;align-items:flex-start">
+
+    <!-- LEFT: Add new SKU form -->
+    <div class="cc" style="min-width:380px;max-width:420px;flex-shrink:0">
+      <div class="ct" style="margin-bottom:14px">📋 New SKU Details</div>
+
+      <div style="display:grid;gap:10px">
+        <div>
+          <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">SKU Name *</label>
+          <input id="ns-name" class="inp" placeholder="e.g. Baby Puffs, Mango Coconut Twists, 1 oz" style="width:100%;box-sizing:border-box">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div>
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Category *</label>
+            <select id="ns-cat" class="sel" style="width:100%">
+              <option value="">Select…</option>
+              <option>Baby Snacks</option>
+              <option>Kids Snacks</option>
+              <option>Frozen Multiserve</option>
+              <option>Smoothies</option>
+              <option>YoGos</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">SKU Type *</label>
+            <select id="ns-type" class="sel" style="width:100%" data-change="nsTypeChange">
+              <option value="new_innovation">New Innovation</option>
+              <option value="line_extension">Line Extension</option>
+              <option value="replacement">Replacement</option>
+              <option value="analog">Analog to Existing</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div>
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">DPCI</label>
+            <input id="ns-dpci" class="inp" placeholder="007XXXXXX">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Unit Price ($) *</label>
+            <input id="ns-price" class="inp" type="number" step="0.01" placeholder="4.49">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div>
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Units/Case</label>
+            <input id="ns-ucase" class="inp" type="number" placeholder="12">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Starting Stores *</label>
+            <input id="ns-stores" class="inp" type="number" placeholder="1000">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div>
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Launch Date</label>
+            <input id="ns-launch" class="inp" type="date">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">First Ship Date</label>
+            <input id="ns-ship" class="inp" type="date">
+          </div>
+        </div>
+
+        <!-- Analog selector (shown when type=analog) -->
+        <div id="ns-analog-row" style="display:none">
+          <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Analog SKU (inherit velocity + lifts)</label>
+          <select id="ns-analog" class="sel" style="width:100%">
+            <option value="">Select analog SKU…</option>
+          </select>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+            <div>
+              <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Velocity % of Analog</label>
+              <input id="ns-vel-pct" class="inp" type="number" value="100" min="1" max="200" placeholder="100">
+            </div>
+            <div>
+              <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Preview UPSPW</label>
+              <div id="ns-vel-preview" style="padding:7px 10px;background:var(--s2);border-radius:6px;font-size:12px;color:var(--ac)">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manual baseline (shown when type != analog) -->
+        <div id="ns-manual-row">
+          <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Baseline UPSPW (units/store/week)</label>
+          <input id="ns-upspw" class="inp" type="number" step="0.1" placeholder="e.g. 8.5">
+          <div style="font-size:10px;color:var(--tx3);margin-top:3px">If blank, category average will be used.</div>
+        </div>
+
+        <!-- Ramp configuration -->
+        <div>
+          <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Launch Ramp Profile</label>
+          <select id="ns-ramp" class="sel" style="width:100%" data-change="nsRampChange">
+            <option value="flat">Flat — full velocity from week 1</option>
+            <option value="gradual" selected>Gradual — 8-week linear ramp to full velocity</option>
+            <option value="custom">Custom — define per-week multipliers</option>
+          </select>
+          <div id="ns-ramp-wks-row" style="margin-top:6px">
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Ramp Duration (weeks)</label>
+            <input id="ns-ramp-wks" class="inp" type="number" value="8" min="1" max="26">
+          </div>
+          <div id="ns-ramp-custom-row" style="display:none;margin-top:6px">
+            <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Per-Week Multipliers (comma-sep, e.g. 0.3,0.5,0.7,0.85,1.0)</label>
+            <input id="ns-ramp-custom" class="inp" placeholder="0.3,0.5,0.7,0.85,1.0">
+          </div>
+        </div>
+
+        <!-- Promo eligibility -->
+        <div>
+          <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:6px">Promo Eligibility</label>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
+              <input type="checkbox" id="ns-tpc" checked> TPC
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
+              <input type="checkbox" id="ns-bogo" checked> BOGO
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
+              <input type="checkbox" id="ns-dwa" checked> DWA
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
+              <input type="checkbox" id="ns-endcap" checked> Endcap / Co-Space
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Notes / Assumptions</label>
+          <textarea id="ns-notes" class="inp" rows="2" style="width:100%;box-sizing:border-box;resize:vertical" placeholder="Innovation rationale, comp shop notes, etc."></textarea>
+        </div>
+
+        <button class="btn on" style="width:100%;padding:10px" data-action="handleAddSKU">➕ Add SKU to Forecast</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Existing new SKUs -->
+    <div class="cc" style="flex:1;min-width:0">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="ct">📦 Added SKUs (New / Innovation)</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" data-action="exportNewSKUs" style="font-size:11px;padding:4px 10px">Export JSON</button>
+          <button class="btn" data-action="triggerImport" style="font-size:11px;padding:4px 10px">Import</button>
+          <input type="file" id="ns-import" accept=".json" style="display:none" data-change="importNewSKUs">
+        </div>
+      </div>
+      <div id="addsku-list"></div>
+    </div>
+
+  </div>
+
+  <!-- Forecast preview (appears after adding) -->
+  <div id="addsku-preview" style="margin-top:16px;display:none">
+    <div class="cc">
+      <div class="ct">📊 New SKU Forecast Preview (52 Weeks)</div>
+      <div style="overflow-x:auto;margin-top:10px">
+        <canvas id="ch-addsku-preview" height="100"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- PAGE: Actuals Tracking                                           -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="pg" id="pg-actuals">
+  <div class="ph">
+    <div class="pt">📈 Actuals Tracking</div>
+    <div class="ps">Daily Omni sales ingestion · WTD vs Forecast · Run-rate projection · Model feedback</div>
+  </div>
+
+  <!-- KPI row -->
+  <div class="kpis k4" id="actuals-kpis" style="margin-bottom:16px"></div>
+
+  <!-- Data state legend + week selector -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+    <div style="display:flex;gap:10px;align-items:center;font-size:11.5px">
+      <span style="color:var(--tx3)">Data State:</span>
+      <span class="chip ds-complete">● Complete</span>
+      <span class="chip ds-partial">◑ Partial</span>
+      <span class="chip ds-none">○ No Data</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <label style="font-size:11px;color:var(--tx3)">View Week:</label>
+      <select id="act-week-sel" class="sel" data-change="initACTUALS"></select>
+    </div>
+  </div>
+
+  <!-- WTD table -->
+  <div class="cc" style="margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="ct">📅 Week-to-Date vs Forecast</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn on" data-tab="wtd" data-action="showActualsTab">WTD Summary</button>
+        <button class="btn" data-tab="daily" data-action="showActualsTab">Daily Detail</button>
+        <button class="btn" data-tab="pace" data-action="showActualsTab">Run-Rate / Pace</button>
+      </div>
+    </div>
+    <div id="actuals-wtd-panel">
+      <div id="actuals-wtd-table" style="overflow-x:auto"></div>
+    </div>
+    <div id="actuals-daily-panel" style="display:none">
+      <div id="actuals-daily-table" style="overflow-x:auto"></div>
+    </div>
+    <div id="actuals-pace-panel" style="display:none">
+      <div id="actuals-pace-content"></div>
+    </div>
+  </div>
+
+  <!-- Ingest daily actuals form -->
+  <div class="cc" style="margin-bottom:16px">
+    <div class="ct" style="margin-bottom:12px">📥 Ingest Daily Actuals</div>
+    <div class="ch cy2" style="font-size:11.5px;margin-bottom:12px;padding:10px 14px">
+      💡 <b>In a live integration</b> this would pull directly from Omni via API.
+      Use this form to manually enter or paste daily actuals. All values feed the WTD table, run-rate projection, and Model Learning engine.
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr 140px 140px auto;gap:8px;align-items:end">
+      <div>
+        <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Date</label>
+        <input id="act-date" class="inp" type="date">
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">SKU</label>
+        <select id="act-sku" class="sel" style="width:100%"></select>
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Units Sold</label>
+        <input id="act-units" class="inp" type="number" placeholder="0">
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Revenue ($, optional)</label>
+        <input id="act-rev" class="inp" type="number" step="0.01" placeholder="0.00">
+      </div>
+      <div>
+        <button class="btn on" data-action="ingestActualsRow" style="padding:8px 16px">Add</button>
+      </div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="btn" data-action="seedDemoActuals" style="font-size:11px">🌱 Load Demo Actuals (2 wks)</button>
+      <button class="btn" data-action="clearAllActuals" style="font-size:11px">🗑 Clear All Actuals</button>
+      <button class="btn" data-action="exportActuals" style="font-size:11px">Export JSON</button>
+    </div>
+  </div>
+
+  <!-- Model feedback section -->
+  <div class="cc">
+    <div class="ct" style="margin-bottom:10px">🔁 Actuals → Model Feedback</div>
+    <div id="actuals-feedback"></div>
+  </div>
+</div>
+
+</main>
+</body>
+</html>

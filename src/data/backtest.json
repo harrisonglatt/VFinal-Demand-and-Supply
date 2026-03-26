@@ -1,0 +1,422 @@
+{
+  "as_of": "Mar 24, 2026",
+  "methodology_note": "L8W walk-forward; bias_base = non-promo-week directional error; bias_promo = promo-week directional error. Positive = over-forecast. n_obs = clean historical test points available.",
+  "promo_type_bias": {
+    "TPC": {
+      "bias_pct": 8.4,
+      "mape_pct": 22.3,
+      "n_obs": 47,
+      "by_cat": {
+        "Baby Snacks": {
+          "bias_pct": 4.1,
+          "mape_pct": 14.2,
+          "n_obs": 8
+        },
+        "Kids Snacks": {
+          "bias_pct": 3.9,
+          "mape_pct": 15.7,
+          "n_obs": 9
+        },
+        "Frozen Multiserve": {
+          "bias_pct": 2.3,
+          "mape_pct": 10.6,
+          "n_obs": 5
+        },
+        "Smoothies": {
+          "bias_pct": 14.2,
+          "mape_pct": 32.8,
+          "n_obs": 14
+        },
+        "YoGos": {
+          "bias_pct": 11.7,
+          "mape_pct": 27.4,
+          "n_obs": 11
+        }
+      },
+      "summary": "TPC lift overstated by +8.4% on average. Smoothies (+14.2%) and YoGos (+11.7%) show the highest systematic over-forecast on TPC events.",
+      "action": "Apply -8 to -14% conservative calibration to Smoothies and YoGos TPC weeks."
+    },
+    "BOGO": {
+      "bias_pct": 12.1,
+      "mape_pct": 31.7,
+      "n_obs": 22,
+      "by_cat": {
+        "Baby Snacks": {
+          "bias_pct": 5.8,
+          "mape_pct": 18.4,
+          "n_obs": 4
+        },
+        "Kids Snacks": {
+          "bias_pct": 7.2,
+          "mape_pct": 21.3,
+          "n_obs": 5
+        },
+        "Frozen Multiserve": {
+          "bias_pct": 7.6,
+          "mape_pct": 19.8,
+          "n_obs": 5
+        },
+        "Smoothies": {
+          "bias_pct": 17.3,
+          "mape_pct": 38.6,
+          "n_obs": 5
+        },
+        "YoGos": {
+          "bias_pct": 19.8,
+          "mape_pct": 42.1,
+          "n_obs": 3
+        }
+      },
+      "summary": "BOGO lift most overstated of any promo type (+12.1%). Most aggressive over-forecast in Smoothies (+17.3%) and YoGos (+19.8%). Only 22 observations — treat with caution.",
+      "action": "BOGO forecasts should receive the highest conservative tilt: -12 to -20% depending on category."
+    },
+    "DWA": {
+      "bias_pct": 6.2,
+      "mape_pct": 18.9,
+      "n_obs": 15,
+      "by_cat": {
+        "Baby Snacks": {
+          "bias_pct": 3.1,
+          "mape_pct": 12.6,
+          "n_obs": 3
+        },
+        "Kids Snacks": {
+          "bias_pct": 4.8,
+          "mape_pct": 16.2,
+          "n_obs": 3
+        },
+        "Frozen Multiserve": {
+          "bias_pct": 4.4,
+          "mape_pct": 15.1,
+          "n_obs": 3
+        },
+        "Smoothies": {
+          "bias_pct": 9.3,
+          "mape_pct": 23.7,
+          "n_obs": 3
+        },
+        "YoGos": {
+          "bias_pct": 8.1,
+          "mape_pct": 21.4,
+          "n_obs": 3
+        }
+      },
+      "summary": "DWA lift overstated by +6.2% on average. Moderate bias — smallest of named promo types. Chain-wide events have lower per-store lift variance.",
+      "action": "Apply -6% conservative tilt to DWA weeks; -9% for Smoothies/YoGos DWA."
+    },
+    "Endcap": {
+      "bias_pct": 3.8,
+      "mape_pct": 14.2,
+      "n_obs": 12,
+      "by_cat": {
+        "Frozen Multiserve": {
+          "bias_pct": 3.8,
+          "mape_pct": 14.2,
+          "n_obs": 12
+        }
+      },
+      "summary": "Endcap/co-space lift mildly overstated (+3.8%) and is the most reliable promo type. Frozen endcap observations are cleanest.",
+      "action": "Minimal adjustment needed (-3 to -5%); already calibrated via walk-forward."
+    },
+    "Launch": {
+      "bias_pct": 18.5,
+      "mape_pct": 44.1,
+      "n_obs": 6,
+      "by_cat": {
+        "Kids Snacks": {
+          "bias_pct": 18.5,
+          "mape_pct": 44.1,
+          "n_obs": 6
+        }
+      },
+      "summary": "Launch week forecasts highly uncertain (analog method only). 18.5% systematic over-forecast observed on comparable launches. New format launches worse than same-format launches.",
+      "action": "New SKU launch weeks: apply -18% bias correction + 6% conservative tilt. Flag as 'Low Confidence' in all decision systems."
+    }
+  },
+  "cat_baseline": {
+    "Baby Snacks": {
+      "mape_base": 6.2,
+      "bias_base": -3.5,
+      "n_obs": 52,
+      "trend": "Under-forecast: model is slightly conservative on baseline weeks. No downward correction needed."
+    },
+    "Frozen Multiserve": {
+      "mape_base": 7.1,
+      "bias_base": 2.4,
+      "n_obs": 48,
+      "trend": "Mild positive baseline bias: model trends ~2% above actual on non-promo weeks."
+    },
+    "Smoothies": {
+      "mape_base": 14.8,
+      "bias_base": 10.6,
+      "n_obs": 52,
+      "trend": "HIGH baseline over-forecast: model trends +10.6% above actual even in non-promo weeks. Velocity assumptions likely stale."
+    },
+    "Kids Snacks": {
+      "mape_base": 8.9,
+      "bias_base": -1.4,
+      "n_obs": 40,
+      "trend": "Approximately unbiased on baseline; MAPE driven by high-velocity outliers."
+    },
+    "YoGos": {
+      "mape_base": 13.4,
+      "bias_base": 8.2,
+      "n_obs": 36,
+      "trend": "Positive baseline bias: YoGos model trends +8.2% high. Apple Berry particularly problematic (+29.3% overall bias)."
+    }
+  },
+  "skus": [
+    {
+      "dpci": "007102035",
+      "bias_base": -6.6,
+      "bias_promo": 4.2,
+      "n_obs_base": 12,
+      "n_obs_promo": 4,
+      "conservative_tilt": 3.5,
+      "reason": "Slight baseline under-forecast; promo lift overstated ~4%"
+    },
+    {
+      "dpci": "007103297",
+      "bias_base": -1.2,
+      "bias_promo": 8.8,
+      "n_obs_base": 10,
+      "n_obs_promo": 3,
+      "conservative_tilt": 4.5,
+      "reason": "Moderate promo lift overstatement; high volatility (CV=0.38)"
+    },
+    {
+      "dpci": "007100291",
+      "bias_base": -0.9,
+      "bias_promo": 5.1,
+      "n_obs_base": 12,
+      "n_obs_promo": 3,
+      "conservative_tilt": 3.5,
+      "reason": "Well-calibrated baseline; mild promo overstatement"
+    },
+    {
+      "dpci": "007109801",
+      "bias_base": -4,
+      "bias_promo": 2.8,
+      "n_obs_base": 11,
+      "n_obs_promo": 3,
+      "conservative_tilt": 3,
+      "reason": "Under-forecast on baseline; most stable Baby SKU"
+    },
+    {
+      "dpci": "270022902",
+      "bias_base": 4.7,
+      "bias_promo": 8.3,
+      "n_obs_base": 9,
+      "n_obs_promo": 3,
+      "conservative_tilt": 4,
+      "reason": "Mild positive baseline bias; ramp-period Frozen promo uncertainty"
+    },
+    {
+      "dpci": "270020128",
+      "bias_base": 0.8,
+      "bias_promo": 3.2,
+      "n_obs_base": 10,
+      "n_obs_promo": 3,
+      "conservative_tilt": 3.5,
+      "reason": "Well-calibrated; best-performing Frozen SKU"
+    },
+    {
+      "dpci": "270028577",
+      "bias_base": 2,
+      "bias_promo": 6.9,
+      "n_obs_base": 9,
+      "n_obs_promo": 3,
+      "conservative_tilt": 4,
+      "reason": "Mild positive bias; high volatility (CV=0.32)"
+    },
+    {
+      "dpci": "211340231",
+      "bias_base": 13.4,
+      "bias_promo": 22.7,
+      "n_obs_base": 9,
+      "n_obs_promo": 3,
+      "conservative_tilt": 5.5,
+      "reason": "Promo lift historically overstated +22.7%; velocity assumption stale"
+    },
+    {
+      "dpci": "211340230",
+      "bias_base": 15.9,
+      "bias_promo": 25.1,
+      "n_obs_base": 9,
+      "n_obs_promo": 3,
+      "conservative_tilt": 5.5,
+      "reason": "Promo lift historically overstated +25.1%; highest individual Smoothies bias"
+    },
+    {
+      "dpci": "211340232",
+      "bias_base": 16.9,
+      "bias_promo": 26.4,
+      "n_obs_base": 8,
+      "n_obs_promo": 3,
+      "conservative_tilt": 5.5,
+      "reason": "Systematic over-forecast +16.9% even on baseline weeks"
+    },
+    {
+      "dpci": "211340237",
+      "bias_base": 2.3,
+      "bias_promo": 9.4,
+      "n_obs_base": 7,
+      "n_obs_promo": 2,
+      "conservative_tilt": 4.5,
+      "reason": "Lower volume SKU; mild overstatement; fewer test points"
+    },
+    {
+      "dpci": "211340236",
+      "bias_base": 0,
+      "bias_promo": 4.1,
+      "n_obs_base": 6,
+      "n_obs_promo": 2,
+      "conservative_tilt": 4,
+      "reason": "Well-calibrated baseline; rising velocity SKU"
+    },
+    {
+      "dpci": "211340238",
+      "bias_base": 0.7,
+      "bias_promo": 6.2,
+      "n_obs_base": 8,
+      "n_obs_promo": 2,
+      "conservative_tilt": 4,
+      "reason": "4ct multipack — less promo history; moderate calibration needed"
+    },
+    {
+      "dpci": "211340239",
+      "bias_base": -1.8,
+      "bias_promo": 4.3,
+      "n_obs_base": 7,
+      "n_obs_promo": 2,
+      "conservative_tilt": 4,
+      "reason": "4ct Berry Banana — slight under on baseline"
+    },
+    {
+      "dpci": "211340240",
+      "bias_base": 0,
+      "bias_promo": 0,
+      "n_obs_base": 2,
+      "n_obs_promo": 0,
+      "conservative_tilt": 6.5,
+      "reason": "Analog estimate (1ct history proxy); insufficient data for bias correction"
+    },
+    {
+      "dpci": "071200966",
+      "bias_base": -3.3,
+      "bias_promo": 7.8,
+      "n_obs_base": 11,
+      "n_obs_promo": 3,
+      "conservative_tilt": 3.5,
+      "reason": "Slight baseline under-forecast; promo lift modestly overstated"
+    },
+    {
+      "dpci": "071200965",
+      "bias_base": -1.6,
+      "bias_promo": 6.4,
+      "n_obs_base": 11,
+      "n_obs_promo": 3,
+      "conservative_tilt": 3.5,
+      "reason": "Approximately unbiased; stable Kids Snacks SKU"
+    },
+    {
+      "dpci": "071200967",
+      "bias_base": 1.5,
+      "bias_promo": 5.9,
+      "n_obs_base": 10,
+      "n_obs_promo": 3,
+      "conservative_tilt": 3.5,
+      "reason": "Mild positive bias; lower-volume Apple Pie variant"
+    },
+    {
+      "dpci": "071060659",
+      "bias_base": -1.2,
+      "bias_promo": 8.4,
+      "n_obs_base": 7,
+      "n_obs_promo": 2,
+      "conservative_tilt": 4.5,
+      "reason": "Limited distribution; promo lift harder to predict"
+    },
+    {
+      "dpci": "071060658",
+      "bias_base": 0.5,
+      "bias_promo": 7.7,
+      "n_obs_base": 7,
+      "n_obs_promo": 2,
+      "conservative_tilt": 4,
+      "reason": "Similar to Pizzalicious; moderate calibration"
+    },
+    {
+      "dpci": "007105166",
+      "bias_base": 0,
+      "bias_promo": 0,
+      "n_obs_base": 0,
+      "n_obs_promo": 0,
+      "conservative_tilt": 7.5,
+      "reason": "New format launch (Stellar Puffs); analog only; high uncertainty"
+    },
+    {
+      "dpci": "007106435",
+      "bias_base": 0,
+      "bias_promo": 0,
+      "n_obs_base": 0,
+      "n_obs_promo": 0,
+      "conservative_tilt": 7.5,
+      "reason": "New format launch (Stellar Puffs White Cheddar); analog only"
+    },
+    {
+      "dpci": "007102732",
+      "bias_base": 0,
+      "bias_promo": 0,
+      "n_obs_base": 0,
+      "n_obs_promo": 0,
+      "conservative_tilt": 6,
+      "reason": "Analog estimate (Baby Puffs curve); new format Minis"
+    },
+    {
+      "dpci": "007103137",
+      "bias_base": 0,
+      "bias_promo": 0,
+      "n_obs_base": 0,
+      "n_obs_promo": 0,
+      "conservative_tilt": 6,
+      "reason": "Analog estimate (Baby Puffs curve); Mango Blueberry variant"
+    },
+    {
+      "dpci": "284104983",
+      "bias_base": 3.2,
+      "bias_promo": 14.1,
+      "n_obs_base": 9,
+      "n_obs_promo": 3,
+      "conservative_tilt": 4.5,
+      "reason": "Promo lift overstated ~14%; 4ct format has limited history"
+    },
+    {
+      "dpci": "284108661",
+      "bias_base": 29.3,
+      "bias_promo": 38.7,
+      "n_obs_base": 7,
+      "n_obs_promo": 2,
+      "conservative_tilt": 6,
+      "reason": "EXTREME bias +29.3% — Apple Berry velocity severely over-forecast; mandatory bias correction"
+    },
+    {
+      "dpci": "284100310",
+      "bias_base": -0.6,
+      "bias_promo": 12.4,
+      "n_obs_base": 8,
+      "n_obs_promo": 2,
+      "conservative_tilt": 5,
+      "reason": "Format exit 1ct; negative baseline bias but promo lift overstated"
+    },
+    {
+      "dpci": "284101821",
+      "bias_base": 3.3,
+      "bias_promo": 18.2,
+      "n_obs_base": 7,
+      "n_obs_promo": 2,
+      "conservative_tilt": 5,
+      "reason": "Significant positive bias on promo weeks; declining trajectory SKU"
+    }
+  ]
+}

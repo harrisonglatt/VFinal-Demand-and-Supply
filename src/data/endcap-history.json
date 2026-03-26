@@ -1,0 +1,62 @@
+[
+  {
+    "wk": -8,
+    "date": "Jan 5",
+    "event": "Frozen Co-space Start (Jan)",
+    "category": "Frozen",
+    "status": "Historical",
+    "type": "Co-space",
+    "stores": "1,531",
+    "mechanic": "Endcap placement, 4+ wks",
+    "lift_pct": "~50%",
+    "actual_lift": 1.43
+  },
+  {
+    "wk": -7,
+    "date": "Jan 12",
+    "event": "Frozen Co-space Week 2",
+    "category": "Frozen",
+    "status": "Historical",
+    "type": "Co-space",
+    "stores": "1,531",
+    "mechanic": "Endcap continuation",
+    "lift_pct": "~50%",
+    "actual_lift": 1.53
+  },
+  {
+    "wk": -6,
+    "date": "Jan 19",
+    "event": "Frozen Co-space Week 3",
+    "category": "Frozen",
+    "status": "Historical",
+    "type": "Co-space",
+    "stores": "1,531",
+    "mechanic": "Endcap",
+    "lift_pct": "~50%",
+    "actual_lift": 1.48
+  },
+  {
+    "wk": -5,
+    "date": "Jan 26",
+    "event": "Frozen Co-space Final",
+    "category": "Frozen",
+    "status": "Historical",
+    "type": "Co-space",
+    "stores": "1,531",
+    "mechanic": "Endcap winding",
+    "lift_pct": "~50%",
+    "actual_lift": 1.51
+  },
+  {
+    "wk": -4,
+    "date": "Feb 2",
+    "event": "Frozen BOGO Circle + Co-space",
+    "category": "Frozen",
+    "status": "Historical",
+    "type": "Stacked",
+    "stores": "1,531",
+    "mechanic": "Endcap + incremental BOGO",
+    "lift_pct": "~103%",
+    "actual_lift": 1.91
+  }
+]

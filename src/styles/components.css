@@ -1,0 +1,157 @@
+/* ── KPI Cards ─────────────────────────────────────────────── */
+.kc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden;}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cc,var(--ac)),transparent);}
+.kl{font-size:10.5px;color:var(--tx2);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:9px;}
+.kv{font-size:30px;font-weight:700;letter-spacing:-1px;line-height:1;}.kv.sm{font-size:22px;}
+.kd{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:600;
+margin-top:7px;padding:3px 8px;border-radius:20px;}
+.kd.up{background:rgba(16,185,129,.12);color:var(--gr);}
+.kd.dn{background:rgba(239,68,68,.12);color:var(--rd);}
+.kd.neu{background:rgba(245,158,11,.12);color:var(--yw);}
+.ks{font-size:11px;color:var(--tx3);margin-top:5px;}
+.ki{position:absolute;right:16px;top:16px;font-size:20px;opacity:.25;}
+
+/* KPI sparklines */
+.k-sparks{display:flex;align-items:flex-end;gap:2px;height:28px;margin-top:6px;opacity:.7;}
+.ks-bar{flex:1;border-radius:2px 2px 0 0;min-width:3px;background:var(--cc,var(--ac));}
+
+/* ── Badges ────────────────────────────────────────────────── */
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;font-family:'Mulish',sans-serif;
+background:rgba(0,227,205,.12);color:var(--ls-blue);border:1px solid rgba(0,227,205,.25);}
+.badge.gr{background:rgba(0,207,146,.12);color:var(--ls-spinach);border-color:rgba(0,207,146,.25);}
+.badge.yw{background:rgba(255,199,17,.12);color:var(--ls-mango);border-color:rgba(255,199,17,.25);}
+.ch{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10.5px;font-weight:600;}
+.cr{background:rgba(239,68,68,.15);color:var(--rd);}.cy2{background:rgba(245,158,11,.15);color:var(--ls-mango);}
+.cg{background:rgba(16,185,129,.15);color:var(--ls-spinach);}.cb{background:rgba(0,227,205,.15);color:var(--ls-blue);}
+.cp{background:rgba(139,92,246,.15);color:#c4b5fd;}.cgr{background:rgba(148,163,184,.1);color:#94a3b8;}
+
+/* ── Little Spoon Category Colors ──────────────────────────── */
+.cat-badge{display:inline-block;font-family:'Mulish',sans-serif;font-size:10.5px;font-weight:700;
+  padding:2px 8px;border-radius:20px;letter-spacing:.3px;text-transform:uppercase;}
+
+/* Baby Snacks → Guava (warm coral) */
+.cat-baby-snacks{background:rgba(255,135,102,.18);color:#FF8766;border:1px solid rgba(255,135,102,.35);}
+/* Kids Snacks → Mango (bright yellow) */
+.cat-kids-snacks{background:rgba(255,199,17,.18);color:#d4a200;border:1px solid rgba(255,199,17,.35);}
+/* Frozen → Blueberry (cool blue) */
+.cat-frozen-multiserve,.cat-frozen{background:rgba(24,167,255,.18);color:#18A7FF;border:1px solid rgba(24,167,255,.35);}
+/* Smoothies → Spinach (fresh green) */
+.cat-smoothies{background:rgba(0,207,146,.18);color:#00CF92;border:1px solid rgba(0,207,146,.35);}
+/* YoGos → Prune (purple) */
+.cat-yogos{background:rgba(220,123,255,.18);color:#DC7BFF;border:1px solid rgba(220,123,255,.35);}
+/* Brand-Wide → LS Blue */
+.cat-brand-wide,.cat-all-categories{background:rgba(0,227,205,.18);color:#00E3CD;border:1px solid rgba(0,227,205,.35);}
+/* Fallback */
+.cat-badge:not([class*="cat-baby"]):not([class*="cat-kids"]):not([class*="cat-frozen"])
+  :not([class*="cat-smoothie"]):not([class*="cat-yogo"]):not([class*="cat-brand"])
+  :not([class*="cat-all"]){background:rgba(0,227,205,.15);color:#00E3CD;border:1px solid rgba(0,227,205,.3);}
+
+/* ── Charts ────────────────────────────────────────────────── */
+.cc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:18px;margin-bottom:22px;}
+.ct{font-size:13px;font-weight:600;color:var(--tx2);margin-bottom:14px;}
+.cw canvas{max-height:230px;}
+
+/* ── LS Chart Defaults ─────────────────────────────────────── */
+.cc{border:1px solid var(--bd);border-radius:12px;}
+.ct{font-family:'Mulish',sans-serif;font-weight:700;font-size:13px;}
+
+/* ── Tables ────────────────────────────────────────────────── */
+.tc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:22px;}
+.ts{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead th{background:var(--s2);padding:9px 11px;text-align:left;font-size:10.5px;
+font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.5px;
+white-space:nowrap;border-bottom:1px solid var(--bd);}
+tbody tr{border-bottom:1px solid rgba(30,45,74,.4);transition:.1s;}
+tbody tr:last-child{border-bottom:none;}tbody tr:hover{background:var(--s2);}
+tbody td{padding:8px 11px;color:var(--tx);white-space:nowrap;}
+.tn{max-width:190px;overflow:hidden;text-overflow:ellipsis;font-weight:500;}
+.tr{text-align:right;font-variant-numeric:tabular-nums;}
+
+/* Sticky table header upgrade */
+.dt thead th{position:sticky;top:0;z-index:3;}
+.st{position:sticky;left:0;background:var(--s2);z-index:2;}
+
+/* ── Buttons, Selects, Inputs ──────────────────────────────── */
+select,.btn,.si{background:var(--s2);border:1px solid var(--bd);color:var(--tx);
+border-radius:7px;padding:6px 11px;font-size:12px;cursor:pointer;outline:none;transition:.15s;}
+select:hover,select:focus,.si:focus{border-color:var(--ac);}
+.btn{font-weight:600;}.btn:hover{background:var(--s3);border-color:var(--ac);}
+.btn.on{background:var(--ac);border-color:var(--ac);color:#fff;}
+.bg{display:flex;}.bg .btn{border-radius:0;border-right-width:0;}
+.bg .btn:first-child{border-radius:7px 0 0 7px;}.bg .btn:last-child{border-radius:0 7px 7px 0;border-right-width:1px;}
+.si{min-width:190px;}
+
+/* ── Filters ───────────────────────────────────────────────── */
+.fb{display:flex;align-items:center;gap:9px;margin-bottom:18px;flex-wrap:wrap;}
+.fm{margin-left:auto;font-size:12px;color:var(--tx2);}
+
+/* ── Tooltips ──────────────────────────────────────────────── */
+.tip{position:relative;display:inline-flex;align-items:center;gap:3px;cursor:help;}
+.tip-pop{display:none;position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);
+z-index:300;background:#1c2a46;border:1px solid var(--bd);border-radius:8px;padding:9px 13px;
+width:230px;font-size:11.5px;color:var(--tx2);line-height:1.55;box-shadow:0 8px 28px rgba(0,0,0,.5);
+pointer-events:none;white-space:normal;text-align:left;}
+.tip-pop::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+border:5px solid transparent;border-top-color:#1c2a46;}
+.tip:hover .tip-pop{display:block;}
+.tip-ic{font-size:10px;color:var(--tx3);opacity:.75;font-style:normal;}
+
+/* ── Scenario Bars ─────────────────────────────────────────── */
+.scen-bar-row{display:flex;align-items:center;gap:12px;padding:5px 0;}
+.scen-bar-lbl{width:48px;font-size:11.5px;font-weight:700;text-align:right;}
+.scen-bar-track{flex:1;height:30px;background:var(--s3);border-radius:6px;overflow:hidden;border:1px solid var(--bd);}
+.scen-bar-fill{height:100%;border-radius:5px;display:flex;align-items:center;padding-left:10px;
+font-size:11.5px;font-weight:700;white-space:nowrap;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.scen-bar-val{width:100px;text-align:right;font-size:12px;font-weight:700;}
+
+/* ── LS Scenario Colors ────────────────────────────────────── */
+.scen-bar-fill.bear{background:linear-gradient(90deg,rgba(239,68,68,.7),rgba(239,68,68,.5));}
+.scen-bar-fill.base{background:linear-gradient(90deg,rgba(0,227,205,.8),rgba(0,249,184,.6));}
+.scen-bar-fill.bull{background:linear-gradient(90deg,rgba(0,207,146,.9),rgba(194,255,127,.7));}
+
+/* Risk OS overrides for scenario bars */
+.scen-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.scen-bar-lbl{width:40px;font-size:12px;font-weight:700;}
+.scen-bar-track{flex:1;height:28px;background:var(--s2);border-radius:6px;overflow:hidden;position:relative;}
+.scen-bar-fill{height:100%;display:flex;align-items:center;padding:0 8px;border-radius:6px;min-width:30px;}
+.scen-bar-val{width:40px;font-size:12px;font-weight:700;text-align:right;}
+
+/* ── Risk Items ────────────────────────────────────────────── */
+.risk-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;
+margin-bottom:5px;background:var(--s2);border:1px solid var(--bd);cursor:default;transition:.15s;}
+.risk-item:hover{border-color:var(--tx3);transform:translateX(2px);}
+
+/* ── Callout Items ─────────────────────────────────────────── */
+.callout-item{display:flex;gap:10px;padding:9px 13px;border-radius:8px;margin-bottom:7px;
+border-left:3px solid transparent;transition:.15s;}
+.callout-item:hover{filter:brightness(1.05);}
+.ci-grn{background:rgba(16,185,129,.06);border-left-color:var(--gr);}
+.ci-yel{background:rgba(245,158,11,.06);border-left-color:var(--yw);}
+.ci-red{background:rgba(239,68,68,.06);border-left-color:var(--rd);}
+.ci-blu{background:rgba(0,227,205,.06);border-left-color:var(--ac);}
+.ci-pur{background:rgba(139,92,246,.06);border-left-color:var(--pu);}
+.ci-icon{font-size:15px;margin-top:1px;flex-shrink:0;}
+.ci-text{flex:1;font-size:11.5px;line-height:1.6;color:var(--tx2);}
+.ci-text strong{color:var(--tx);}
+
+/* ── Progress Bars (Category Snapshot) ─────────────────────── */
+.cat-snap-row{display:flex;align-items:center;gap:14px;padding:9px 14px;
+border-radius:8px;margin-bottom:5px;background:var(--s2);}
+.cat-snap-name{width:115px;font-size:12.5px;font-weight:700;white-space:nowrap;}
+.cat-snap-bar-wrap{flex:1;}
+.cat-snap-bar-bg{height:13px;background:var(--s3);border-radius:4px;overflow:hidden;}
+.cat-snap-bar-fg{height:100%;border-radius:4px;transition:width .5s;}
+.cat-snap-bar-sub{display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-top:3px;}
+.cat-snap-pct{width:48px;text-align:right;font-size:14px;font-weight:800;}
+
+/* ── Impact Preview ────────────────────────────────────────── */
+.impact-preview{background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);
+border-radius:8px;padding:10px 14px;margin-top:8px;animation:fadeIn .3s;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.ip-title{font-weight:700;color:#c4b5fd;margin-bottom:7px;font-size:12px;}
+.ip-row{display:flex;justify-content:space-between;align-items:center;
+padding:4px 0;border-bottom:1px solid rgba(139,92,246,.1);font-size:11.5px;}
+.ip-row:last-child{border-bottom:none;}
+.ip-lbl{color:var(--tx3);}
+.ip-val{font-weight:700;}

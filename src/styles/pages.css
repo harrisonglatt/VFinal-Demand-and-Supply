@@ -1,0 +1,117 @@
+/* ── Scenario Table ─────────────────────────────────────────── */
+.sc3-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.sc3-tbl th{background:var(--s2);padding:8px 11px;font-size:10.5px;font-weight:700;
+color:var(--tx2);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bd);}
+.sc3-tbl td{padding:7px 11px;border-bottom:1px solid rgba(30,48,84,.3);}
+.sc3-tbl tbody tr:hover{background:var(--s2);}
+.sc3-tbl .bear-val{color:var(--rd);font-weight:600;}
+.sc3-tbl .base-val{color:var(--ls-blue);font-weight:600;}
+.sc3-tbl .bull-val{color:var(--ls-spinach);font-weight:600;}
+.sc3-tbl .cat-row{background:rgba(0,227,205,.05);font-weight:700;border-top:1px solid var(--bd);}
+.sc3-tbl .total-row{background:rgba(0,227,205,.12);border-top:2px solid var(--ac);}
+.sc3-tbl .range-col{color:var(--yw);}
+
+/* ── Confidence Badges ─────────────────────────────────────── */
+.ci-badge{font-size:9px;padding:1px 4px;border-radius:3px;vertical-align:middle;margin-left:3px;font-weight:600;}
+.ci-lo{background:rgba(239,68,68,.15);color:var(--rd);}
+.ci-hi{background:rgba(16,185,129,.15);color:var(--ls-spinach);}
+
+/* ── Variance Flags ────────────────────────────────────────── */
+.vf{font-size:9.5px;padding:1px 5px;border-radius:3px;font-weight:700;vertical-align:middle;margin-left:3px;}
+.vf-hi{background:rgba(239,68,68,.18);color:var(--rd);}
+.vf-ok{background:rgba(16,185,129,.15);color:var(--ls-spinach);}
+.vf-warn{background:rgba(245,158,11,.15);color:var(--ls-mango);}
+
+/* ── Data States ───────────────────────────────────────────── */
+.ds-complete{background:rgba(0,207,146,.15);color:#00cf92;border:1px solid rgba(0,207,146,.25);padding:2px 8px;border-radius:12px;font-size:10.5px}
+.ds-partial{background:rgba(255,199,17,.15);color:#ffc711;border:1px solid rgba(255,199,17,.25);padding:2px 8px;border-radius:12px;font-size:10.5px}
+.ds-none{background:rgba(100,130,180,.1);color:#44608a;border:1px solid rgba(100,130,180,.15);padding:2px 8px;border-radius:12px;font-size:10.5px}
+
+/* ── Maturity Badges ───────────────────────────────────────── */
+.maturity-new{background:rgba(24,167,255,.15);color:#18a7ff;padding:2px 7px;border-radius:10px;font-size:10px;white-space:nowrap}
+.maturity-ramping{background:rgba(255,199,17,.15);color:#ffc711;padding:2px 7px;border-radius:10px;font-size:10px;white-space:nowrap}
+.maturity-established{background:rgba(0,207,146,.15);color:#00cf92;padding:2px 7px;border-radius:10px;font-size:10px;white-space:nowrap}
+.maturity-analog{background:rgba(220,123,255,.15);color:#dc7bff;padding:2px 7px;border-radius:10px;font-size:10px;white-space:nowrap}
+.maturity-manual{background:rgba(255,199,17,.12);color:#ffc711;padding:2px 7px;border-radius:10px;font-size:10px;white-space:nowrap}
+.maturity-actual{background:rgba(0,227,205,.15);color:#00e3cd;padding:2px 7px;border-radius:10px;font-size:10px;white-space:nowrap}
+
+/* ── New SKU ───────────────────────────────────────────────── */
+.new-sku-row{background:rgba(24,167,255,.04)!important}
+.new-sku-badge{display:inline-block;background:rgba(24,167,255,.2);color:#18a7ff;font-size:9px;padding:1px 5px;border-radius:8px;margin-left:4px;vertical-align:middle}
+
+/* ── Shell / Empty States ──────────────────────────────────── */
+.shell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;gap:14px;color:var(--tx3);}
+.sic{font-size:46px;opacity:.25;}.sti{font-size:17px;font-weight:600;color:var(--tx2);}
+.sde{font-size:13px;text-align:center;max-width:360px;line-height:1.6;}
+.scs{font-size:11px;padding:4px 12px;border:1px solid var(--bd);border-radius:20px;color:var(--tx3);}
+
+/* ── Demand Plan ───────────────────────────────────────────── */
+.dp-f{background:rgba(0,227,205,.06);}.dp-p{background:rgba(245,158,11,.1)!important;}
+.dp-div{background:rgba(0,227,205,.18);padding:0;min-width:4px;width:4px;}
+
+/* ── Promo List ────────────────────────────────────────────── */
+.pl{display:flex;flex-direction:column;gap:9px;}
+.pc{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:13px 15px;display:flex;align-items:flex-start;gap:14px;}
+.pw{font-size:10.5px;color:var(--tx3);min-width:42px;text-align:center;}
+.pw strong{display:block;font-size:18px;color:var(--tx);font-weight:700;}
+.pi{flex:1;}.pe{font-size:13px;font-weight:600;}.pd{font-size:11.5px;color:var(--tx2);margin-top:3px;}
+.pr{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
+.plift{font-size:15px;font-weight:700;color:var(--yw);}
+
+/* ── Launch ────────────────────────────────────────────────── */
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+.lc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px;}
+.ln{font-size:13px;font-weight:600;margin-bottom:11px;}
+
+/* ── Scenario Picker ───────────────────────────────────────── */
+.sr{display:flex;gap:10px;margin-bottom:12px;}
+.sp{flex:1;text-align:center;padding:9px 6px;border-radius:8px;border:1px solid var(--bd);cursor:pointer;transition:.15s;}
+.sp.bear.on{background:rgba(239,68,68,.13);border-color:var(--rd);}
+.sp.base.on{background:rgba(0,227,205,.13);border-color:var(--ac);}
+.sp.bull.on{background:rgba(16,185,129,.13);border-color:var(--gr);}
+.sl{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;}
+.sv{font-size:17px;font-weight:700;margin-top:2px;}
+.sp.bear .sv{color:var(--rd);}.sp.base .sv{color:var(--ac2);}.sp.bull .sv{color:var(--gr);}
+
+/* ── Grid Layouts ──────────────────────────────────────────── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
+/* ── KPI Grids ─────────────────────────────────────────────── */
+.kpis{display:grid;gap:14px;margin-bottom:22px;}
+.k4{grid-template-columns:repeat(4,1fr);}.k3{grid-template-columns:repeat(3,1fr);}
+.k2{grid-template-columns:repeat(2,1fr);}
+@media(max-width:1200px){.k4{grid-template-columns:repeat(2,1fr);}}
+
+/* ── LS KPI Cards ─────────────────────────────────────────── */
+.kpi-v{font-family:'Mulish',sans-serif;font-weight:900;}
+.kpi-l{font-family:'Mulish',sans-serif;}
+
+/* ── Inputs ────────────────────────────────────────────────── */
+.inp{background:var(--s2);border:1px solid var(--s3);color:var(--tx);padding:7px 10px;border-radius:6px;font-size:12px;outline:none;width:100%}
+.inp:focus{border-color:var(--ac)}
+
+/* ── Risk OS ───────────────────────────────────────────────── */
+.ros-risk-high{background:rgba(239,68,68,.06)!important;}
+.ros-risk-med{background:rgba(255,199,17,.04)!important;}
+
+/* ── Executive Summary ─────────────────────────────────────── */
+.exec-sep{display:flex;align-items:center;gap:10px;margin:4px 0 14px;color:var(--tx3);}
+.exec-sep::before,.exec-sep::after{content:'';flex:1;height:1px;background:var(--bd);}
+.exec-sep span{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+
+/* ── LS Executive Summary ─────────────────────────────────── */
+.exec-sep span{color:var(--ls-blue);opacity:1;}
+
+/* ── Color Utilities ───────────────────────────────────────── */
+.up{color:var(--gr);font-weight:600;}.dn{color:var(--rd);font-weight:600;}.neu{color:var(--yw);font-weight:600;}
+
+/* ── Omni Tag ──────────────────────────────────────────────── */
+.omni-tag{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;
+padding:2px 8px;border-radius:20px;background:rgba(6,182,212,.12);color:var(--cy);
+border:1px solid rgba(6,182,212,.25);}
+
+/* ── Live Indicator ────────────────────────────────────────── */
+.live{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gr);font-weight:500;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gr);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}

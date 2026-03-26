@@ -1,0 +1,527 @@
+{
+  "as_of": "Mar 24, 2026",
+  "cw_label": "Wk of Mar 22",
+  "lw_label": "Wk of Mar 15",
+  "days_in": 3,
+  "lw_days": 7,
+  "cw_units": 68957,
+  "cw_sales": 418171.96,
+  "lw_units": 154691,
+  "lw_sales": 916690.16,
+  "lw_daily_avg_u": 22099,
+  "lw_daily_avg_s": 130955.74,
+  "cw_daily_avg_u": 22986,
+  "cw_daily_avg_s": 139390.65,
+  "daily_totals": [
+    {
+      "date": "Mar 12",
+      "dow": "Thu",
+      "wk": "LW-1",
+      "units": 20740,
+      "sales": 121631.07
+    },
+    {
+      "date": "Mar 13",
+      "dow": "Fri",
+      "wk": "LW-1",
+      "units": 23353,
+      "sales": 136305.65
+    },
+    {
+      "date": "Mar 14",
+      "dow": "Sat",
+      "wk": "LW-1",
+      "units": 26837,
+      "sales": 158276.75
+    },
+    {
+      "date": "Mar 15",
+      "dow": "Sun",
+      "wk": "LW",
+      "units": 24800,
+      "sales": 149558.94
+    },
+    {
+      "date": "Mar 16",
+      "dow": "Mon",
+      "wk": "LW",
+      "units": 20023,
+      "sales": 120386.01
+    },
+    {
+      "date": "Mar 17",
+      "dow": "Tue",
+      "wk": "LW",
+      "units": 18978,
+      "sales": 112540.08
+    },
+    {
+      "date": "Mar 18",
+      "dow": "Wed",
+      "wk": "LW",
+      "units": 20174,
+      "sales": 119817.05
+    },
+    {
+      "date": "Mar 19",
+      "dow": "Thu",
+      "wk": "LW",
+      "units": 21166,
+      "sales": 123983.12
+    },
+    {
+      "date": "Mar 20",
+      "dow": "Fri",
+      "wk": "LW",
+      "units": 23510,
+      "sales": 137553.52
+    },
+    {
+      "date": "Mar 21",
+      "dow": "Sat",
+      "wk": "LW",
+      "units": 26040,
+      "sales": 152851.44
+    },
+    {
+      "date": "Mar 22",
+      "dow": "Sun",
+      "wk": "CW",
+      "units": 27208,
+      "sales": 165468.57
+    },
+    {
+      "date": "Mar 23",
+      "dow": "Mon",
+      "wk": "CW",
+      "units": 21301,
+      "sales": 129184.21
+    },
+    {
+      "date": "Mar 24",
+      "dow": "Tue",
+      "wk": "CW",
+      "units": 20448,
+      "sales": 123519.18
+    }
+  ],
+  "dow_compare": [
+    {
+      "dow": "Sun",
+      "lw_date": "Mar 15",
+      "cw_date": "Mar 22",
+      "lw_units": 24800,
+      "cw_units": 27208,
+      "lw_sales": 149558.94,
+      "cw_sales": 165468.57
+    },
+    {
+      "dow": "Mon",
+      "lw_date": "Mar 16",
+      "cw_date": "Mar 23",
+      "lw_units": 20023,
+      "cw_units": 21301,
+      "lw_sales": 120386.01,
+      "cw_sales": 129184.21
+    },
+    {
+      "dow": "Tue",
+      "lw_date": "Mar 17",
+      "cw_date": "Mar 24",
+      "lw_units": 18978,
+      "cw_units": 20448,
+      "lw_sales": 112540.08,
+      "cw_sales": 123519.18
+    }
+  ],
+  "cat_summary": [
+    {
+      "cat": "Baby Snacks",
+      "cw_units": 24470,
+      "cw_sales": 124285.44,
+      "lw_units": 56257,
+      "lw_sales": 284643.58,
+      "lw_3day_sales": 121990.11,
+      "lw_3day_units": 24110,
+      "wow_sales": 0.0188
+    },
+    {
+      "cat": "Kids Snacks",
+      "cw_units": 16704,
+      "cw_sales": 105036.39,
+      "lw_units": 32786,
+      "lw_sales": 202224.02,
+      "lw_3day_sales": 86667.44,
+      "lw_3day_units": 14051,
+      "wow_sales": 0.2119
+    },
+    {
+      "cat": "Frozen",
+      "cw_units": 8991,
+      "cw_sales": 88224.62,
+      "lw_units": 26714,
+      "lw_sales": 220199.47,
+      "lw_3day_sales": 94371.2,
+      "lw_3day_units": 11449,
+      "wow_sales": -0.0651
+    },
+    {
+      "cat": "Smoothies",
+      "cw_units": 14415,
+      "cw_sales": 65216.37,
+      "lw_units": 31052,
+      "lw_sales": 132985.38,
+      "lw_3day_sales": 56993.73,
+      "lw_3day_units": 13308,
+      "wow_sales": 0.1443
+    },
+    {
+      "cat": "YoGos",
+      "cw_units": 4377,
+      "cw_sales": 35409.14,
+      "lw_units": 7882,
+      "lw_sales": 76637.71,
+      "lw_3day_sales": 32844.73,
+      "lw_3day_units": 3378,
+      "wow_sales": 0.0781
+    }
+  ],
+  "skus": [
+    {
+      "name": "Kale Apple Curls",
+      "cat": "Baby Snacks",
+      "cw_units": 8101,
+      "cw_sales": 40252.51,
+      "lw_units": 18555,
+      "lw_sales": 91807.09,
+      "lw_3day_units": 7952,
+      "lw_3day_sales": 39345.9,
+      "wow_units_pct": 0.0187,
+      "wow_sales_pct": 0.023
+    },
+    {
+      "name": "Mini Turkey Kale Meatballs",
+      "cat": "Frozen",
+      "cw_units": 3430,
+      "cw_sales": 33644.69,
+      "lw_units": 10461,
+      "lw_sales": 86574.31,
+      "lw_3day_units": 4483,
+      "lw_3day_sales": 37103.28,
+      "wow_units_pct": -0.2349,
+      "wow_sales_pct": -0.0932
+    },
+    {
+      "name": "Blueberry Carrot Puffs",
+      "cat": "Baby Snacks",
+      "cw_units": 6457,
+      "cw_sales": 32080.23,
+      "lw_units": 13804,
+      "lw_sales": 68137.79,
+      "lw_3day_units": 5916,
+      "lw_3day_sales": 29201.91,
+      "wow_units_pct": 0.0914,
+      "wow_sales_pct": 0.0986
+    },
+    {
+      "name": "Super Chicken Dippers",
+      "cat": "Frozen",
+      "cw_units": 3225,
+      "cw_sales": 31679.45,
+      "lw_units": 9277,
+      "lw_sales": 76749.26,
+      "lw_3day_units": 3976,
+      "lw_3day_sales": 32892.54,
+      "wow_units_pct": -0.1889,
+      "wow_sales_pct": -0.0369
+    },
+    {
+      "name": "Banana Pitaya Rings",
+      "cat": "Baby Snacks",
+      "cw_units": 6268,
+      "cw_sales": 31133.96,
+      "lw_units": 15117,
+      "lw_sales": 74689.53,
+      "lw_3day_units": 6479,
+      "lw_3day_sales": 32009.8,
+      "wow_units_pct": -0.0326,
+      "wow_sales_pct": -0.0274
+    },
+    {
+      "name": "Chicken Veggie Sliders",
+      "cat": "Frozen",
+      "cw_units": 2336,
+      "cw_sales": 22900.48,
+      "lw_units": 6976,
+      "lw_sales": 56875.9,
+      "lw_3day_units": 2990,
+      "lw_3day_sales": 24375.39,
+      "wow_units_pct": -0.2187,
+      "wow_sales_pct": -0.0605
+    },
+    {
+      "name": "Strawberry Banana Shake 4pk",
+      "cat": "Smoothies",
+      "cw_units": 2183,
+      "cw_sales": 21521.05,
+      "lw_units": 4332,
+      "lw_sales": 43698.35,
+      "lw_3day_units": 1857,
+      "lw_3day_sales": 18727.86,
+      "wow_units_pct": 0.1756,
+      "wow_sales_pct": 0.1491
+    },
+    {
+      "name": "Organic Oatmeal Baby Cereal",
+      "cat": "Baby Snacks",
+      "cw_units": 3644,
+      "cw_sales": 20818.74,
+      "lw_units": 8781,
+      "lw_sales": 50009.17,
+      "lw_3day_units": 3763,
+      "lw_3day_sales": 21432.5,
+      "wow_units_pct": -0.0316,
+      "wow_sales_pct": -0.0286
+    },
+    {
+      "name": "Strawberry Bananza YoGos 4pk",
+      "cat": "YoGos",
+      "cw_units": 1997,
+      "cw_sales": 19588.43,
+      "lw_units": 3750,
+      "lw_sales": 44212.96,
+      "lw_3day_units": 1607,
+      "lw_3day_sales": 18948.41,
+      "wow_units_pct": 0.2427,
+      "wow_sales_pct": 0.0338
+    },
+    {
+      "name": "Blueberry Muffin Oat Bakes",
+      "cat": "Kids Snacks",
+      "cw_units": 2933,
+      "cw_sales": 17386.65,
+      "lw_units": 6965,
+      "lw_sales": 41198.16,
+      "lw_3day_units": 2985,
+      "lw_3day_sales": 17656.35,
+      "wow_units_pct": -0.0174,
+      "wow_sales_pct": -0.0153
+    },
+    {
+      "name": "Fruit+Veggie Minis Straw. Banana",
+      "cat": "Kids Snacks",
+      "cw_units": 1926,
+      "cw_sales": 17177.84,
+      "lw_units": 2909,
+      "lw_sales": 25904.55,
+      "lw_3day_units": 1247,
+      "lw_3day_sales": 11101.95,
+      "wow_units_pct": 0.5445,
+      "wow_sales_pct": 0.5473
+    },
+    {
+      "name": "Fruit+Veggie Minis Mango Blueberry",
+      "cat": "Kids Snacks",
+      "cw_units": 1777,
+      "cw_sales": 15868.74,
+      "lw_units": 2812,
+      "lw_sales": 25013.75,
+      "lw_3day_units": 1205,
+      "lw_3day_sales": 10720.18,
+      "wow_units_pct": 0.4747,
+      "wow_sales_pct": 0.4803
+    },
+    {
+      "name": "Chocolate Chip Oat Bakes",
+      "cat": "Kids Snacks",
+      "cw_units": 2614,
+      "cw_sales": 15492.2,
+      "lw_units": 5839,
+      "lw_sales": 34508.5,
+      "lw_3day_units": 2502,
+      "lw_3day_sales": 14789.36,
+      "wow_units_pct": 0.0448,
+      "wow_sales_pct": 0.0475
+    },
+    {
+      "name": "Stellar Puffs Cinna-Banana",
+      "cat": "Kids Snacks",
+      "cw_units": 2637,
+      "cw_sales": 13215.74,
+      "lw_units": 4391,
+      "lw_sales": 21877.75,
+      "lw_3day_units": 1882,
+      "lw_3day_sales": 9376.18,
+      "wow_units_pct": 0.4012,
+      "wow_sales_pct": 0.4095
+    },
+    {
+      "name": "Apple Berry Blast YoGos 4pk",
+      "cat": "YoGos",
+      "cw_units": 1260,
+      "cw_sales": 12388.26,
+      "lw_units": 2182,
+      "lw_sales": 25739.97,
+      "lw_3day_units": 935,
+      "lw_3day_sales": 11031.42,
+      "wow_units_pct": 0.3476,
+      "wow_sales_pct": 0.123
+    },
+    {
+      "name": "Stellar Puffs White Cheddar",
+      "cat": "Kids Snacks",
+      "cw_units": 2405,
+      "cw_sales": 12042.55,
+      "lw_units": 3865,
+      "lw_sales": 19359.77,
+      "lw_3day_units": 1656,
+      "lw_3day_sales": 8297.04,
+      "wow_units_pct": 0.4523,
+      "wow_sales_pct": 0.4514
+    },
+    {
+      "name": "Berry Banana Blast Smoothie",
+      "cat": "Smoothies",
+      "cw_units": 3679,
+      "cw_sales": 11353.5,
+      "lw_units": 8234,
+      "lw_sales": 23655.05,
+      "lw_3day_units": 3529,
+      "lw_3day_sales": 10137.88,
+      "wow_units_pct": 0.0425,
+      "wow_sales_pct": 0.1199
+    },
+    {
+      "name": "Apple Pie Oat Bakes",
+      "cat": "Kids Snacks",
+      "cw_units": 1775,
+      "cw_sales": 10519.06,
+      "lw_units": 4405,
+      "lw_sales": 26059.31,
+      "lw_3day_units": 1888,
+      "lw_3day_sales": 11168.28,
+      "wow_units_pct": -0.0599,
+      "wow_sales_pct": -0.0581
+    },
+    {
+      "name": "Strawberry Banana Shake",
+      "cat": "Smoothies",
+      "cw_units": 3210,
+      "cw_sales": 10015.37,
+      "lw_units": 7295,
+      "lw_sales": 21344.17,
+      "lw_3day_units": 3126,
+      "lw_3day_sales": 9147.5,
+      "wow_units_pct": 0.0269,
+      "wow_sales_pct": 0.0949
+    },
+    {
+      "name": "Green Dream Smoothie",
+      "cat": "Smoothies",
+      "cw_units": 2781,
+      "cw_sales": 8525.27,
+      "lw_units": 6102,
+      "lw_sales": 17463.04,
+      "lw_3day_units": 2615,
+      "lw_3day_sales": 7484.16,
+      "wow_units_pct": 0.0635,
+      "wow_sales_pct": 0.1391
+    },
+    {
+      "name": "Berry Banana Blast Smoothie 4pk",
+      "cat": "Smoothies",
+      "cw_units": 742,
+      "cw_sales": 7222.61,
+      "lw_units": 1434,
+      "lw_sales": 14060.93,
+      "lw_3day_units": 615,
+      "lw_3day_sales": 6026.11,
+      "wow_units_pct": 0.2065,
+      "wow_sales_pct": 0.1986
+    },
+    {
+      "name": "Tropical Avocado Greens Smoothie",
+      "cat": "Smoothies",
+      "cw_units": 1066,
+      "cw_sales": 3222.04,
+      "lw_units": 2211,
+      "lw_sales": 6232.93,
+      "lw_3day_units": 948,
+      "lw_3day_sales": 2671.26,
+      "wow_units_pct": 0.1245,
+      "wow_sales_pct": 0.2062
+    },
+    {
+      "name": "Tropical Mango Twist YoGos",
+      "cat": "YoGos",
+      "cw_units": 624,
+      "cw_sales": 1906,
+      "lw_units": 1104,
+      "lw_sales": 3773.8,
+      "lw_3day_units": 473,
+      "lw_3day_sales": 1617.34,
+      "wow_units_pct": 0.3192,
+      "wow_sales_pct": 0.1785
+    },
+    {
+      "name": "Pineapple Guava Punch Smoothie",
+      "cat": "Smoothies",
+      "cw_units": 593,
+      "cw_sales": 1781.91,
+      "lw_units": 1083,
+      "lw_sales": 3033.78,
+      "lw_3day_units": 464,
+      "lw_3day_sales": 1300.19,
+      "wow_units_pct": 0.278,
+      "wow_sales_pct": 0.3705
+    },
+    {
+      "name": "Veggie Loops Pizzalicious",
+      "cat": "Kids Snacks",
+      "cw_units": 323,
+      "cw_sales": 1690.93,
+      "lw_units": 803,
+      "lw_sales": 4142.75,
+      "lw_3day_units": 344,
+      "lw_3day_sales": 1775.46,
+      "wow_units_pct": -0.061,
+      "wow_sales_pct": -0.0476
+    },
+    {
+      "name": "Veggie Loops Mac+Cheesy",
+      "cat": "Kids Snacks",
+      "cw_units": 314,
+      "cw_sales": 1642.68,
+      "lw_units": 797,
+      "lw_sales": 4159.48,
+      "lw_3day_units": 342,
+      "lw_3day_sales": 1782.63,
+      "wow_units_pct": -0.0819,
+      "wow_sales_pct": -0.0785
+    },
+    {
+      "name": "Green Dream Smoothie 4pk",
+      "cat": "Smoothies",
+      "cw_units": 161,
+      "cw_sales": 1574.62,
+      "lw_units": 361,
+      "lw_sales": 3497.13,
+      "lw_3day_units": 155,
+      "lw_3day_sales": 1498.77,
+      "wow_units_pct": 0.0387,
+      "wow_sales_pct": 0.0506
+    },
+    {
+      "name": "Strawberry Bananza YoGos Single",
+      "cat": "YoGos",
+      "cw_units": 496,
+      "cw_sales": 1526.45,
+      "lw_units": 846,
+      "lw_sales": 2910.98,
+      "lw_3day_units": 363,
+      "lw_3day_sales": 1247.56,
+      "wow_units_pct": 0.3664,
+      "wow_sales_pct": 0.2235
+    }
+  ]
+}
