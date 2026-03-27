@@ -1,3 +1,26 @@
+/* ── Sign-In Page ──────────────────────────────────────────── */
+.sign-in-page{display:flex;align-items:center;justify-content:center;min-height:100vh;
+  background:var(--bg);padding:20px;}
+.sign-in-card{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:48px 40px;
+  text-align:center;max-width:380px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.3);}
+.sign-in-card svg{margin:0 auto 16px;}
+.sign-in-title{font-size:24px;font-weight:900;font-family:'Mulish',sans-serif;
+  background:linear-gradient(135deg,#00E3CD 0%,#00F9B8 60%,#C2FF7F 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0 0 4px;}
+.sign-in-subtitle{font-size:13px;color:var(--tx2);margin:0 0 28px;font-weight:600;letter-spacing:.3px;}
+.sign-in-error{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;
+  font-size:12px;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-weight:500;}
+.sign-in-input{width:100%;padding:11px 14px;border:1px solid var(--bd);border-radius:10px;
+  background:var(--s2);color:var(--tx);font-size:14px;font-family:'Mulish',sans-serif;
+  outline:none;margin-bottom:12px;box-sizing:border-box;transition:.2s;}
+.sign-in-input:focus{border-color:rgba(0,227,205,.5);box-shadow:0 0 0 2px rgba(0,227,205,.12);}
+.sign-in-input::placeholder{color:var(--tx3);}
+.sign-in-btn{width:100%;padding:12px 20px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,#00E3CD 0%,#00CF92 100%);
+  color:#0d1626;font-size:14px;font-weight:700;font-family:'Mulish',sans-serif;
+  cursor:pointer;transition:.2s;}
+.sign-in-btn:hover{opacity:.9;}.sign-in-btn:disabled{opacity:.4;cursor:not-allowed;}
+
 /* ── Scenario Table ─────────────────────────────────────────── */
 .sc3-tbl{width:100%;border-collapse:collapse;font-size:12px;}
 .sc3-tbl th{background:var(--s2);padding:8px 11px;font-size:10.5px;font-weight:700;
