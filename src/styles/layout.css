@@ -50,6 +50,11 @@ background:rgba(239,68,68,.18);color:var(--rd);}
 .nav-dot{width:6px;height:6px;border-radius:50%;background:var(--gr);
 position:absolute;left:8px;top:50%;transform:translateY(-50%);animation:pulse 2s infinite;}
 
+/* ── Header Sign-Out ──────────────────────────────────────── */
+.hdr-sign-out{font-size:11px;color:var(--tx3);background:none;border:1px solid var(--bd);border-radius:6px;
+  padding:3px 10px;cursor:pointer;font-family:'Mulish',sans-serif;font-weight:600;transition:.15s;margin-left:8px;}
+.hdr-sign-out:hover{color:var(--ls-blue);border-color:rgba(0,227,205,.4);background:rgba(0,227,205,.08);}
+
 /* ── Main Container ────────────────────────────────────────── */
 .main{margin-left:var(--sw);padding-top:var(--hh);}
 .pg{display:none;padding:24px;}.pg.active{display:block;}
