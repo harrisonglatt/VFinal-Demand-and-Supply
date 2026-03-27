@@ -1,6 +1,17 @@
 # Little Spoon × Target — Supply & Demand Intelligence
 
-A modular demand intelligence dashboard for Little Spoon's Target business. Covers SKU-level forecasting, inventory risk analysis, promo lift modeling, scenario planning, and actuals tracking across all active categories.
+A modular demand intelligence dashboard for Little Spoon's Target business. Built with Next.js, React, and TypeScript. Covers SKU-level forecasting, inventory risk analysis, promo lift modeling, scenario planning, and actuals tracking across all active categories.
+
+---
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript (strict mode)
+- **UI:** React 19
+- **Charts:** Chart.js 4 via react-chartjs-2
+- **State:** React Context + useReducer
+- **Styling:** CSS custom properties (vanilla CSS modules)
 
 ---
 
@@ -18,160 +29,204 @@ npm install
 npm run dev
 ```
 
-The app opens at `http://localhost:5173`.
+The app opens at `http://localhost:3000`.
 
-### Other Commands
+### Commands
 
 | Command | Description |
 |---|---|
 | `npm run dev` | Start development server with HMR |
-| `npm run build` | Production build to `dist/` |
-| `npm run preview` | Serve the production build locally |
+| `npm run build` | Production build (TypeScript type-checking included) |
+| `npm start` | Serve the production build |
+| `npm run lint` | Run ESLint |
 
 ---
 
 ## Project Structure
 
 ```
-supply-and-demand-intel/
-├── index.html              # App shell — header, sidebar, all 21 page containers
-├── vite.config.js          # Vite config
-├── package.json
+src/
+├── app/                          # Next.js App Router — one directory per page
+│   ├── layout.tsx                # Root layout: fonts, CSS, providers, AppShell
+│   ├── page.tsx                  # Root redirect → /executive
+│   ├── executive/page.tsx        # Executive Summary dashboard
+│   ├── overview/page.tsx         # Brand Overview with charts
+│   ├── demand-plan/page.tsx      # 52-week demand plan table
+│   ├── daily/page.tsx            # Daily performance (WoW, trend, product, SKU)
+│   ├── actuals-vs-forecast/page.tsx
+│   ├── inventory/page.tsx        # LS warehouse + Target DC inventory
+│   ├── shipment/page.tsx         # Case-level shipment plan
+│   ├── po-forecast/page.tsx      # PO forecast (order/coverage models)
+│   ├── promo/page.tsx            # Promo calendar (forward + historical)
+│   ├── launch/page.tsx           # New SKU launch ramp analysis
+│   ├── historical/page.tsx       # 35-week historical sell-through
+│   ├── scenario/page.tsx         # Bear / Base / Bull scenario analysis
+│   ├── endcap/page.tsx           # Endcap lift analysis
+│   ├── assumptions/page.tsx      # Model assumptions + override controls
+│   ├── guide/page.tsx            # Model guide (data sources, methodology)
+│   ├── forecast-versions/page.tsx # Forecast lock + audit trail
+│   ├── backtest/page.tsx         # Walk-forward backtest engine
+│   ├── model-learning/page.tsx   # Model learning + calibration
+│   ├── add-sku/page.tsx          # Add new SKUs with analog forecasting
+│   ├── risk-os/page.tsx          # Risk Operating Center
+│   └── actuals-tracking/page.tsx # Daily actuals ingestion + WTD tracking
 │
-├── src/
-│   ├── main.js             # Entry point: Chart.js init, router, event delegation
-│   │
-│   ├── styles/
-│   │   ├── index.css       # Import aggregator (import this one)
-│   │   ├── variables.css   # CSS custom properties & brand tokens
-│   │   ├── base.css        # Reset, body, scrollbars
-│   │   ├── layout.css      # Header, sidebar, main container
-│   │   ├── components.css  # KPI cards, badges, charts, tables, buttons
-│   │   └── pages.css       # Page-specific styles
-│   │
-│   ├── data/
-│   │   ├── index.js        # Data loader — imports all JSON, exports DATA_* constants
-│   │   │                   #   + derived promo helpers (isOnPromo, promoSkuCats, etc.)
-│   │   ├── dp.json         # 52-week demand plan (SKUs, forecasts, historical)
-│   │   ├── promo.json      # Promo calendar events
-│   │   ├── hist-promo.json # Historical promo actuals
-│   │   ├── inv.json        # LS warehouse inventory / OOS analysis
-│   │   ├── ship.json       # Shipment plan (case-level, weekly)
-│   │   ├── daily.json      # Daily Omni performance data
-│   │   ├── accuracy.json   # Model accuracy (MAPE, bias, trust scores per SKU)
-│   │   ├── stopship.json   # Stop-ship / inventory-at-risk exposure
-│   │   ├── backtest.json   # Walk-forward backtest results
-│   │   ├── hist.json       # 35-week historical sell-through
-│   │   ├── launch.json     # New SKU launch ramp data
-│   │   ├── avf.json        # Actuals vs forecast (LW vs model)
-│   │   ├── omni.json       # Omni channel summary metrics
-│   │   ├── target-dc.json  # Target DC inventory levels
-│   │   ├── pofc.json       # PO forecast (order/coverage model)
-│   │   ├── endcap-history.json # Historical endcap lift events
-│   │   └── fcast-rev.json  # 52-week revenue forecast array
-│   │
-│   ├── utils/
-│   │   ├── formatters.js   # fmt, fmtP, fmtN, fmtDol, sf, chgCls
-│   │   ├── dom.js          # chip, riskChip, fillSel, kpiCard
-│   │   ├── charts.js       # Chart.js brand defaults, mkLine, destroyChart
-│   │   └── state.js        # Global override stores + upcFor/velFor/liftFor accessors
-│   │
-│   └── pages/              # One module per page — lazy-loaded on first navigation
-│       ├── executive.js         # Executive Summary dashboard
-│       ├── overview.js          # Overview KPIs + charts
-│       ├── demand-plan.js       # 52-week demand plan table
-│       ├── daily.js             # Daily performance (WoW, trend, product, SKU views)
-│       ├── actuals-vs-forecast.js # LW actuals vs model forecast
-│       ├── inventory.js         # Inventory intelligence (LS warehouse + Target DC)
-│       ├── shipment.js          # Case-level shipment plan
-│       ├── po-forecast.js       # PO forecast — order/sales ratio + coverage model
-│       ├── promo.js             # Promo calendar (forward + historical)
-│       ├── launch.js            # New SKU launch ramp analysis
-│       ├── historical.js        # 35-week historical sell-through
-│       ├── scenario.js          # Bear / Base / Bull scenario analysis
-│       ├── endcap.js            # Endcap / co-space lift analysis
-│       ├── assumptions.js       # Model assumptions + override controls
-│       ├── guide.js             # Model guide — data sources, methodology, KPI defs
-│       ├── forecast-versions.js # Forecast version locking + audit trail
-│       ├── backtest.js          # Walk-forward backtest engine
-│       ├── model-learning.js    # Model learning + conservative calibration engine
-│       ├── add-sku.js           # Add new SKUs with analog-based forecasting
-│       ├── risk-os.js           # Risk Operating Center — stop-ship exposure
-│       └── actuals-tracking.js  # Daily actuals ingestion + WTD tracking
+├── components/
+│   ├── layout/
+│   │   ├── AppShell.tsx          # Header + Sidebar + ChartProvider + main wrapper
+│   │   ├── Header.tsx            # Top header bar with branding and badges
+│   │   ├── Sidebar.tsx           # Navigation sidebar (uses Next.js Link)
+│   │   └── PageShell.tsx         # Reusable page header (title + subtitle)
+│   ├── ui/
+│   │   ├── KpiCard.tsx           # KPI metric card
+│   │   ├── KpiGrid.tsx           # 2/3/4-column KPI grid wrapper
+│   │   ├── Chip.tsx              # Status chip + RiskChip
+│   │   ├── ButtonGroup.tsx       # Toggle button group (.btn.on pattern)
+│   │   ├── SelectFilter.tsx      # Dropdown filter with auto-dedup
+│   │   ├── FilterBar.tsx         # Filter bar wrapper with metadata
+│   │   ├── DataTable.tsx         # Scrollable table container
+│   │   └── Toast.tsx             # Auto-dismissing notification toast
+│   └── charts/
+│       ├── ChartProvider.tsx     # Chart.js registration + brand defaults
+│       ├── LineChart.tsx          # react-chartjs-2 Line with LS styling
+│       ├── BarChart.tsx           # react-chartjs-2 Bar with LS styling
+│       └── DoughnutChart.tsx      # react-chartjs-2 Doughnut with LS styling
 │
-└── .claude/
-    └── launch.json         # Dev server configs for Claude Code preview
+├── context/
+│   └── OverridesContext.tsx       # useReducer store for velocity/lift/UPC overrides
+│
+├── hooks/
+│   ├── useOverrides.ts           # Typed access to OverridesContext + selectors
+│   └── useLocalStorage.ts        # Generic localStorage persistence hook
+│
+├── data/
+│   ├── types.ts                  # TypeScript interfaces for all data shapes
+│   ├── index.ts                  # Typed data loader + derived promo helpers
+│   └── json/                     # 17 JSON data files (future API endpoints)
+│       ├── dp.json               # 52-week demand plan
+│       ├── promo.json            # Promo calendar events
+│       ├── ship.json             # Shipment plan
+│       ├── daily.json            # Daily Omni performance
+│       ├── accuracy.json         # Model accuracy (MAPE, bias, trust)
+│       ├── stopship.json         # Stop-ship inventory exposure
+│       ├── inv.json              # LS warehouse inventory
+│       ├── hist.json             # 35-week historical sell-through
+│       ├── launch.json           # Launch SKU data
+│       ├── avf.json              # Actuals vs forecast
+│       ├── omni.json             # Omni channel metrics
+│       ├── target-dc.json        # Target DC inventory
+│       ├── pofc.json             # PO forecast data
+│       ├── backtest.json         # Backtest results
+│       ├── hist-promo.json       # Historical promo actuals
+│       ├── endcap-history.json   # Endcap lift events
+│       └── fcast-rev.json        # 52-week revenue forecast
+│
+├── lib/
+│   ├── formatters.ts             # Number/currency/percent formatting (pure functions)
+│   ├── charts.ts                 # Chart.js brand defaults + config builders
+│   └── computations/
+│       ├── executive.ts          # calcCV, calcBands, aggregateExec, detectRiskSkus
+│       ├── scenario.ts           # Scenario projection + SKU breakdown
+│       ├── pofc.ts               # PO forecast computations
+│       └── promo.ts              # Promo category mapping + isOnPromo
+│
+└── styles/
+    ├── globals.css               # Imports all 5 CSS layers
+    ├── variables.css             # Design tokens (colors, spacing, brand palette)
+    ├── base.css                  # Reset + body
+    ├── layout.css                # Header, sidebar, main container
+    ├── components.css            # KPI cards, badges, tables, buttons, charts
+    └── pages.css                 # Page-specific styles
 ```
 
 ---
 
 ## Architecture
 
-### Routing & Page Loading
+### Routing
 
-Pages are lazy-loaded on first navigation using dynamic `import()`. The router in `src/main.js` maintains a module registry and calls each page's `init*()` function once on first visit. All exported functions are registered on `window` so pages can call into each other (e.g. Assumptions refreshing the Executive Summary).
+Uses the Next.js App Router with file-based routing. Each page is a `'use client'` component in `src/app/{page-name}/page.tsx`. The root page (`/`) redirects to `/executive`.
 
-```js
-// Navigating to a page triggers:
-const mod = await import('./pages/executive.js');
-mod.initEXEC();
+### State Management
+
+**OverridesContext** (`src/context/OverridesContext.tsx`) manages user-editable model assumptions via `useReducer`:
+
+| Store | Purpose |
+|---|---|
+| `velOverrides` | Velocity (UPSPW) overrides by DPCI |
+| `liftOverrides` | Promo lift multiplier overrides by `"category\|type"` key |
+| `upcOverrides` | Units-per-case overrides by DPCI |
+
+The Assumptions page dispatches changes. All consuming pages re-render automatically through React's context propagation — no manual refresh needed.
+
+Access overrides via the `useOverrides()` hook:
+
+```tsx
+const { velFor, upcFor, liftFor, setVel, resetAll, overrideCount } = useOverrides();
 ```
 
 ### Data Layer
 
-All data lives in `src/data/*.json`. The `src/data/index.js` loader imports every file and re-exports it as a named constant (`DATA_DP`, `DATA_PROMO`, etc.). It also computes derived values at import time (promo week maps, category lookups).
+All data lives in `src/data/json/*.json` with TypeScript interfaces in `src/data/types.ts`. The `src/data/index.ts` loader imports everything and exports typed constants:
 
-**Swapping JSON for API calls:** Replace any `import X from './X.json'` in `src/data/index.js` with a `fetch()` call. The rest of the app is unchanged since it only consumes the exported constants.
+```tsx
+import { DATA_DP, DATA_PROMO, isOnPromo } from '@/data/index';
+import type { DPSku, PromoEvent } from '@/data/types';
+```
 
-### State Management
+**Swapping JSON for API calls:** Replace the static imports in `src/data/index.ts` with `fetch()` calls or React Query hooks. All consumers use the same exported constants, so the rest of the app is unchanged.
 
-`src/utils/state.js` holds three mutable override stores:
+### Charts
 
-| Store | Purpose |
-|---|---|
-| `upcOverrides` | Units-per-case overrides by DPCI |
-| `velOverrides` | Velocity (UPSPW) overrides by DPCI |
-| `liftOverrides` | Promo lift multiplier overrides by `"category|type"` key |
+Chart components wrap `react-chartjs-2` with Little Spoon brand defaults (colors, fonts, tooltips). Chart.js component registration happens at the module level in each chart component.
 
-The Assumptions page writes to these. Accessor functions (`velFor`, `upcFor`, `liftFor`) are used throughout other pages so overrides propagate automatically.
+```tsx
+import LineChart from '@/components/charts/LineChart';
+
+<LineChart
+  labels={['W1', 'W2', 'W3']}
+  datasets={[{ label: 'Units', data: [100, 200, 150], borderColor: '#00E3CD' }]}
+/>
+```
 
 ### Styling
 
-CSS is split into five layers imported via `src/styles/index.css`:
+CSS is split into five layers imported via `src/styles/globals.css`. The same class names from the original design are used throughout JSX. All design tokens are CSS custom properties in `variables.css`.
 
-1. `variables.css` — all design tokens (colors, spacing, brand palette)
-2. `base.css` — reset + body
-3. `layout.css` — header, sidebar, main content area
-4. `components.css` — reusable UI: KPI cards, badges, tables, buttons, charts
-5. `pages.css` — page-specific overrides
+### Persistence
+
+Three pages use `localStorage` for client-side persistence via the `useLocalStorage` hook:
+- **Add SKU** — user-created SKUs
+- **Forecast Versions** — locked forecast snapshots
+- **Actuals Tracking** — ingested daily actuals
 
 ---
 
 ## Pages
 
-| Page | Nav Label | Key Features |
+| Route | Page | Key Features |
 |---|---|---|
-| Executive Summary | 🎯 Executive Summary | Bear/Base/Bull toggle, 13-wk scenario bars, risk watchlist, auto-insights |
-| Overview | 📊 Overview | Revenue chart (actuals + forecast), inventory donut, promo list |
-| Demand Plan | 📈 Demand Plan | 52-week SKU table, scenario + unit toggle, promo week highlighting |
-| Daily Performance | 📅 Daily Performance | WoW by day, 14-day trend, product mix, SKU detail |
-| Actuals vs Forecast | 🎯 Actuals vs Forecast | LW actuals vs model, MAPE per SKU, miss/beat filtering |
-| Inventory Intel | 📦 Inventory Intel | OOS alerts, WOS, lost $/wk — LS warehouse + Target DC views |
-| Shipment Plan | 🚚 Shipment Plan | Case-level weekly plan, inline forecast editing |
-| PO Forecast | 📦 PO Forecast | Order/sales ratio model + coverage-based model, 13-wk view |
-| Promo Calendar | 🗓 Promo Calendar | Forward + historical events, lift modeling, stacking rules |
-| Launch Ramp | 🚀 Launch Ramp | 4 new SKU ramp analysis, Bear/Base/Bull velocity curves |
-| Historical S/T | 📅 Historical S/T | 35-week sell-through table + heatmap view |
-| Scenario Analysis | 🔮 Scenario Analysis | 52-week revenue/units across all three scenarios |
-| Endcap Lift | 📐 Endcap Lift | Co-space incremental revenue + confirmed vs proposed split |
-| Assumptions | ⚙️ Assumptions | Live override controls — velocity, lift multipliers, UPC |
-| Model Guide | 📋 Model Guide | Data sources, refresh schedule, KPI definitions, methodology |
-| Forecast Versions | 🔒 Forecast Versions | Lock snapshots, weekly variance table, audit trail |
-| Backtest Lab | 🔬 Backtest Lab | Walk-forward engine, MAPE/bias by SKU and category |
-| Model Learning | 🧠 Model Learning | Conservative calibration, trust scores, model feedback loop |
-| Add SKU | ➕ Add SKU | Analog-based new SKU forecasting with ramp profiles |
-| Risk Operating Center | 🚨 Risk OS | Stop-ship exposure, decision cards, integrated risk view |
-| Actuals Tracking | 📈 Actuals Tracking | Daily actuals ingestion, WTD vs forecast, run-rate projection |
+| `/executive` | Executive Summary | Bear/Base/Bull toggle, 13-wk scenario bars, risk watchlist, auto-insights |
+| `/overview` | Overview | Revenue chart (actuals + forecast), inventory donut, promo list |
+| `/demand-plan` | Demand Plan | 52-week SKU table, scenario + unit toggle, promo week highlighting |
+| `/daily` | Daily Performance | WoW by day, 14-day trend, product mix, SKU detail |
+| `/actuals-vs-forecast` | Actuals vs Forecast | LW actuals vs model, MAPE per SKU, miss/beat filtering |
+| `/inventory` | Inventory Intel | OOS alerts, WOS, lost $/wk — LS warehouse + Target DC views |
+| `/shipment` | Shipment Plan | Case-level weekly plan, inline forecast editing |
+| `/po-forecast` | PO Forecast | Order/sales ratio model + coverage-based model, 13-wk view |
+| `/promo` | Promo Calendar | Forward + historical events, lift modeling, stacking rules |
+| `/launch` | Launch Ramp | 4 new SKU ramp analysis, Bear/Base/Bull velocity curves |
+| `/historical` | Historical S/T | 35-week sell-through table + heatmap view |
+| `/scenario` | Scenario Analysis | 52-week revenue/units across all three scenarios |
+| `/endcap` | Endcap Lift | Co-space incremental revenue + confirmed vs proposed split |
+| `/assumptions` | Assumptions | Live override controls — velocity, lift multipliers, UPC |
+| `/guide` | Model Guide | Data sources, refresh schedule, KPI definitions, methodology |
+| `/forecast-versions` | Forecast Versions | Lock snapshots, weekly variance table, audit trail |
+| `/backtest` | Backtest Lab | Walk-forward engine, MAPE/bias by SKU and category |
+| `/model-learning` | Model Learning | Conservative calibration, trust scores, model feedback loop |
+| `/add-sku` | Add SKU | Analog-based new SKU forecasting with ramp profiles |
+| `/risk-os` | Risk OS | Stop-ship exposure, decision cards, integrated risk view |
+| `/actuals-tracking` | Actuals Tracking | Daily actuals ingestion, WTD vs forecast, run-rate projection |
 
 ---
 
