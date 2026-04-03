@@ -1,17 +1,20 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 import PageShell from '@/components/layout/PageShell';
 import KpiCard from '@/components/ui/KpiCard';
 import KpiGrid from '@/components/ui/KpiGrid';
 import ButtonGroup from '@/components/ui/ButtonGroup';
+import LineChart from '@/components/charts/LineChart';
 import {
   DATA_DP, DATA_SHIP, DATA_PROMO, DATA_ACCURACY, DATA_STOPSHIP, DATA_AVF,
+  DATA_OMNI, DATA_INV, FCAST_REV_52WK,
 } from '@/data/index';
 import { useOverrides } from '@/hooks/useOverrides';
 import { fmt, fmtP, sf } from '@/lib/formatters';
 import {
-  aggregateExec, detectRiskSkus, calcCV,
+  aggregateExec, detectRiskSkus, calcCV, calc52WkRevenue, calc52WkUnits, calcOOSWatch,
+  calcToplinePerf, calcPOSvsOrders, calcSkuSegmentation, calcTrendData,
   type RiskSku,
 } from '@/lib/computations/executive';
 import type { ScenarioKey } from '@/data/types';
@@ -81,6 +84,73 @@ export default function ExecutivePage() {
   /* ── Risk watchlist ────────────────────────────────────────────── */
   const risks: RiskSku[] = useMemo(() => detectRiskSkus(DATA_DP.skus), []);
 
+  /* ── 52-Week Forecasts (scenario-aware) ──────────────────────── */
+  const rev52 = useMemo(() => calc52WkRevenue(FCAST_REV_52WK, mult), [mult]);
+  const units52 = useMemo(() => calc52WkUnits(DATA_DP.skus, mult), [mult]);
+
+  /* ── Omni sell-through (last week vs prior week) ─────────────── */
+  const omniST = useMemo(() => {
+    const wt = DATA_OMNI.weekly_totals;
+    if (wt.length < 2) return { lwSales: 0, lwUnits: 0, llwSales: 0, llwUnits: 0, wowSales: 0, wowUnits: 0 };
+    const lw = wt[wt.length - 1];
+    const llw = wt[wt.length - 2];
+    return {
+      lwSales: lw.sales,
+      lwUnits: lw.units,
+      llwSales: llw.sales,
+      llwUnits: llw.units,
+      wowSales: llw.sales > 0 ? (lw.sales - llw.sales) / llw.sales : 0,
+      wowUnits: llw.units > 0 ? (lw.units - llw.units) / llw.units : 0,
+    };
+  }, []);
+
+  /* ── OOS Watch ───────────────────────────────────────────────── */
+  const oosWatch = useMemo(() => calcOOSWatch(DATA_INV.skus), []);
+
+  /* ── Topline Performance ─────────────────────────────────────── */
+  const topline = useMemo(() => calcToplinePerf(DATA_OMNI, DATA_AVF), []);
+
+  /* ── POS vs Orders Alignment ─────────────────────────────────── */
+  const posVsOrders = useMemo(() => calcPOSvsOrders(DATA_AVF, DATA_SHIP.skus, DATA_DP.skus), []);
+  const stockoutRiskCount = posVsOrders.filter(r => r.flag === 'stockout_risk').length;
+  const excessRiskCount = posVsOrders.filter(r => r.flag === 'excess_risk').length;
+
+  /* ── SKU Segmentation ────────────────────────────────────────── */
+  const segments = useMemo(() => calcSkuSegmentation(DATA_AVF, DATA_SHIP.skus), []);
+
+  /* ── Trend Data ──────────────────────────────────────────────── */
+  const trendData = useMemo(() => calcTrendData(DATA_OMNI, DATA_SHIP.skus), []);
+
+  /* ── AI Insights ("So What") ─────────────────────────────────── */
+  const [aiInsights, setAiInsights] = useState<{ insights: string[]; risks: string[]; actions: string[]; source: string } | null>(null);
+  const [aiLoading, setAiLoading] = useState(true);
+
+  const fetchInsights = useCallback(async () => {
+    setAiLoading(true);
+    try {
+      const body = {
+        lwSales: omniST.lwSales, lwUnits: omniST.lwUnits,
+        l4wSales: topline.l4wSales, l4wUnits: topline.l4wUnits,
+        wowSales: omniST.wowSales, wowUnits: omniST.wowUnits,
+        growingCount: topline.growingCount, decliningCount: topline.decliningCount,
+        totalSkus: topline.totalSkus,
+        rev52, mape: DATA_ACCURACY.model_mape_l4w, bias: DATA_ACCURACY.model_bias_l4w,
+        oosCount: oosWatch.oosCount, oosLost: oosWatch.totalLost,
+        riskUsd: DATA_STOPSHIP.total_bear_exposure_usd,
+        coveragePct: Math.round(covPct * 100),
+        stockoutRiskCount, excessRiskCount,
+        topSku: topline.top5[0]?.name ?? 'N/A',
+        bottomSku: topline.bottom5[0]?.name ?? 'N/A',
+        catMapeWorst: Math.max(...Object.values(DATA_ACCURACY.cat_mape)).toFixed(1),
+      };
+      const res = await fetch('/api/insights', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      if (res.ok) setAiInsights(await res.json());
+    } catch { /* silent */ }
+    setAiLoading(false);
+  }, [omniST, topline, rev52, covPct, oosWatch, stockoutRiskCount, excessRiskCount]);
+
+  useEffect(() => { fetchInsights(); }, [fetchInsights]);
+
   /* ── Next 4 events ─────────────────────────────────────────────── */
   const next4 = useMemo(() => DATA_PROMO.filter(e => e.wk >= 1 && e.wk <= 4), []);
 
@@ -120,6 +190,16 @@ export default function ExecutivePage() {
     if (kidsNote)
       calls.push({ cls: 'ci-pur', ic: '🧸', txt: `<strong>Kids DWA Wk ${kidsNote.wk}:</strong> Model uses <strong>1.45x</strong> (corrected from 2.0x). Old assumption required elasticity of −5x — structurally incorrect. New: 20%-off event at elasticity −2.5 → 1.50x, adjusted to 1.45x.` });
 
+    // Omni sell-through callout
+    if (omniST.wowSales > 0.05)
+      calls.push({ cls: 'ci-grn', ic: '🛒', txt: `<strong>Omni sell-through surging:</strong> LW revenue <strong>$${(omniST.lwSales / 1000).toFixed(0)}K</strong> (+${(omniST.wowSales * 100).toFixed(1)}% WoW). ${fmt(omniST.lwUnits)} units sold through Target.` });
+    else if (omniST.wowSales < -0.05)
+      calls.push({ cls: 'ci-red', ic: '🛒', txt: `<strong>Omni sell-through declining:</strong> LW revenue <strong>$${(omniST.lwSales / 1000).toFixed(0)}K</strong> (${(omniST.wowSales * 100).toFixed(1)}% WoW). Monitor for OOS or seasonality.` });
+
+    // OOS callout
+    if (oosWatch.oosCount >= 3)
+      calls.push({ cls: 'ci-red', ic: '🚨', txt: `<strong>${oosWatch.oosCount} SKUs with OOS &gt;3% at Target.</strong> Estimated lost revenue: <strong>$${fmt(Math.round(oosWatch.totalLost))}/week</strong>. Review replenishment priorities.` });
+
     if (scenario !== 'base')
       calls.push({ cls: 'ci-blu', ic: '🔮', txt: `<strong>Viewing ${scenario.toUpperCase()} scenario (×${mult.toFixed(2)}):</strong> All forward units scaled ${scenario === 'bear' ? 'down' : 'up'} by ${Math.round(Math.abs(mult - 1) * 100)}%. Switch to Base for model-default.` });
 
@@ -127,7 +207,7 @@ export default function ExecutivePage() {
       calls.push({ cls: 'ci-grn', ic: '✓', txt: '<strong>Model running normally.</strong> No anomalies detected. All 14 pages initializing, forecast propagating, scenarios active.' });
 
     return calls;
-  }, [covPct, planCases, wow, scenario, mult]);
+  }, [covPct, planCases, wow, scenario, mult, omniST, oosWatch]);
 
   /* ── Category snapshot ─────────────────────────────────────────── */
   const catSnap = useMemo(() => {
@@ -166,7 +246,7 @@ export default function ExecutivePage() {
   return (
     <PageShell
       title="Executive Summary"
-      subtitle="Decision Dashboard · Week of Mar 22, 2026 · Omni actuals through Mar 24"
+      subtitle={`Decision Dashboard · Omni actuals through ${DATA_OMNI.as_of_date}`}
       extra={
         <ButtonGroup options={SCENARIO_OPTS} active={scenario} onChange={v => setScenario(v as ScenarioKey)} />
       }
@@ -174,36 +254,108 @@ export default function ExecutivePage() {
       {/* ── KPI Cards ──────────────────────────────────────────────── */}
       <KpiGrid columns={4}>
         <KpiCard
-          icon="📦" label={`13-Wk Forecast (${scLbl})`}
-          style={`--cc:${scCol}`} value={fmt(tot13)}
-          delta={wow > 0.01 ? `${fmtP(wow)} WoW (actuals)` : wow < -0.01 ? `${fmtP(wow)} WoW decel` : 'Flat WoW'}
-          deltaClass={wow > 0.01 ? 'up' : wow < -0.05 ? 'dn' : 'neu'}
-          sub={`${fmt(tot13Base)} base · ${fmt(tot13Bear)} bear · ${fmt(tot13Bull)} bull`}
+          icon="💰" label={`52-Wk Revenue (${scLbl})`}
+          style={`--cc:${scCol}`}
+          value={`$${(rev52 / 1_000_000).toFixed(1)}M`}
+          delta={`${scLbl} scenario · ×${mult.toFixed(2)}`}
+          deltaClass={scenario === 'bull' ? 'up' : scenario === 'bear' ? 'dn' : 'neu'}
+          sub={`$${(calc52WkRevenue(FCAST_REV_52WK, 0.80) / 1_000_000).toFixed(1)}M bear · $${(calc52WkRevenue(FCAST_REV_52WK, 1.00) / 1_000_000).toFixed(1)}M base · $${(calc52WkRevenue(FCAST_REV_52WK, 1.20) / 1_000_000).toFixed(1)}M bull`}
         />
         <KpiCard
-          icon="🎯" label="Coverage vs Plan"
-          style={`--cc:${covPct >= 0.90 ? 'var(--gr)' : covPct >= 0.70 ? 'var(--yw)' : 'var(--rd)'}`}
-          value={covPct > 0 ? `${Math.round(covPct * 100)}%` : '—'}
-          delta={covPct >= 0.90 ? '✓ On track' : covPct >= 0.70 ? '⚠ Gap detected' : '⚠ Behind plan'}
-          deltaClass={covPct >= 0.90 ? 'up' : covPct >= 0.70 ? 'neu' : 'dn'}
-          sub={`Plan: ${fmt(planCases)} cs · PO committed: ${fmt(poCases)} cs`}
+          icon="📦" label={`52-Wk Units (${scLbl})`}
+          style={`--cc:${scCol}`}
+          value={`${(units52 / 1_000_000).toFixed(2)}M`}
+          delta={`${fmt(tot13)} units in next 13 wks`}
+          deltaClass="neu"
+          sub={`${DATA_DP.skus.length} SKUs · ${scLbl} scenario`}
         />
         <KpiCard
-          icon="📉" label="Forecast Gap"
-          style={`--cc:${gapUnits >= 0 ? 'var(--gr)' : 'var(--rd)'}`}
-          value={`${gapUnits >= 0 ? '+' : ''}${fmt(gapUnits)} units`}
-          delta={gapUnits >= 0 ? 'Ahead of plan' : 'Behind plan'}
-          deltaClass={gapUnits >= 0 ? 'up' : 'dn'}
-          sub={`vs plan of ${fmt(planUnits)} units`}
+          icon="🛒" label="LW Sell-Through $"
+          style="--cc:var(--ac)"
+          value={`$${(omniST.lwSales / 1000).toFixed(0)}K`}
+          delta={`${omniST.wowSales >= 0 ? '+' : ''}${(omniST.wowSales * 100).toFixed(1)}% WoW`}
+          deltaClass={omniST.wowSales > 0.02 ? 'up' : omniST.wowSales < -0.05 ? 'dn' : 'neu'}
+          sub={`Omni actuals · ${DATA_OMNI.as_of_date}`}
         />
         <KpiCard
-          icon="📈" label="LW Actuals (Mar 8)"
-          style="--cc:var(--cy)" value={fmt(lwTotal)}
-          delta={`${fmtP(wow)} vs prior week`}
-          deltaClass={wow > 0.02 ? 'up' : wow < -0.05 ? 'dn' : 'neu'}
-          sub={`${DATA_DP.skus.length} SKUs · LW = week ending Mar 8, 2026`}
+          icon="📈" label="LW Sell-Through Units"
+          style="--cc:var(--cy)"
+          value={fmt(omniST.lwUnits)}
+          delta={`${omniST.wowUnits >= 0 ? '+' : ''}${(omniST.wowUnits * 100).toFixed(1)}% WoW`}
+          deltaClass={omniST.wowUnits > 0.02 ? 'up' : omniST.wowUnits < -0.05 ? 'dn' : 'neu'}
+          sub={`vs ${fmt(omniST.llwUnits)} prior week · Target Total`}
         />
       </KpiGrid>
+
+      {/* ── "So What" — AI Executive Insights ──────────────────── */}
+      <div style={{ marginTop: 16, background: 'linear-gradient(135deg, rgba(0,227,205,.06), rgba(99,102,241,.06))', border: '1px solid rgba(0,227,205,.2)', borderRadius: 12, padding: '16px 20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--ac)', textTransform: 'uppercase', letterSpacing: '.08em' }}>{'🧠'} Executive Insights</div>
+          <span style={{ fontSize: 10, color: 'var(--tx3)' }}>{aiInsights ? `Source: ${aiInsights.source}` : 'Loading...'}</span>
+        </div>
+        {aiLoading ? (
+          <div style={{ textAlign: 'center', padding: 16, color: 'var(--tx3)', fontSize: 12 }}>Generating insights...</div>
+        ) : aiInsights ? (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--gr)', marginBottom: 6, textTransform: 'uppercase' }}>{'💡'} Key Insights</div>
+              {aiInsights.insights.map((t, i) => (
+                <div key={i} style={{ fontSize: 11.5, color: 'var(--tx)', lineHeight: 1.6, marginBottom: 8, paddingLeft: 8, borderLeft: '2px solid var(--gr)' }}>{t}</div>
+              ))}
+            </div>
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 700, color: '#ef4444', marginBottom: 6, textTransform: 'uppercase' }}>{'⚠️'} Risks</div>
+              {aiInsights.risks.map((t, i) => (
+                <div key={i} style={{ fontSize: 11.5, color: 'var(--tx)', lineHeight: 1.6, marginBottom: 8, paddingLeft: 8, borderLeft: '2px solid #ef4444' }}>{t}</div>
+              ))}
+            </div>
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 700, color: '#818cf8', marginBottom: 6, textTransform: 'uppercase' }}>{'🎯'} Actions</div>
+              {aiInsights.actions.map((t, i) => (
+                <div key={i} style={{ fontSize: 11.5, color: 'var(--tx)', lineHeight: 1.6, marginBottom: 8, paddingLeft: 8, borderLeft: '2px solid #818cf8' }}>{t}</div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      {/* ── Topline Performance Bar ─────────────────────────────── */}
+      <div style={{ marginTop: 16, display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: 12, color: 'var(--tx2)' }}>
+        <div style={{ background: 'var(--s2)', borderRadius: 8, padding: '8px 14px', flex: 1, minWidth: 140 }}>
+          <div style={{ fontSize: 10, color: 'var(--tx3)', fontWeight: 600 }}>L4W SELL-THROUGH</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--tx)' }}>${(topline.l4wSales / 1_000_000).toFixed(2)}M</div>
+          <div style={{ fontSize: 11 }}>{fmt(topline.l4wUnits)} units</div>
+        </div>
+        <div style={{ background: 'var(--s2)', borderRadius: 8, padding: '8px 14px', flex: 1, minWidth: 140 }}>
+          <div style={{ fontSize: 10, color: 'var(--tx3)', fontWeight: 600 }}>SKU MOMENTUM</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--tx)' }}>
+            <span style={{ color: 'var(--gr)' }}>{topline.growingCount}</span>
+            <span style={{ fontSize: 13, color: 'var(--tx3)' }}> / </span>
+            <span style={{ color: 'var(--rd)' }}>{topline.decliningCount}</span>
+          </div>
+          <div style={{ fontSize: 11 }}>growing / declining of {topline.totalSkus}</div>
+        </div>
+        <div style={{ background: 'var(--s2)', borderRadius: 8, padding: '8px 14px', flex: 2, minWidth: 280 }}>
+          <div style={{ fontSize: 10, color: 'var(--tx3)', fontWeight: 600, marginBottom: 4 }}>TOP PERFORMERS (WoW)</div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            {topline.top5.slice(0, 3).map((s, i) => (
+              <span key={i} style={{ fontSize: 11, padding: '2px 8px', background: 'rgba(0,207,146,.1)', color: 'var(--gr)', borderRadius: 4 }}>
+                {s.name.substring(0, 20)} +{(s.wow * 100).toFixed(0)}%
+              </span>
+            ))}
+          </div>
+        </div>
+        <div style={{ background: 'var(--s2)', borderRadius: 8, padding: '8px 14px', flex: 2, minWidth: 280 }}>
+          <div style={{ fontSize: 10, color: 'var(--tx3)', fontWeight: 600, marginBottom: 4 }}>NEEDS ATTENTION</div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            {topline.bottom5.slice(0, 3).map((s, i) => (
+              <span key={i} style={{ fontSize: 11, padding: '2px 8px', background: 'rgba(239,68,68,.1)', color: '#ef4444', borderRadius: 4 }}>
+                {s.name.substring(0, 20)} {(s.wow * 100).toFixed(0)}%
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 16 }}>
         {/* ── Scenario Bars ──────────────────────────────────────── */}
@@ -296,6 +448,87 @@ export default function ExecutivePage() {
         </div>
       </div>
 
+      {/* ── POS vs Orders Alignment ────────────────────────────── */}
+      <div className="card" style={{ marginTop: 16 }}>
+        <div className="card-title">POS vs Orders Alignment (L4W) — {stockoutRiskCount} stockout risk · {excessRiskCount} excess risk</div>
+        <div style={{ overflowX: 'auto', maxHeight: 320 }}>
+          <table style={{ width: '100%' }}>
+            <thead>
+              <tr>
+                <th style={{ minWidth: 180 }}>SKU</th>
+                <th>Cat</th>
+                <th className="tr">POS Units</th>
+                <th className="tr">Ordered Units</th>
+                <th className="tr">Delta</th>
+                <th className="tr">Delta %</th>
+                <th>Flag</th>
+              </tr>
+            </thead>
+            <tbody>
+              {posVsOrders.slice(0, 15).map((r, i) => {
+                const flagColor = r.flag === 'stockout_risk' ? '#ef4444' : r.flag === 'excess_risk' ? '#FFC711' : 'var(--gr)';
+                const flagLabel = r.flag === 'stockout_risk' ? '🔴 Stockout Risk' : r.flag === 'excess_risk' ? '🟡 Excess' : '✅ Aligned';
+                return (
+                  <tr key={i}>
+                    <td className="tn"><b>{r.name}</b></td>
+                    <td style={{ fontSize: 10, color: 'var(--tx3)' }}>{r.category}</td>
+                    <td className="tr">{fmt(r.posUnits)}</td>
+                    <td className="tr">{fmt(r.orderedUnits)}</td>
+                    <td className="tr" style={{ color: flagColor, fontWeight: 600 }}>{r.delta > 0 ? '+' : ''}{fmt(r.delta)}</td>
+                    <td className="tr" style={{ color: flagColor, fontWeight: 600 }}>{r.deltaPct > 0 ? '+' : ''}{(r.deltaPct * 100).toFixed(0)}%</td>
+                    <td style={{ fontSize: 10, color: flagColor }}>{flagLabel}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ── Trend View: POS + Orders Overlay ─────────────────────── */}
+      <div className="card" style={{ marginTop: 16 }}>
+        <div className="card-title">POS vs Orders Trend (Weekly Units)</div>
+        <div style={{ padding: '0 12px 12px' }}>
+          <LineChart
+            labels={trendData.posWeeks.map(w => w.label)}
+            datasets={[
+              { label: 'POS (Sell-Through)', data: trendData.posWeeks.map(w => w.units), borderColor: '#00E3CD', backgroundColor: 'rgba(0,227,205,.1)', fill: true },
+              { label: 'Orders (Shipped)', data: trendData.orderWeeks.map(w => w.units), borderColor: '#818cf8', backgroundColor: 'rgba(99,102,241,.1)', fill: true },
+            ]}
+            height={250}
+          />
+        </div>
+      </div>
+
+      {/* ── SKU Segmentation 2×2 ─────────────────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 16 }}>
+        {([
+          { key: 'heroes', label: 'Heroes', sub: 'High velocity + high orders', icon: '🏆', col: '#00CF92', bg: 'rgba(0,207,146,.06)', border: 'rgba(0,207,146,.2)', data: segments.heroes },
+          { key: 'risk', label: 'Stockout Risk', sub: 'High velocity + low orders', icon: '🚨', col: '#ef4444', bg: 'rgba(239,68,68,.06)', border: 'rgba(239,68,68,.2)', data: segments.risk },
+          { key: 'excess', label: 'Excess Risk', sub: 'Low velocity + high orders', icon: '⚠️', col: '#FFC711', bg: 'rgba(255,199,17,.06)', border: 'rgba(255,199,17,.2)', data: segments.excess },
+          { key: 'tail', label: 'Tail', sub: 'Low velocity + low orders', icon: '📉', col: 'var(--tx3)', bg: 'var(--s2)', border: 'var(--bd)', data: segments.tail },
+        ] as const).map(seg => (
+          <div key={seg.key} style={{ background: seg.bg, border: `1px solid ${seg.border}`, borderRadius: 10, padding: '12px 16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+              <div>
+                <span style={{ fontSize: 14 }}>{seg.icon}</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: seg.col, marginLeft: 6 }}>{seg.label}</span>
+                <span style={{ fontSize: 10, color: 'var(--tx3)', marginLeft: 6 }}>{seg.sub}</span>
+              </div>
+              <span style={{ fontSize: 18, fontWeight: 900, color: seg.col }}>{seg.data.length}</span>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              {seg.data.slice(0, 5).map((s, i) => (
+                <span key={i} style={{ fontSize: 10, padding: '2px 6px', borderRadius: 3, background: `${seg.col}15`, color: seg.col, whiteSpace: 'nowrap' }}>
+                  {s.name.substring(0, 22)}
+                </span>
+              ))}
+              {seg.data.length > 5 && <span style={{ fontSize: 10, color: 'var(--tx3)' }}>+{seg.data.length - 5} more</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* ── Risk Summary (Inventory at Risk + Forecast Accuracy) ─── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 16 }}>
         <div style={{ background: 'rgba(239,68,68,.06)', border: '1px solid rgba(239,68,68,.2)', borderRadius: 10, padding: '14px 16px' }}>
@@ -327,6 +560,33 @@ export default function ExecutivePage() {
           ))}
         </div>
       </div>
+
+      {/* ── OOS Watch at Target ──────────────────────────────────── */}
+      {oosWatch.oosCount > 0 && (
+        <div style={{ background: 'rgba(239,68,68,.06)', border: '1px solid rgba(239,68,68,.2)', borderRadius: 10, padding: '14px 16px', marginTop: 16 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--tx3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>{'🚨'} OOS Watch at Target</div>
+          <div style={{ display: 'flex', gap: 24, marginBottom: 10 }}>
+            <div>
+              <div style={{ fontSize: 24, fontWeight: 900, color: '#ef4444' }}>
+                {oosWatch.oosCount} <span style={{ fontSize: 13, fontWeight: 600, opacity: 0.7 }}>SKUs with OOS &gt;3%</span>
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--tx2)' }}>
+                Est. lost revenue: <strong style={{ color: '#ef4444' }}>${fmt(Math.round(oosWatch.totalLost))}/week</strong>
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 6 }}>
+            {oosWatch.skus.slice(0, 6).map((s, i) => (
+              <div key={i} style={{ fontSize: 11, color: 'var(--tx3)', padding: '5px 0', borderTop: '1px solid rgba(239,68,68,.15)', display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                <span>{'🔴'} {s.name}</span>
+                <span style={{ flexShrink: 0, color: 'var(--tx2)' }}>
+                  <strong style={{ color: '#ef4444' }}>{(s.oos_pct * 100).toFixed(1)}%</strong> OOS &middot; ${fmt(Math.round(s.lost_dollar_week))}/wk lost
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* ── Category Forecast Coverage ────────────────────────────── */}
       <div className="card" style={{ marginTop: 16 }}>

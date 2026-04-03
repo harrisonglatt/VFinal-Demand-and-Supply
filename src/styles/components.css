@@ -78,7 +78,8 @@ border-radius:7px;padding:6px 11px;font-size:12px;cursor:pointer;outline:none;tr
 select:hover,select:focus,.si:focus{border-color:var(--ac);}
 .btn{font-weight:600;}.btn:hover{background:var(--s3);border-color:var(--ac);}
 .btn.on{background:var(--ac);border-color:var(--ac);color:#fff;}
-.bg{display:flex;}.bg .btn{border-radius:0;border-right-width:0;}
+.bg{display:flex;}.bg .btn{border-radius:0;border-right-width:0;background:#FF6B00;border-color:#FF6B00;color:#fff;}
+.bg .btn:hover{background:#E55F00;border-color:#E55F00;}.bg .btn.on{background:#FF6B00;border-color:#FF6B00;color:#fff;}
 .bg .btn:first-child{border-radius:7px 0 0 7px;}.bg .btn:last-child{border-radius:0 7px 7px 0;border-right-width:1px;}
 .si{min-width:190px;}
 

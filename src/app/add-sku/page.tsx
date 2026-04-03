@@ -4,258 +4,312 @@ import { useState, useMemo, useCallback } from 'react';
 import PageShell from '@/components/layout/PageShell';
 import KpiGrid from '@/components/ui/KpiGrid';
 import KpiCard from '@/components/ui/KpiCard';
+import ButtonGroup from '@/components/ui/ButtonGroup';
 import DataTable from '@/components/ui/DataTable';
 import BarChart from '@/components/charts/BarChart';
-import { DATA_DP, DATA_PROMO, isOnPromo } from '@/data/index';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { DATA_DP } from '@/data/index';
+import { useNewSkus, type NewSku } from '@/context/NewSkuContext';
+import { CASE_CODE_MAP } from '@/lib/owlery/transform';
 import { fmt } from '@/lib/formatters';
 
-const LS_NEW_SKUS_KEY = 'ls_ti_new_skus_v1';
-
-const CAT_LIFT_TABLE: Record<string, Record<string, number>> = {
-  'Baby Snacks': { tpc: 1.20, bogo: 1.55, dwa: 1.60, endcap: 1.25 },
-  'Kids Snacks': { tpc: 1.25, bogo: 1.55, dwa: 1.45, endcap: 1.25 },
-  'Frozen Multiserve': { tpc: 1.10, bogo: 1.60, dwa: 1.60, endcap: 1.50 },
-  'Smoothies': { tpc: 1.35, bogo: 1.45, dwa: 1.45, endcap: 1.15 },
-  'YoGos': { tpc: 1.25, bogo: 1.45, dwa: 1.50, endcap: 1.20 },
-};
-const CAT_AVG_UPSPW: Record<string, number> = { 'Baby Snacks': 11.0, 'Kids Snacks': 8.5, 'Frozen Multiserve': 6.0, 'Smoothies': 9.5, 'YoGos': 5.0 };
 const CATS = ['Baby Snacks', 'Kids Snacks', 'Frozen Multiserve', 'Smoothies', 'YoGos'];
+const CAT_AVG_UPSPW: Record<string, number> = { 'Baby Snacks': 11.0, 'Kids Snacks': 8.5, 'Frozen Multiserve': 6.0, 'Smoothies': 9.5, 'YoGos': 5.0 };
+const RAMP_TYPES = [{ value: 'gradual', label: 'Gradual (8 wk)' }, { value: 'aggressive', label: 'Aggressive (4 wk)' }, { value: 'flat', label: 'Flat (immediate)' }];
 
-interface NewSku {
-  id: string; name: string; dpci: string; category: string; price: number; ucase: number;
-  launchDate: string; stores: number; baselineUPSPW: number;
-  promoEligibility: { tpc: boolean; bogo: boolean; dwa: boolean }; endcapEligible: boolean;
-  skuType: string; analogSkuDpci: string | null; analogOverrides: { velocityPct?: number };
-  rampType: string; rampWeeks: number; rampCustom: number[]; notes: string; createdAt: string;
-  fcast?: number[];
-}
+const VIEW_OPTS = [
+  { value: 'add', label: '+ Add SKU' },
+  { value: 'active', label: 'Active SKUs' },
+];
 
-function computeNewSkuForecast(sku: NewSku): number[] {
-  let basePW = 0;
-  if (sku.skuType === 'analog' && sku.analogSkuDpci) {
-    const analog = DATA_DP.skus.find(s => s.dpci === sku.analogSkuDpci);
-    if (analog) {
-      const cleanHist = analog.hist.slice(0, 12).filter(v => v > 0);
-      const l4w = cleanHist.slice(-4);
-      const analogUpspw = l4w.length ? l4w.reduce((a, b) => a + b, 0) / l4w.length / analog.stores : (analog.lw_upspw || 0);
-      const velPct = (sku.analogOverrides?.velocityPct != null) ? sku.analogOverrides.velocityPct / 100 : 1.0;
-      basePW = analogUpspw * velPct * sku.stores;
-    }
-  }
-  if (!basePW) basePW = (sku.baselineUPSPW || CAT_AVG_UPSPW[sku.category] || 8.0) * (sku.stores || 1000);
-
+function computeForecast(form: typeof INITIAL_FORM): number[] {
+  const basePW = (form.baselineUPSPW || CAT_AVG_UPSPW[form.category] || 8.0) * (form.stores || 1000);
   const planStart = new Date('2026-03-22');
-  const launchDate = sku.launchDate ? new Date(sku.launchDate) : planStart;
+  const launchDate = form.setDate ? new Date(form.setDate) : planStart;
   const msPerWeek = 7 * 24 * 3600 * 1000;
   const launchWkIdx = Math.max(0, Math.floor((launchDate.getTime() - planStart.getTime()) / msPerWeek));
 
-  function getRamp(weeksLive: number) {
-    if (sku.rampType === 'flat') return 1.0;
-    if (sku.rampType === 'custom' && sku.rampCustom?.length > 0) return weeksLive < sku.rampCustom.length ? sku.rampCustom[weeksLive] : 1.0;
-    const rw = sku.rampWeeks || 8;
-    return Math.min(1.0, 0.20 + (weeksLive / rw) * 0.80);
-  }
-
-  const catLifts = CAT_LIFT_TABLE[sku.category] || {};
-  function getPromoLift(wkIdx1: number) {
-    const events = DATA_PROMO.filter(p => p.wk === wkIdx1 && (!p.category || p.category === sku.category));
-    if (!events.length) return 1.0;
-    let maxLift = 1.0;
-    events.forEach(ev => {
-      const t = (ev.type || '').toLowerCase();
-      if (t === 'dwa' && sku.promoEligibility?.dwa) maxLift = Math.max(maxLift, catLifts.dwa || 1.0);
-      else if (t.includes('bogo') && sku.promoEligibility?.bogo) maxLift = Math.max(maxLift, catLifts.bogo || 1.0);
-      else if (t === 'tpc' && sku.promoEligibility?.tpc) maxLift = Math.max(maxLift, catLifts.tpc || 1.0);
-    });
-    return maxLift;
-  }
+  const rampWeeks = form.rampType === 'aggressive' ? 4 : form.rampType === 'flat' ? 0 : 8;
 
   const fcast: number[] = [];
   for (let w = 0; w < 52; w++) {
     if (w < launchWkIdx) { fcast.push(0); continue; }
-    fcast.push(Math.round(basePW * getRamp(w - launchWkIdx) * getPromoLift(w + 1)));
+    const weeksLive = w - launchWkIdx;
+    let ramp = 1.0;
+    if (rampWeeks > 0) ramp = Math.min(1.0, 0.20 + (weeksLive / rampWeeks) * 0.80);
+    fcast.push(Math.round(basePW * ramp));
   }
+
+  // Add set PO as a spike in the PO arrival week
+  if (form.setPOCases > 0 && form.setPOWeeksBefore > 0) {
+    const poWkIdx = Math.max(0, launchWkIdx - form.setPOWeeksBefore);
+    if (poWkIdx < 52) {
+      fcast[poWkIdx] = Math.max(fcast[poWkIdx], form.setPOCases * (form.unitsPerCase || 12));
+    }
+  }
+
   return fcast;
 }
 
+const INITIAL_FORM = {
+  name: '', caseCode: '', category: 'Baby Snacks', subCategory: '',
+  unitsPerCase: 12, unitPrice: 0, casePrice: 0,
+  setDate: '2026-04-19', launchDate: '2026-04-19', stores: 1800,
+  baselineUPSPW: 0, rampType: 'gradual',
+  setPOCases: 500, setPOWeeksBefore: 2,
+  promoEligible: true, notes: '',
+};
+
 export default function AddSkuPage() {
-  const [newSkus, setNewSkus] = useLocalStorage<NewSku[]>(LS_NEW_SKUS_KEY, []);
-  const [previewSku, setPreviewSku] = useState<NewSku | null>(null);
+  const [view, setView] = useState('add');
+  const [form, setForm] = useState({ ...INITIAL_FORM });
+  const [errors, setErrors] = useState<string[]>([]);
+  const { newSkus, addSku, removeSku } = useNewSkus();
 
-  /* ── Form state ─────────────────────────────────────────────────── */
-  const [name, setName] = useState('');
-  const [cat, setCat] = useState('');
-  const [skuType, setSkuType] = useState('innovation');
-  const [price, setPrice] = useState('');
-  const [stores, setStores] = useState('');
-  const [dpci, setDpci] = useState('');
-  const [launchDate, setLaunchDate] = useState('');
-  const [upspw, setUpspw] = useState('');
-  const [ucase, setUcase] = useState('12');
-  const [analogDpci, setAnalogDpci] = useState('');
-  const [velPct, setVelPct] = useState('100');
-  const [rampType, setRampType] = useState('gradual');
-  const [rampWks, setRampWks] = useState('8');
-  const [tpc, setTpc] = useState(true);
-  const [bogo, setBogo] = useState(true);
-  const [dwa, setDwa] = useState(true);
-  const [endcap, setEndcap] = useState(false);
-  const [notes, setNotes] = useState('');
+  const set = (field: string, value: any) => setForm(f => ({ ...f, [field]: value }));
 
-  /* ── KPI data ───────────────────────────────────────────────────── */
-  const kpiData = useMemo(() => {
-    const totalFcast = newSkus.reduce((a, s) => a + computeNewSkuForecast(s).reduce((x, y) => x + y, 0), 0);
-    const totalRev = newSkus.reduce((a, s) => a + computeNewSkuForecast(s).reduce((x, y) => x + y, 0) * s.price, 0);
-    return { count: newSkus.length, totalFcast, totalRev, cats: [...new Set(newSkus.map(s => s.category))].length };
-  }, [newSkus]);
+  // Preview forecast
+  const preview = useMemo(() => computeForecast(form), [form]);
+  const total52 = preview.reduce((a, b) => a + b, 0);
+  const poArrivalWeek = form.setDate ? Math.max(0, Math.floor((new Date(form.setDate).getTime() - new Date('2026-03-22').getTime()) / (7 * 24 * 3600 * 1000)) - form.setPOWeeksBefore) : 0;
+
+  // Validate
+  const validate = useCallback(() => {
+    const errs: string[] = [];
+    if (!form.name.trim()) errs.push('SKU name is required');
+    if (!form.category) errs.push('Category is required');
+    if (!form.setDate) errs.push('Set date is required');
+    if (form.stores <= 0) errs.push('Store count must be positive');
+    if (form.setPOCases < 0) errs.push('Set PO cases cannot be negative');
+    if (form.unitsPerCase <= 0) errs.push('Units per case must be positive');
+    return errs;
+  }, [form]);
 
   const handleAdd = useCallback(() => {
-    if (!name) { alert('SKU Name is required.'); return; }
-    if (!cat) { alert('Category is required.'); return; }
-    if (!price) { alert('Unit Price is required.'); return; }
-    if (!stores) { alert('Starting Stores is required.'); return; }
-    const newSku: NewSku = {
-      id: 'new-sku-' + Date.now(), name, dpci: dpci || ('NEW-' + Date.now()),
-      category: cat, price: parseFloat(price), ucase: parseInt(ucase) || 12,
-      launchDate: launchDate || new Date().toISOString().split('T')[0],
-      stores: parseInt(stores), baselineUPSPW: parseFloat(upspw) || 0,
-      promoEligibility: { tpc, bogo, dwa }, endcapEligible: endcap,
-      skuType, analogSkuDpci: skuType === 'analog' ? analogDpci : null,
-      analogOverrides: skuType === 'analog' ? { velocityPct: parseFloat(velPct) } : {},
-      rampType, rampWeeks: parseInt(rampWks) || 8, rampCustom: [],
-      notes, createdAt: new Date().toISOString().split('T')[0],
+    const errs = validate();
+    if (errs.length > 0) { setErrors(errs); return; }
+    setErrors([]);
+
+    const fcast = computeForecast(form);
+    const sku: NewSku = {
+      id: `new-sku-${Date.now()}`,
+      name: form.name,
+      dpci: form.caseCode || `NEW-${Date.now().toString(36).toUpperCase()}`,
+      category: form.category,
+      price: form.unitPrice,
+      stores: form.stores,
+      ucase: form.unitsPerCase,
+      launchDate: form.setDate,
+      baseUpspw: form.baselineUPSPW || CAT_AVG_UPSPW[form.category] || 8.0,
+      fcast,
+      rampType: form.rampType,
+      skuType: 'innovation',
+      promoEligibility: form.promoEligible ? ['TPC', 'DWA', 'BOGO'] : [],
+      notes: form.notes,
+      caseCode: form.caseCode,
+      createdAt: new Date().toISOString(),
     };
-    newSku.fcast = computeNewSkuForecast(newSku);
-    setNewSkus(prev => [...prev, newSku]);
-    setPreviewSku(newSku);
-    setName(''); setDpci(''); setPrice(''); setStores(''); setUpspw(''); setNotes('');
-  }, [name, cat, skuType, price, stores, dpci, launchDate, upspw, ucase, analogDpci, velPct, rampType, rampWks, tpc, bogo, dwa, endcap, notes, setNewSkus]);
-
-  const handleDelete = useCallback((id: string) => {
-    if (confirm('Remove this SKU from the forecast?')) setNewSkus(prev => prev.filter(s => s.id !== id));
-  }, [setNewSkus]);
-
-  const handleExport = useCallback(() => {
-    const blob = new Blob([JSON.stringify(newSkus, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ls-new-skus-' + new Date().toISOString().split('T')[0] + '.json'; a.click();
-  }, [newSkus]);
+    addSku(sku);
+    setForm({ ...INITIAL_FORM });
+    setView('active');
+  }, [form, validate, addSku]);
 
   return (
-    <PageShell title="Add New SKU" subtitle="Innovation pipeline · New SKU forecast engine">
-      <div style={{ padding: '0 24px 24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <PageShell
+      title="Add a SKU"
+      subtitle={`System entry point · ${newSkus.length} new SKUs active · Flows to all modules`}
+      extra={<ButtonGroup options={VIEW_OPTS} active={view} onChange={setView} />}
+    >
+      <KpiGrid columns={4}>
+        <KpiCard icon="📦" label="New SKUs" style="--cc:var(--ac)" value={String(newSkus.length)} delta="Active in system" deltaClass="neu" sub="Auto-flows to Launch Ramp, Demand Plan, Shipments" />
+        <KpiCard icon="🚀" label="52-Wk Preview" style="--cc:var(--gr)" value={fmt(total52)} delta="Units (current form)" deltaClass="neu" sub={form.name || 'Enter SKU details'} />
+        <KpiCard icon="📅" label="Set PO Week" style="--cc:var(--cy)" value={`Wk ${poArrivalWeek + 1}`} delta={`${form.setPOCases} cases, ${form.setPOWeeksBefore}wk before set`} deltaClass="neu" sub="" />
+        <KpiCard icon="🏪" label="Stores" style="--cc:var(--pu)" value={fmt(form.stores)} delta={form.category} deltaClass="neu" sub="" />
+      </KpiGrid>
 
-        <KpiGrid columns={4}>
-          <KpiCard icon="&#128230;" label="New SKUs Added" style="--cc:var(--cy)" value={kpiData.count} delta="In active forecast" deltaClass="neu" sub="Fully modeled in demand plan" />
-          <KpiCard icon="&#128202;" label="52-Wk Fcast Units" style="--cc:var(--ac)" value={fmt(kpiData.totalFcast)} delta="Projected from new SKUs" deltaClass="neu" sub="Across all 52 forecast weeks" />
-          <KpiCard icon="&#128176;" label="52-Wk Fcast Rev" style="--cc:var(--gr)" value={'$' + Math.round(kpiData.totalRev / 1000) + 'K'} delta="Revenue contribution" deltaClass="neu" sub="Based on unit price x forecast" />
-          <KpiCard icon="&#128640;" label="Categories Covered" style="--cc:var(--yw)" value={kpiData.cats || 0} delta="With new SKUs" deltaClass="neu" sub="" />
-        </KpiGrid>
+      {/* ── Add SKU Form ──────────────────────────────────────────── */}
+      {view === 'add' && (
+        <div style={{ maxWidth: 800, margin: '16px auto' }}>
+          {errors.length > 0 && (
+            <div style={{ background: 'rgba(239,68,68,.08)', border: '1px solid rgba(239,68,68,.3)', borderRadius: 8, padding: '10px 14px', marginBottom: 12 }}>
+              {errors.map((e, i) => <div key={i} style={{ fontSize: 12, color: '#ef4444' }}>⚠️ {e}</div>)}
+            </div>
+          )}
 
-        {/* ── New SKU Form ─────────────────────────────────────────────── */}
-        <div className="cc">
-          <div className="ct">Add New SKU</div>
-          <div style={{ padding: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, fontSize: 12 }}>
-            <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>SKU Name *</label>
-              <input type="text" value={name} onChange={e => setName(e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }} /></div>
-            <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Category *</label>
-              <select value={cat} onChange={e => setCat(e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }}>
-                <option value="">Select...</option>{CATS.map(c => <option key={c} value={c}>{c}</option>)}
-              </select></div>
-            <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Unit Price ($) *</label>
-              <input type="number" value={price} onChange={e => setPrice(e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }} /></div>
-            <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Starting Stores *</label>
-              <input type="number" value={stores} onChange={e => setStores(e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }} /></div>
-            <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>DPCI</label>
-              <input type="text" value={dpci} onChange={e => setDpci(e.target.value)} placeholder="Auto-generated if blank" style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }} /></div>
-            <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Launch Date</label>
-              <input type="date" value={launchDate} onChange={e => setLaunchDate(e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }} /></div>
-            <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Type</label>
-              <select value={skuType} onChange={e => setSkuType(e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }}>
-                <option value="innovation">Innovation</option><option value="analog">Analog</option>
-              </select></div>
-            <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Baseline UPSPW</label>
-              <input type="number" step="0.1" value={upspw} onChange={e => setUpspw(e.target.value)} placeholder="Uses category avg if blank" style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }} /></div>
-            {skuType === 'analog' && (
-              <>
-                <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Analog SKU</label>
-                  <select value={analogDpci} onChange={e => setAnalogDpci(e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }}>
-                    <option value="">Select...</option>{DATA_DP.skus.map(s => <option key={s.dpci} value={s.dpci}>{s.name.substring(0, 50)}</option>)}
-                  </select></div>
-                <div><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Velocity % of Analog</label>
-                  <input type="number" value={velPct} onChange={e => setVelPct(e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }} /></div>
-              </>
-            )}
-            <div style={{ gridColumn: '1 / -1' }}>
-              <label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Promo Eligibility</label>
-              <div style={{ display: 'flex', gap: 16 }}>
-                <label style={{ color: 'var(--tx2)' }}><input type="checkbox" checked={tpc} onChange={e => setTpc(e.target.checked)} /> TPC</label>
-                <label style={{ color: 'var(--tx2)' }}><input type="checkbox" checked={bogo} onChange={e => setBogo(e.target.checked)} /> BOGO</label>
-                <label style={{ color: 'var(--tx2)' }}><input type="checkbox" checked={dwa} onChange={e => setDwa(e.target.checked)} /> DWA</label>
-                <label style={{ color: 'var(--tx2)' }}><input type="checkbox" checked={endcap} onChange={e => setEndcap(e.target.checked)} /> Endcap</label>
+          {/* Section A: Core SKU Info */}
+          <div className="card" style={{ padding: 20, marginBottom: 12 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ac)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '.05em' }}>A. Core SKU Info</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>SKU Name *</label>
+                <input type="text" value={form.name} onChange={e => set('name', e.target.value)} placeholder="e.g., Strawberry Mango Smoothie 4oz" style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Case Code</label>
+                <input type="text" value={form.caseCode} onChange={e => set('caseCode', e.target.value)} placeholder="e.g., LS-WMR25" style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Category *</label>
+                <select value={form.category} onChange={e => set('category', e.target.value)} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }}>
+                  {CATS.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Sub-Category</label>
+                <input type="text" value={form.subCategory} onChange={e => set('subCategory', e.target.value)} placeholder="e.g., Singles, 4pk" style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Units Per Case *</label>
+                <input type="number" value={form.unitsPerCase} onChange={e => set('unitsPerCase', parseInt(e.target.value) || 0)} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Unit Price ($)</label>
+                <input type="number" step="0.01" value={form.unitPrice} onChange={e => set('unitPrice', parseFloat(e.target.value) || 0)} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
               </div>
             </div>
-            <div style={{ gridColumn: '1 / -1' }}><label style={{ color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Notes</label>
-              <input type="text" value={notes} onChange={e => setNotes(e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, color: 'var(--tx)', fontSize: 12 }} /></div>
-            <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 8 }}>
-              <button onClick={handleAdd} style={{ background: 'var(--ac)', color: '#000', border: 'none', borderRadius: 6, padding: '9px 20px', cursor: 'pointer', fontWeight: 700, fontSize: 13 }}>Add SKU</button>
-              <button onClick={handleExport} style={{ background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 5, padding: '5px 13px', color: 'var(--tx3)', cursor: 'pointer', fontSize: 11.5 }}>Export SKUs</button>
+          </div>
+
+          {/* Section B: Launch Info */}
+          <div className="card" style={{ padding: 20, marginBottom: 12 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: '#00CF92', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '.05em' }}>B. Launch & Set Info</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Set Date *</label>
+                <input type="date" value={form.setDate} onChange={e => set('setDate', e.target.value)} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Stores at Launch *</label>
+                <input type="number" value={form.stores} onChange={e => set('stores', parseInt(e.target.value) || 0)} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Ramp Type</label>
+                <select value={form.rampType} onChange={e => set('rampType', e.target.value)} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }}>
+                  {RAMP_TYPES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                </select>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ── Existing SKU List ────────────────────────────────────────── */}
-        <div className="cc">
-          <div className="ct">New SKUs in Forecast</div>
+          {/* Section C: Set PO */}
+          <div className="card" style={{ padding: 20, marginBottom: 12, border: '1px solid rgba(0,227,205,.2)' }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--cy)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '.05em' }}>C. Set PO (Initial Order)</div>
+            <div style={{ fontSize: 11, color: 'var(--tx3)', marginBottom: 12 }}>
+              The initial purchase order that hits before set date. This flows into the Shipment Plan as a distinct upfront order before standard replenishment begins.
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Set PO Quantity (Cases)</label>
+                <input type="number" value={form.setPOCases} onChange={e => set('setPOCases', parseInt(e.target.value) || 0)} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Weeks Before Set</label>
+                <input type="number" min="0" max="8" value={form.setPOWeeksBefore} onChange={e => set('setPOWeeksBefore', parseInt(e.target.value) || 0)} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Derived PO Arrival Week</label>
+                <div style={{ padding: '8px', background: 'rgba(0,227,205,.06)', borderRadius: 6, fontSize: 13, fontWeight: 700, color: 'var(--ac)' }}>
+                  Week {poArrivalWeek + 1} ({form.setPOCases * form.unitsPerCase} units)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section D: Forecast Inputs */}
+          <div className="card" style={{ padding: 20, marginBottom: 12 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: '#FFC711', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '.05em' }}>D. Forecast Inputs</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Baseline UPSPW (leave 0 for category avg: {CAT_AVG_UPSPW[form.category] ?? 8})</label>
+                <input type="number" step="0.1" value={form.baselineUPSPW} onChange={e => set('baselineUPSPW', parseFloat(e.target.value) || 0)} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Promo Eligible</label>
+                <select value={form.promoEligible ? 'yes' : 'no'} onChange={e => set('promoEligible', e.target.value === 'yes')} style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12 }}>
+                  <option value="yes">Yes — TPC, DWA, BOGO eligible</option>
+                  <option value="no">No — not promo eligible</option>
+                </select>
+              </div>
+            </div>
+            <div style={{ marginTop: 12 }}>
+              <label style={{ fontSize: 11, color: 'var(--tx3)', display: 'block', marginBottom: 4 }}>Notes</label>
+              <textarea value={form.notes} onChange={e => set('notes', e.target.value)} placeholder="Launch context, analog SKU reference, special considerations..." style={{ width: '100%', background: 'var(--s2)', border: '1px solid var(--bd)', borderRadius: 6, padding: '8px', color: 'var(--tx)', fontSize: 12, minHeight: 60, resize: 'vertical' }} />
+            </div>
+          </div>
+
+          {/* Forecast Preview */}
+          <div className="card" style={{ padding: 20, marginBottom: 12 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ac)', marginBottom: 8 }}>FORECAST PREVIEW</div>
+            <div style={{ fontSize: 11, color: 'var(--tx3)', marginBottom: 8 }}>
+              52-week: {fmt(total52)} units · Set PO: {form.setPOCases} cases ({fmt(form.setPOCases * form.unitsPerCase)} units) in Wk {poArrivalWeek + 1}
+            </div>
+            <BarChart
+              labels={DATA_DP.fcast_weeks.slice(0, 26).map(w => w)}
+              datasets={[{ label: 'Forecast Units', data: preview.slice(0, 26), backgroundColor: preview.slice(0, 26).map((v, i) => i === poArrivalWeek ? 'rgba(0,227,205,.9)' : 'rgba(99,102,241,.6)') }]}
+              height={160}
+            />
+            <div style={{ fontSize: 10, color: 'var(--tx3)', marginTop: 4 }}>Teal bar = Set PO week · Purple = demand ramp</div>
+          </div>
+
+          {/* System Flow Summary */}
+          <div style={{ padding: '12px 16px', background: 'rgba(0,227,205,.04)', borderRadius: 8, marginBottom: 12, fontSize: 11, color: 'var(--tx3)', lineHeight: 1.8 }}>
+            <b style={{ color: 'var(--ac)' }}>When you add this SKU, it will automatically:</b><br />
+            ✅ Appear in <b>Launch Ramp Tracker</b> (Week 1 = set date)<br />
+            ✅ Add forecast to <b>Demand Plan</b> (52-week row)<br />
+            ✅ Set PO reflected in <b>Shipment Plan</b> (Wk {poArrivalWeek + 1} spike)<br />
+            ✅ Included in <b>Executive Summary</b> totals<br />
+            ✅ Tagged for <b>Promo Calendar</b> eligibility
+          </div>
+
+          <button onClick={handleAdd} style={{ width: '100%', padding: '14px', background: 'var(--ac)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
+            Add SKU to System
+          </button>
+        </div>
+      )}
+
+      {/* ── Active SKUs View ──────────────────────────────────────── */}
+      {view === 'active' && (
+        <>
           {newSkus.length === 0 ? (
-            <div style={{ color: 'var(--tx3)', textAlign: 'center', padding: '40px 20px' }}>No new SKUs added yet. Fill the form above to add your first new SKU.</div>
+            <div style={{ padding: 40, textAlign: 'center', color: 'var(--tx3)', fontSize: 13 }}>No new SKUs added yet. Switch to "+ Add SKU" to get started.</div>
           ) : (
             <DataTable>
-              <table className="dt">
-                <thead><tr>
-                  <th>SKU Name</th><th>Category</th><th>Type</th><th>Stores</th><th>Launch</th><th className="tr">Wk1 Fcast</th><th className="tr">52-Wk Rev</th><th>Actions</th>
-                </tr></thead>
+              <table style={{ marginTop: 16 }}>
+                <thead>
+                  <tr>
+                    <th style={{ minWidth: 180 }}>SKU</th>
+                    <th>Category</th>
+                    <th>Case Code</th>
+                    <th className="tr">Stores</th>
+                    <th className="tr">UPC</th>
+                    <th className="tr">52-Wk Units</th>
+                    <th className="tr">Set PO</th>
+                    <th>Set Date</th>
+                    <th>Ramp</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  {newSkus.map(s => {
-                    const fc = computeNewSkuForecast(s);
-                    const rev52 = fc.reduce((a, b) => a + b, 0) * s.price;
-                    return (
-                      <tr key={s.id}>
-                        <td style={{ maxWidth: 200 }}>{s.name} <span style={{ fontSize: 9, background: 'rgba(0,227,205,.15)', color: 'var(--ac)', borderRadius: 3, padding: '1px 5px' }}>NEW</span></td>
-                        <td>{s.category}</td>
-                        <td style={{ fontSize: 10, color: 'var(--tx3)' }}>{s.skuType === 'analog' ? 'Analog' : 'Innovation'}</td>
-                        <td className="tr">{fmt(s.stores)}</td>
-                        <td>{s.launchDate}</td>
-                        <td className="tr"><b>{fmt(fc[0])}</b></td>
-                        <td className="tr">${Math.round(rev52 / 1000)}K</td>
-                        <td><button onClick={() => handleDelete(s.id)} className="btn" style={{ fontSize: 10, padding: '3px 8px', color: 'var(--rd)' }}>Remove</button></td>
-                      </tr>
-                    );
-                  })}
+                  {newSkus.map(s => (
+                    <tr key={s.id}>
+                      <td className="tn"><b>{s.name}</b></td>
+                      <td style={{ fontSize: 10 }}>{s.category}</td>
+                      <td style={{ fontSize: 10, fontFamily: 'monospace', color: 'var(--ac)' }}>{s.caseCode || s.dpci}</td>
+                      <td className="tr">{fmt(s.stores)}</td>
+                      <td className="tr">{s.ucase}</td>
+                      <td className="tr" style={{ fontWeight: 600 }}>{fmt(s.fcast.reduce((a, b) => a + b, 0))}</td>
+                      <td className="tr">{s.notes || '—'}</td>
+                      <td style={{ fontSize: 11 }}>{s.launchDate}</td>
+                      <td style={{ fontSize: 10 }}>{s.rampType}</td>
+                      <td>
+                        <button onClick={() => removeSku(s.id)} style={{ background: 'rgba(239,68,68,.08)', border: '1px solid rgba(239,68,68,.2)', borderRadius: 4, padding: '2px 8px', color: '#ef4444', fontSize: 10, cursor: 'pointer' }}>Remove</button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </DataTable>
           )}
-        </div>
-
-        {/* ── Preview Chart ────────────────────────────────────────────── */}
-        {previewSku && (
-          <div className="cc">
-            <div className="ct">Forecast Preview — {previewSku.name}</div>
-            <div style={{ padding: '0 12px 12px' }}>
-              <BarChart
-                labels={DATA_DP.fcast_weeks}
-                datasets={[{
-                  label: previewSku.name,
-                  data: computeNewSkuForecast(previewSku),
-                  backgroundColor: 'rgba(0,227,205,.5)',
-                }]}
-                height={200}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+        </>
+      )}
     </PageShell>
   );
 }

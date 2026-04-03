@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Mulish, Roboto } from 'next/font/google';
 import '@/styles/globals.css';
 import { OverridesProvider } from '@/context/OverridesContext';
+import { PromoProvider } from '@/context/PromoContext';
+import { NewSkuProvider } from '@/context/NewSkuContext';
+import { CalibrationProvider } from '@/context/CalibrationContext';
 import { AppShell } from '@/components/layout/AppShell';
 
 const mulish = Mulish({
@@ -31,7 +34,13 @@ export default function RootLayout({
     <html lang="en" className={`${mulish.variable} ${roboto.variable}`}>
       <body>
         <OverridesProvider>
-          <AppShell>{children}</AppShell>
+          <PromoProvider>
+            <NewSkuProvider>
+              <CalibrationProvider>
+                <AppShell>{children}</AppShell>
+              </CalibrationProvider>
+            </NewSkuProvider>
+          </PromoProvider>
         </OverridesProvider>
       </body>
     </html>

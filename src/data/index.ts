@@ -75,6 +75,11 @@ export const DATA_POFC = pofc as unknown as POFCData;
 
 export const FCAST_REV_52WK = fcastRev as unknown as FcastRev52Wk;
 
+// ─── Promo Calendar (parsed from CSV) ─────────────────────────────────
+
+import promoCal from './json/promo-calendar.json';
+export const DATA_PROMO_CAL = promoCal as { weeks: string[]; categories: { id: string; label: string; dept: string }[]; events: { week: string; weekIdx: number; category: string; categoryId: string; dept: string; promoType: string; subCategory: string; description: string; status: string }[] };
+
 // ─── Promo-week set ───────────────────────────────────────────────────
 
 /** Set of all week numbers that have at least one promo event */
