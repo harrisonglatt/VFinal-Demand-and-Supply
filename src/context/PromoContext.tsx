@@ -31,7 +31,7 @@ export interface PromoEvent {
   stores: string;
   skus: string[];           // Case codes (auto-mapped from category, user-narrowable)
   liftPct: number;          // Expected lift %
-  liftSource: 'sku' | 'category' | 'fallback';
+  liftSource: string;
   confidence: 'high' | 'medium' | 'low';
   isNew: boolean;
 }
