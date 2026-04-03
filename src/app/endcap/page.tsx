@@ -1,330 +1,341 @@
 'use client';
 
-import { useMemo, Fragment } from 'react';
+import { useMemo, useState } from 'react';
 import PageShell from '@/components/layout/PageShell';
 import KpiCard from '@/components/ui/KpiCard';
 import KpiGrid from '@/components/ui/KpiGrid';
+import ButtonGroup from '@/components/ui/ButtonGroup';
 import DataTable from '@/components/ui/DataTable';
 import BarChart from '@/components/charts/BarChart';
-import DoughnutChart from '@/components/charts/DoughnutChart';
-import { DATA_DP, DATA_PROMO, DATA_ENDCAP_HISTORY, FCAST_REV_52WK } from '@/data/index';
-import { fmt, fmtDol, sf } from '@/lib/formatters';
+import { DATA_HIST_PROMO, DATA_OMNI } from '@/data/index';
+import { usePromo } from '@/context/PromoContext';
+import { fmt, fmtDol } from '@/lib/formatters';
 
-/* ── Processed endcap event type ─────────────────────────────────────── */
+const VIEW_OPTS = [
+  { value: 'summary', label: 'Performance' },
+  { value: 'events', label: 'Event Detail' },
+  { value: 'mechanic', label: 'By Mechanic' },
+  { value: 'insights', label: 'Insights' },
+];
 
-interface ProcEvent {
-  wk: number;
-  date: string;
-  event: string;
-  category: string;
-  status: string;
-  type: string;
-  stores: string;
-  mechanic: string;
-  lift_pct: string;
-  actual_lift?: number;
-  baseUnits: number;
-  baseRev: number;
-  liftPct: number;
-  inclUnits: number;
-  inclRev: number;
-  isHist: boolean;
+/* ── Compute baseline from Omni trailing data ─────────────────────── */
+function getBaseline(): { units: number; revenue: number } {
+  const wt = DATA_OMNI.weekly_totals;
+  if (wt.length < 4) return { units: 15000, revenue: 90000 };
+  const t4 = wt.slice(-4);
+  return {
+    units: Math.round(t4.reduce((a, w) => a + w.units, 0) / 4),
+    revenue: Math.round(t4.reduce((a, w) => a + w.sales, 0) / 4),
+  };
 }
 
-/* ── Page Component ──────────────────────────────────────────────────── */
+interface LiftEvent {
+  id: string;
+  week: string;
+  event: string;
+  category: string;
+  type: string;
+  mechanic: string;
+  baselineUnits: number;
+  actualUnits: number;
+  incrementalUnits: number;
+  liftPct: number;
+  modelLiftPct: number;
+  deltaPct: number;
+  status: 'completed' | 'upcoming';
+  confidence: string;
+  source: 'historical' | 'promo_calendar';
+}
 
-export default function EndcapPage() {
-  /* Merge historical + future endcap events, compute lift metrics */
-  const proc = useMemo<ProcEvent[]>(() => {
-    const histEvents = DATA_ENDCAP_HISTORY ?? [];
-    const futureEvents = DATA_PROMO.filter(
-      (p) =>
-        (p.type && p.type.toLowerCase().includes('co-space')) ||
-        (p.mechanic && p.mechanic.toLowerCase().includes('endcap')),
-    );
-    const endcaps = [...histEvents, ...futureEvents].sort((a, b) => a.wk - b.wk);
+export default function PromoLiftPage() {
+  const [view, setView] = useState('summary');
+  const promoCtx = usePromo();
+  const baseline = getBaseline();
 
-    return endcaps.map((p) => {
-      const isHist = p.wk <= 0;
-      let bU: number, bR: number, lf: number, iU: number, iR: number;
+  /* ── Build unified event list ───────────────────────────────────── */
+  const events = useMemo(() => {
+    const list: LiftEvent[] = [];
 
-      if (isHist) {
-        const histBase = 13751;
-        const histAvgPrice = 8.25;
-        const actualLift = ('actual_lift' in p ? (p as { actual_lift: number }).actual_lift : null) || 1;
-        bU = histBase;
-        bR = Math.round(histBase * histAvgPrice);
-        lf = actualLift - 1;
-        iU = Math.round(bU * lf);
-        iR = bR * lf;
-      } else {
-        const wi = p.wk - 1;
-        bU = DATA_DP.skus.reduce((a, s) => a + sf(s.fcast[Math.min(wi, 51)]), 0);
-        bR = FCAST_REV_52WK[Math.max(0, wi)] || bU * 5.5;
-        const rawL = (p.lift_pct || '0%').replace('%', '').replace('+', '').replace('~', '').trim();
-        const numMatch = rawL.match(/(\d+(?:\.\d+)?)/);
-        const lp = numMatch ? parseFloat(numMatch[0]) : 0;
-        lf = lp / 100;
-        iU = Math.round(bU * lf);
-        iR = bR * lf;
-      }
-
-      return {
-        ...p,
-        actual_lift: 'actual_lift' in p ? (p as { actual_lift: number }).actual_lift : undefined,
-        baseUnits: bU,
-        baseRev: bR,
-        liftPct: lf,
-        inclUnits: iU,
-        inclRev: iR,
-        isHist,
-      };
+    // 1. Historical completed events (from hist-promo.json — ground truth)
+    DATA_HIST_PROMO.forEach((e, i) => {
+      const baseU = 13751; // Fixed historical baseline
+      const actualLiftFactor = (e.actual_lift_x ?? 1) - 1;
+      const incrUnits = Math.round(baseU * actualLiftFactor);
+      list.push({
+        id: `hist-${i}`,
+        week: e.date,
+        event: e.event,
+        category: e.category,
+        type: e.type,
+        mechanic: e.mechanic,
+        baselineUnits: baseU,
+        actualUnits: Math.round(baseU * (e.actual_lift_x ?? 1)),
+        incrementalUnits: incrUnits,
+        liftPct: e.actual_lift_pct,
+        modelLiftPct: e.model_lift_pct,
+        deltaPct: e.delta_pct,
+        status: 'completed',
+        confidence: e.confidence_in_actual || 'High',
+        source: 'historical',
+      });
     });
-  }, []);
 
-  /* Derived KPI values */
-  const kpis = useMemo(() => {
-    const totIncl = proc.reduce((a, p) => a + p.inclRev, 0);
-    const totInclU = proc.reduce((a, p) => a + p.inclUnits, 0);
-    const histProc = proc.filter((p) => p.isHist);
-    const histTotalIncr = histProc.reduce((a, p) => a + p.inclRev, 0);
-    const futureProc = proc.filter((p) => p.wk > 0);
-    const futureTotalIncr = futureProc.reduce((a, p) => a + p.inclRev, 0);
-    const conf = proc.filter(
-      (p) => p.status && (p.status.includes('✓') || p.status.toLowerCase().includes('confirm')),
+    // 2. Upcoming events from PromoContext (auto-synced from promo calendar)
+    const activePromos = promoCtx.events.filter(e =>
+      e.status !== 'rejected' && e.status !== 'blocked' && e.status !== 'info'
     );
-    const confR = conf.reduce((a, p) => a + p.inclRev, 0);
-    const futureWithLift = futureProc.filter((p) => p.liftPct > 0);
-    const avgLift = futureWithLift.length
-      ? futureWithLift.reduce((a, p) => a + p.liftPct, 0) / futureWithLift.length
-      : 0;
-    const peakLift = futureProc.reduce((mx, p) => Math.max(mx, p.liftPct), 0);
-    const futureConf = conf.filter((p) => !p.isHist).length;
-
-    return {
-      total: proc.length,
-      histCount: histProc.length,
-      futureCount: futureProc.length,
-      totIncl,
-      totInclU,
-      histTotalIncr,
-      futureTotalIncr,
-      confR,
-      avgLift,
-      peakLift,
-      futureConf,
-      futureProposed: futureProc.length - futureConf,
-      histInclU: histProc.reduce((a, p) => a + p.inclUnits, 0),
-      futureInclU: futureProc.reduce((a, p) => a + p.inclUnits, 0),
-    };
-  }, [proc]);
-
-  /* Chart data: bar chart labels, values, colors */
-  const barData = useMemo(() => {
-    const labels = proc.map((p) =>
-      p.isHist ? `↩ ${p.date}` : `Wk${p.wk} ${p.category.substring(0, 7)}`,
-    );
-    const data = proc.map((p) => p.inclRev);
-    const colors = proc.map((p) => {
-      if (p.isHist) return 'rgba(24,167,255,.55)';
-      const ok = p.status && (p.status.includes('✓') || p.status.toLowerCase().includes('confirm'));
-      return ok ? 'rgba(0,207,146,.8)' : 'rgba(255,199,17,.6)';
+    activePromos.forEach(e => {
+      const liftPct = e.liftPct;
+      const incrUnits = Math.round(baseline.units * liftPct / 100);
+      list.push({
+        id: e.id,
+        week: e.week,
+        event: `${e.promoType}: ${e.description.substring(0, 40)}`,
+        category: e.category,
+        type: e.promoType,
+        mechanic: e.description,
+        baselineUnits: baseline.units,
+        actualUnits: 0, // Not yet measured
+        incrementalUnits: incrUnits, // Expected
+        liftPct: liftPct,
+        modelLiftPct: liftPct,
+        deltaPct: 0,
+        status: 'upcoming',
+        confidence: e.confidence,
+        source: 'promo_calendar',
+      });
     });
-    return { labels, data, colors };
-  }, [proc]);
+
+    return list;
+  }, [promoCtx.events, baseline]);
+
+  const completed = events.filter(e => e.status === 'completed');
+  const upcoming = events.filter(e => e.status === 'upcoming');
+
+  /* ── Mechanic aggregation ───────────────────────────────────────── */
+  const mechanicStats = useMemo(() => {
+    const byType: Record<string, { lifts: number[]; incrUnits: number; count: number }> = {};
+    completed.forEach(e => {
+      if (!byType[e.type]) byType[e.type] = { lifts: [], incrUnits: 0, count: 0 };
+      byType[e.type].lifts.push(e.liftPct);
+      byType[e.type].incrUnits += e.incrementalUnits;
+      byType[e.type].count++;
+    });
+    return Object.entries(byType).map(([type, d]) => ({
+      type,
+      avgLift: Math.round(d.lifts.reduce((a, b) => a + b, 0) / d.lifts.length),
+      medianLift: d.lifts.sort((a, b) => a - b)[Math.floor(d.lifts.length / 2)] ?? 0,
+      totalIncr: d.incrUnits,
+      count: d.count,
+      variability: d.lifts.length > 1 ? Math.round(Math.sqrt(d.lifts.reduce((a, b) => a + (b - d.lifts.reduce((x, y) => x + y, 0) / d.lifts.length) ** 2, 0) / d.lifts.length)) : 0,
+    })).sort((a, b) => b.avgLift - a.avgLift);
+  }, [completed]);
+
+  /* ── KPIs ───────────────────────────────────────────────────────── */
+  const totalIncrCompleted = completed.reduce((a, e) => a + e.incrementalUnits, 0);
+  const totalIncrUpcoming = upcoming.reduce((a, e) => a + e.incrementalUnits, 0);
+  const avgLiftCompleted = completed.length > 0 ? Math.round(completed.reduce((a, e) => a + e.liftPct, 0) / completed.length) : 0;
+  const bestMechanic = mechanicStats[0];
+  const modelAccuracy = completed.length > 0 ? Math.round(completed.reduce((a, e) => a + Math.abs(e.deltaPct), 0) / completed.length) : 0;
+
+  /* ── Auto insights ──────────────────────────────────────────────── */
+  const insights = useMemo(() => {
+    const items: { icon: string; label: string; detail: string; color: string }[] = [];
+
+    if (mechanicStats.length >= 2) {
+      const top = mechanicStats[0];
+      const bottom = mechanicStats[mechanicStats.length - 1];
+      items.push({ icon: '📊', label: 'Mechanic Comparison', detail: `${top.type} drives ${(top.avgLift / (bottom.avgLift || 1)).toFixed(1)}x the lift of ${bottom.type} on average (${top.avgLift}% vs ${bottom.avgLift}%)`, color: 'var(--ac)' });
+    }
+
+    const overForecast = completed.filter(e => e.deltaPct < -5);
+    if (overForecast.length > 0) {
+      items.push({ icon: '⚠️', label: 'Model Over-Forecasting', detail: `${overForecast.length} of ${completed.length} events came in below model forecast. Avg over-forecast: ${Math.round(overForecast.reduce((a, e) => a + Math.abs(e.deltaPct), 0) / overForecast.length)}%. Conservative calibration recommended.`, color: '#FFC711' });
+    }
+
+    if (bestMechanic) {
+      items.push({ icon: '🏆', label: 'Top Mechanic', detail: `${bestMechanic.type} delivers the highest lift at +${bestMechanic.avgLift}% with ${fmt(bestMechanic.totalIncr)} incremental units across ${bestMechanic.count} events`, color: '#00CF92' });
+    }
+
+    const totalIncr = totalIncrCompleted;
+    items.push({ icon: '💰', label: 'Total Incremental Impact', detail: `${fmt(totalIncr)} incremental units from ${completed.length} completed events. Expected ${fmt(totalIncrUpcoming)} more from ${upcoming.length} upcoming promos.`, color: 'var(--ac)' });
+
+    if (modelAccuracy > 0) {
+      items.push({ icon: '🎯', label: 'Model Accuracy', detail: `Average model error: ±${modelAccuracy} percentage points. ${modelAccuracy <= 5 ? 'Within acceptable range.' : 'Consider recalibrating lift assumptions.'}`, color: modelAccuracy <= 5 ? '#00CF92' : '#FFC711' });
+    }
+
+    return items;
+  }, [mechanicStats, completed, upcoming, totalIncrCompleted, totalIncrUpcoming, bestMechanic, modelAccuracy]);
 
   return (
-    <PageShell title="Endcap Lift" subtitle="Incremental revenue from endcap & co-space placements">
-      {/* ── KPI Row ────────────────────────────────────────── */}
+    <PageShell
+      title="Promo + Endcap Lift"
+      subtitle={`${completed.length} completed · ${upcoming.length} upcoming · Performance attribution engine`}
+      extra={<ButtonGroup options={VIEW_OPTS} active={view} onChange={setView} />}
+    >
       <KpiGrid columns={4}>
-        <KpiCard
-          icon="📐"
-          label="Endcap Placements"
-          style="--cc:var(--cy)"
-          value={kpis.total}
-          delta={`${kpis.futureConf} future confirmed · ${kpis.futureProposed} proposed`}
-          deltaClass="neu"
-          sub={`${kpis.histCount} historical · ${kpis.futureCount} upcoming`}
-        />
-        <KpiCard
-          icon="📦"
-          label="Total Incr. Units"
-          style="--cc:var(--gr)"
-          value={fmt(kpis.totInclU)}
-          delta={`${fmt(kpis.histInclU)} actual hist · ${fmt(kpis.futureInclU)} fcast`}
-          deltaClass="up"
-          sub="vs stable baseline velocity"
-        />
-        <KpiCard
-          icon="💰"
-          label="Total Incr. Revenue"
-          style="--cc:var(--yw)"
-          value={fmtDol(kpis.futureTotalIncr)}
-          delta={`${fmtDol(kpis.histTotalIncr)} hist actuals (realized)`}
-          deltaClass="up"
-          sub="Forward-looking only (upcoming)"
-        />
-        <KpiCard
-          icon="📍"
-          label="Avg Lift %"
-          style="--cc:var(--pu)"
-          value={`${(kpis.avgLift * 100).toFixed(0)}%`}
-          delta={`${(kpis.peakLift * 100).toFixed(0)}% peak · excl. co-space-only`}
-          deltaClass="neu"
-          sub="Future events with deal mechanic"
-        />
+        <KpiCard icon="📈" label="Avg Lift (Completed)" style="--cc:var(--ac)" value={`+${avgLiftCompleted}%`} delta={`${completed.length} measured events`} deltaClass="neu" sub="Actual observed lift" />
+        <KpiCard icon="📦" label="Incremental Units" style="--cc:var(--gr)" value={fmt(totalIncrCompleted)} delta={`+${fmt(totalIncrUpcoming)} expected upcoming`} deltaClass="up" sub="Above baseline demand" />
+        <KpiCard icon="🏆" label="Best Mechanic" style="--cc:#00CF92" value={bestMechanic ? `${bestMechanic.type}` : '—'} delta={bestMechanic ? `+${bestMechanic.avgLift}% avg lift` : ''} deltaClass="up" sub={bestMechanic ? `${bestMechanic.count} events` : ''} />
+        <KpiCard icon="🎯" label="Model Accuracy" style={`--cc:${modelAccuracy <= 5 ? 'var(--gr)' : 'var(--yw)'}`} value={`±${modelAccuracy}pp`} delta={modelAccuracy <= 5 ? 'On target' : 'Needs calibration'} deltaClass={modelAccuracy <= 5 ? 'up' : 'neu'} sub="Avg model error" />
       </KpiGrid>
 
-      {/* ── Charts Row ─────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 16, marginTop: 16 }}>
-        <div className="cc">
-          <div className="ct">Incremental Revenue by Event</div>
-          <BarChart
-            labels={barData.labels}
-            datasets={[
-              {
-                label: 'Incr. Revenue',
-                data: barData.data,
-                backgroundColor: barData.colors as unknown as string,
-              },
-            ]}
-          />
+      {/* ── Performance Summary ────────────────────────────────────── */}
+      {view === 'summary' && (
+        <>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 16 }}>
+            <div className="card">
+              <div className="card-title">Lift by Mechanic (Completed Events)</div>
+              <div style={{ padding: '0 12px 12px' }}>
+                <BarChart
+                  labels={mechanicStats.map(m => m.type)}
+                  datasets={[{ label: 'Avg Lift %', data: mechanicStats.map(m => m.avgLift), backgroundColor: 'rgba(0,227,205,.7)' }]}
+                  height={220}
+                />
+              </div>
+            </div>
+            <div className="card">
+              <div className="card-title">Incremental Units by Mechanic</div>
+              <div style={{ padding: '0 12px 12px' }}>
+                <BarChart
+                  labels={mechanicStats.map(m => m.type)}
+                  datasets={[{ label: 'Incremental Units', data: mechanicStats.map(m => m.totalIncr), backgroundColor: 'rgba(99,102,241,.7)' }]}
+                  height={220}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Model accuracy by event */}
+          <div className="card" style={{ marginTop: 16 }}>
+            <div className="card-title">Model vs Actual (Completed Events)</div>
+            <div style={{ padding: '0 12px 12px' }}>
+              <BarChart
+                labels={completed.map(e => e.week)}
+                datasets={[
+                  { label: 'Model Lift %', data: completed.map(e => e.modelLiftPct), backgroundColor: 'rgba(148,163,184,.5)' },
+                  { label: 'Actual Lift %', data: completed.map(e => e.liftPct), backgroundColor: 'rgba(0,227,205,.8)' },
+                ]}
+                height={200}
+              />
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── Event Detail ──────────────────────────────────────────── */}
+      {view === 'events' && (
+        <DataTable>
+          <table>
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th style={{ minWidth: 180 }}>Event</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th className="tr">Baseline</th>
+                <th className="tr">Actual</th>
+                <th className="tr">Lift %</th>
+                <th className="tr">Model %</th>
+                <th className="tr">Delta</th>
+                <th className="tr">Incr. Units</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Completed events first */}
+              {completed.length > 0 && (
+                <tr style={{ background: 'var(--s3)' }}><td colSpan={11} style={{ fontWeight: 700, fontSize: 11, color: 'var(--gr)' }}>COMPLETED ({completed.length})</td></tr>
+              )}
+              {completed.map(e => (
+                <tr key={e.id}>
+                  <td style={{ fontWeight: 600, fontSize: 11 }}>{e.week}</td>
+                  <td className="tn" style={{ fontSize: 11 }}>{e.event}</td>
+                  <td style={{ fontSize: 10 }}>{e.category}</td>
+                  <td><span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 3, background: 'rgba(0,227,205,.1)', color: 'var(--ac)' }}>{e.type}</span></td>
+                  <td className="tr" style={{ color: 'var(--tx3)' }}>{fmt(e.baselineUnits)}</td>
+                  <td className="tr" style={{ fontWeight: 600 }}>{fmt(e.actualUnits)}</td>
+                  <td className="tr" style={{ fontWeight: 700, color: 'var(--gr)' }}>+{e.liftPct}%</td>
+                  <td className="tr" style={{ color: 'var(--tx3)' }}>{e.modelLiftPct}%</td>
+                  <td className="tr" style={{ color: e.deltaPct >= 0 ? 'var(--gr)' : 'var(--rd)', fontWeight: 600 }}>{e.deltaPct >= 0 ? '+' : ''}{e.deltaPct}pp</td>
+                  <td className="tr" style={{ fontWeight: 600 }}>{fmt(e.incrementalUnits)}</td>
+                  <td><span style={{ fontSize: 9, padding: '2px 6px', borderRadius: 3, background: 'rgba(0,207,146,.12)', color: '#00CF92' }}>Completed</span></td>
+                </tr>
+              ))}
+              {/* Upcoming events */}
+              {upcoming.length > 0 && (
+                <tr style={{ background: 'var(--s3)' }}><td colSpan={11} style={{ fontWeight: 700, fontSize: 11, color: 'var(--yw)' }}>UPCOMING ({upcoming.length}) — from Promo Calendar</td></tr>
+              )}
+              {upcoming.slice(0, 20).map(e => (
+                <tr key={e.id} style={{ opacity: 0.7 }}>
+                  <td style={{ fontWeight: 600, fontSize: 11 }}>{e.week}</td>
+                  <td className="tn" style={{ fontSize: 11 }}>{e.event}</td>
+                  <td style={{ fontSize: 10 }}>{e.category}</td>
+                  <td><span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 3, background: 'rgba(255,199,17,.1)', color: '#FFC711' }}>{e.type}</span></td>
+                  <td className="tr" style={{ color: 'var(--tx3)' }}>{fmt(e.baselineUnits)}</td>
+                  <td className="tr" style={{ color: 'var(--tx3)' }}>—</td>
+                  <td className="tr" style={{ color: '#FFC711' }}>+{e.liftPct}%</td>
+                  <td className="tr" style={{ color: 'var(--tx3)' }}>{e.modelLiftPct}%</td>
+                  <td className="tr" style={{ color: 'var(--tx3)' }}>—</td>
+                  <td className="tr" style={{ color: '#FFC711' }}>{fmt(e.incrementalUnits)}</td>
+                  <td><span style={{ fontSize: 9, padding: '2px 6px', borderRadius: 3, background: 'rgba(255,199,17,.12)', color: '#FFC711' }}>Expected</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </DataTable>
+      )}
+
+      {/* ── By Mechanic ───────────────────────────────────────────── */}
+      {view === 'mechanic' && (
+        <DataTable>
+          <table style={{ marginTop: 16 }}>
+            <thead>
+              <tr>
+                <th style={{ minWidth: 120 }}>Mechanic</th>
+                <th className="tr">Events</th>
+                <th className="tr">Avg Lift %</th>
+                <th className="tr">Median Lift</th>
+                <th className="tr">Variability</th>
+                <th className="tr">Total Incr. Units</th>
+                <th>Assessment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mechanicStats.map(m => (
+                <tr key={m.type}>
+                  <td style={{ fontWeight: 700 }}>{m.type}</td>
+                  <td className="tr">{m.count}</td>
+                  <td className="tr" style={{ fontWeight: 700, color: 'var(--gr)' }}>+{m.avgLift}%</td>
+                  <td className="tr">+{m.medianLift}%</td>
+                  <td className="tr" style={{ color: m.variability > 10 ? 'var(--rd)' : m.variability > 5 ? 'var(--yw)' : 'var(--gr)' }}>±{m.variability}pp</td>
+                  <td className="tr" style={{ fontWeight: 600 }}>{fmt(m.totalIncr)}</td>
+                  <td>
+                    <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 4, background: m.avgLift > 30 ? 'rgba(0,207,146,.12)' : m.avgLift > 15 ? 'rgba(99,102,241,.12)' : 'rgba(255,199,17,.12)', color: m.avgLift > 30 ? '#00CF92' : m.avgLift > 15 ? '#818cf8' : '#FFC711' }}>
+                      {m.avgLift > 30 ? 'High Impact' : m.avgLift > 15 ? 'Moderate' : 'Low Impact'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </DataTable>
+      )}
+
+      {/* ── Insights ──────────────────────────────────────────────── */}
+      {view === 'insights' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 16 }}>
+          {insights.map((ins, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', background: `${ins.color}06`, border: `1px solid ${ins.color}20`, borderRadius: 10 }}>
+              <div style={{ fontSize: 28, flexShrink: 0 }}>{ins.icon}</div>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: ins.color }}>{ins.label}</div>
+                <div style={{ fontSize: 12, color: 'var(--tx)', lineHeight: 1.6 }}>{ins.detail}</div>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="cc">
-          <div className="ct">Confirmed vs Proposed</div>
-          <DoughnutChart
-            labels={['Confirmed', 'Proposed']}
-            data={[kpis.confR, kpis.totIncl - kpis.confR]}
-            colors={['rgba(0,207,146,.8)', 'rgba(255,199,17,.6)']}
-          />
-        </div>
-      </div>
-
-      {/* ── Detail Table ───────────────────────────────────── */}
-      <DataTable>
-        <table>
-          <thead>
-            <tr>
-              <th>Week</th>
-              <th>Event</th>
-              <th>Category</th>
-              <th>Type</th>
-              <th>Stores</th>
-              <th className="tr">Lift %</th>
-              <th className="tr">Base Units</th>
-              <th className="tr">Incr. Units</th>
-              <th className="tr">Base Rev</th>
-              <th className="tr">Incr. Rev</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Historical header */}
-            <tr>
-              <td
-                colSpan={11}
-                style={{
-                  background: 'rgba(24,167,255,.06)',
-                  color: 'var(--cy)',
-                  fontSize: 10.5,
-                  fontWeight: 700,
-                  letterSpacing: '.04em',
-                  padding: '5px 12px',
-                  borderBottom: '1px solid rgba(24,167,255,.18)',
-                }}
-              >
-                ↩ HISTORICAL EVENTS — Jan–Feb 2026 · Realized actuals vs stable
-                baseline ({fmt(13751)} units/wk)
-              </td>
-            </tr>
-            {proc.map((p, i) => {
-              const ok =
-                p.status &&
-                (p.status.includes('✓') || p.status.toLowerCase().includes('confirm'));
-              const liftDisplay = p.isHist
-                ? p.actual_lift
-                  ? `${((p.actual_lift - 1) * 100).toFixed(0)}% actual`
-                  : '—'
-                : `${(p.liftPct * 100).toFixed(0)}%`;
-
-              /* Insert separator before first future event */
-              const showSeparator =
-                !p.isHist && (i === 0 || proc[i - 1].isHist);
-
-              return (
-                <Fragment key={`${p.wk}-${i}`}>
-                  {showSeparator && (
-                    <tr>
-                      <td
-                        colSpan={11}
-                        style={{
-                          background: 'rgba(0,227,205,.05)',
-                          color: 'var(--tx3)',
-                          fontSize: 10.5,
-                          fontWeight: 700,
-                          letterSpacing: '.05em',
-                          padding: '6px 12px',
-                          borderTop: '1px solid rgba(0,227,205,.2)',
-                          borderBottom: '1px solid rgba(0,227,205,.2)',
-                        }}
-                      >
-                        ▶ UPCOMING EVENTS
-                      </td>
-                    </tr>
-                  )}
-                  <tr
-                    style={
-                      p.isHist
-                        ? { opacity: 0.82, background: 'rgba(24,167,255,.04)' }
-                        : undefined
-                    }
-                  >
-                    <td>
-                      <span className={`ch ${p.isHist ? 'cy2' : 'cb'}`}>
-                        {p.isHist ? `↩ ${p.date}` : `Wk${p.wk} ${p.date}`}
-                      </span>
-                    </td>
-                    <td className="tn" title={p.event} style={{ maxWidth: 200 }}>
-                      {p.event}
-                    </td>
-                    <td>
-                      <span className="ch cgr">{p.category.substring(0, 12)}</span>
-                    </td>
-                    <td>
-                      <span className="ch cp">{p.type}</span>
-                    </td>
-                    <td style={{ fontSize: 11.5 }}>{p.stores}</td>
-                    <td className="tr up" style={p.isHist ? { color: 'var(--cy)' } : undefined}>
-                      {liftDisplay}
-                    </td>
-                    <td className="tr">{fmt(p.baseUnits)}</td>
-                    <td className="tr up">{fmt(p.inclUnits)}</td>
-                    <td className="tr">{fmtDol(p.baseRev)}</td>
-                    <td className="tr up">{fmtDol(p.inclRev)}</td>
-                    <td>
-                      {p.isHist ? (
-                        <span
-                          className="ch"
-                          style={{
-                            background: 'rgba(24,167,255,.15)',
-                            color: 'var(--cy)',
-                          }}
-                        >
-                          {'📋'} Historical
-                        </span>
-                      ) : ok ? (
-                        <span className="ch cg">✓ Confirmed</span>
-                      ) : (
-                        <span className="ch cy2">⏳ Proposed</span>
-                      )}
-                    </td>
-                  </tr>
-                </Fragment>
-              );
-            })}
-          </tbody>
-        </table>
-      </DataTable>
+      )}
     </PageShell>
   );
 }

@@ -444,6 +444,61 @@ export interface PromoWkCatEntry {
 
 export type PromoWkCats = Record<number, PromoWkCatEntry>;
 
+// ─── Owlery PO Tracker (API) ───────────────────────────────────────────
+
+export interface OwleryPOLine {
+  po_number: string;
+  sku: string;
+  dpci: string;
+  product_name: string;
+  category: string;
+  cases: number;
+  units_per_case: number;
+  total_units: number;
+  delivery_date: string;
+  ship_date: string;
+  status: 'open' | 'planned' | 'quoted' | 'tendered' | 'inProgress' | 'closed' | 'cancelled';
+  carrier: string;
+  load_number: string;
+  destination_dc: string;
+  mode: string;
+}
+
+export interface OwleryPOSkuRollup {
+  sku: string;
+  dpci: string;
+  product_name: string;
+  category: string;
+  units_per_case: number;
+  total_cases: number;
+  total_units: number;
+  po_count: number;
+  deliveries: { date: string; cases: number; po_number: string; status: string }[];
+  next_delivery: string;
+  pct_delivered: number;
+}
+
+export interface OwleryPOData {
+  as_of: string;
+  source: string;
+  lines: OwleryPOLine[];
+  sku_rollup: OwleryPOSkuRollup[];
+  summary: {
+    total_pos: number;
+    total_lines: number;
+    total_cases: number;
+    total_units: number;
+    open_pos: number;
+    pre_shipment: number;
+    pre_shipment_loads: number;
+    in_transit: number;
+    in_transit_loads: number;
+    delivered: number;
+    upcoming_7d: number;
+    upcoming_14d: number;
+  };
+}
+
 // ─── Scenario Types ─────────────────────────────────────────────────────
 
 export type ScenarioKey = 'bear' | 'base' | 'bull';

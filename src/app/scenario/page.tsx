@@ -1,266 +1,261 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import PageShell from '@/components/layout/PageShell';
 import KpiGrid from '@/components/ui/KpiGrid';
 import KpiCard from '@/components/ui/KpiCard';
 import ButtonGroup from '@/components/ui/ButtonGroup';
 import DataTable from '@/components/ui/DataTable';
 import LineChart from '@/components/charts/LineChart';
-import { DATA_DP, DATA_PROMO, DATA_OMNI, FCAST_REV_52WK, PROMO_WKS } from '@/data/index';
-import { useOverrides } from '@/hooks/useOverrides';
+import BarChart from '@/components/charts/BarChart';
+import { DATA_DP, DATA_OMNI, FCAST_REV_52WK } from '@/data/index';
+import { usePromo } from '@/context/PromoContext';
 import { fmt, fmtDol, sf } from '@/lib/formatters';
 import { calcCV } from '@/lib/computations/executive';
+import type { ScenarioKey } from '@/data/types';
 
-type Scenario = 'bear' | 'base' | 'bull';
-const SC_MULT: Record<Scenario, number> = { bear: 0.80, base: 1.00, bull: 1.20 };
-const SC_COL: Record<Scenario, string> = { bear: '#ef4444', base: '#00E3CD', bull: '#00CF92' };
+const VIEW_OPTS = [
+  { value: 'overview', label: 'Overview' },
+  { value: 'sensitivity', label: 'Sensitivity' },
+  { value: 'weekly', label: 'Weekly Plan' },
+  { value: 'sku', label: 'By SKU' },
+];
+
+const MULT: Record<ScenarioKey, number> = { bear: 0.80, base: 1.00, bull: 1.20 };
 
 export default function ScenarioPage() {
-  const [scenario, setScenario] = useState<Scenario>('base');
-  const { velFor } = useOverrides();
-  const m = SC_MULT[scenario];
+  const [scenario, setScenario] = useState<ScenarioKey>('base');
+  const [view, setView] = useState('overview');
+  const [customMult, setCustomMult] = useState(1.0);
+  const [useCustom, setUseCustom] = useState(false);
+  const promo = usePromo();
 
-  /* ── Core computations ──────────────────────────────────────────── */
-  const labels = DATA_DP.fcast_weeks;
-  const baseU = useMemo(() => labels.map((_, i) => DATA_DP.skus.reduce((a, s) => a + sf(s.fcast[i]), 0)), [labels]);
-  const bearU = useMemo(() => baseU.map(v => Math.round(v * 0.80)), [baseU]);
-  const bullU = useMemo(() => baseU.map(v => Math.round(v * 1.20)), [baseU]);
-  const curU = useMemo(() => baseU.map(v => Math.round(v * m)), [baseU, m]);
+  const mult = useCustom ? customMult : MULT[scenario];
+  const fWks = DATA_DP.fcast_weeks;
 
-  const bearR = useMemo(() => FCAST_REV_52WK.map(v => v * 0.80), []);
-  const baseR = FCAST_REV_52WK;
-  const bullR = useMemo(() => FCAST_REV_52WK.map(v => v * 1.20), []);
-  const curR = useMemo(() => FCAST_REV_52WK.map(v => v * m), [m]);
+  /* ── 52-Week Projections with promo lifts ────────────────────────── */
+  const projections = useMemo(() => {
+    const weeklyRev = { bear: [] as number[], base: [] as number[], bull: [] as number[], custom: [] as number[] };
+    const weeklyUnits = { bear: [] as number[], base: [] as number[], bull: [] as number[], custom: [] as number[] };
 
-  const totRB = bearR.reduce((a, b) => a + b, 0);
-  const totR = baseR.reduce((a, b) => a + b, 0);
-  const totRBull = bullR.reduce((a, b) => a + b, 0);
-  const totRC = curR.reduce((a, b) => a + b, 0);
-  const totUB = bearU.reduce((a, b) => a + b, 0);
-  const totU = baseU.reduce((a, b) => a + b, 0);
-  const totUBull = bullU.reduce((a, b) => a + b, 0);
-  const totUC = curU.reduce((a, b) => a + b, 0);
-  const peakR = Math.max(...curR);
-  const peakWk = labels[curR.indexOf(peakR)];
-  const diff = totRC - totR;
-  const diffPct = (m - 1) * 100;
+    for (let w = 0; w < 52; w++) {
+      let baseUnits = 0;
+      DATA_DP.skus.forEach(s => {
+        const lift = promo.getLift(w, s.category);
+        baseUnits += sf(s.fcast[w]) * (1 + lift / 100);
+      });
 
-  /* ── Revenue chart datasets ─────────────────────────────────────── */
-  const n = Math.min(6, DATA_OMNI.weekly_totals.length);
-  const revLabels = [...DATA_OMNI.weeks.slice(-n), ...labels];
-  const revActuals = [...DATA_OMNI.weekly_totals.slice(-n).map((w: { sales: number }) => w.sales), ...Array(52).fill(null)];
-  const pad = n - 1;
-  const lastActual = DATA_OMNI.weekly_totals[DATA_OMNI.weekly_totals.length - 1].sales;
-  const bR = [...Array(pad).fill(null), lastActual, ...bearR];
-  const bsR = [...Array(pad).fill(null), lastActual, ...baseR];
-  const buR = [...Array(pad).fill(null), lastActual, ...bullR];
+      weeklyUnits.bear.push(Math.round(baseUnits * 0.80));
+      weeklyUnits.base.push(Math.round(baseUnits));
+      weeklyUnits.bull.push(Math.round(baseUnits * 1.20));
+      weeklyUnits.custom.push(Math.round(baseUnits * customMult));
+
+      const baseRev = (FCAST_REV_52WK[w] ?? 0);
+      weeklyRev.bear.push(Math.round(baseRev * 0.80));
+      weeklyRev.base.push(Math.round(baseRev));
+      weeklyRev.bull.push(Math.round(baseRev * 1.20));
+      weeklyRev.custom.push(Math.round(baseRev * customMult));
+    }
+
+    return { weeklyRev, weeklyUnits };
+  }, [promo, customMult]);
+
+  const p = projections;
+  const activeUnits = useCustom ? p.weeklyUnits.custom : p.weeklyUnits[scenario];
+  const activeRev = useCustom ? p.weeklyRev.custom : p.weeklyRev[scenario];
+  const totalRev = activeRev.reduce((a, b) => a + b, 0);
+  const totalUnits = activeUnits.reduce((a, b) => a + b, 0);
+  const avgWeeklyRev = Math.round(totalRev / 52);
+  const peakRevIdx = activeRev.indexOf(Math.max(...activeRev));
+  const peakRev = activeRev[peakRevIdx];
+
+  const omniLw = DATA_OMNI.weekly_totals[DATA_OMNI.weekly_totals.length - 1];
+  const omniAnnualized = (omniLw?.sales ?? 0) * 52;
+  const vsOmni = omniAnnualized > 0 ? (totalRev - omniAnnualized) / omniAnnualized : 0;
+
+  const actualWeeks = DATA_OMNI.weekly_totals.slice(-6);
+  const actualLabels = actualWeeks.map(w => w.week.replace(/,?\s*\d{4}/, '').trim());
+
+  /* ── Sensitivity analysis ───────────────────────────────────────── */
+  const sensitivities = useMemo(() => {
+    const scenarios = [0.70, 0.80, 0.90, 1.00, 1.10, 1.20, 1.30];
+    return scenarios.map(m => {
+      const rev = FCAST_REV_52WK.reduce((a, b) => a + b * m, 0);
+      const units = DATA_DP.skus.reduce((a, s) => a + s.fcast.reduce((x, y) => x + y, 0) * m, 0);
+      return { mult: m, label: `×${m.toFixed(2)}`, rev: Math.round(rev), units: Math.round(units) };
+    });
+  }, []);
 
   /* ── SKU breakdown ──────────────────────────────────────────────── */
-  const skuBreakdown = useMemo(() => {
-    const catAgg: Record<string, { bear: number; base: number; bull: number }> = {};
-    const rows = DATA_DP.skus.map(s => {
-      const vel = velFor(s) || s.lw_upspw || 1;
-      const origVel = s.lw_upspw || vel;
-      const scale = origVel > 0 ? vel / origVel : 1;
-      const f13 = s.fcast.slice(0, 13).reduce((a: number, b: number) => a + b, 0);
-      const base = Math.round(f13 * scale);
-      const bear = Math.round(base * 0.80);
-      const bull = Math.round(base * 1.20);
+  const skuRows = useMemo(() => {
+    return DATA_DP.skus.map(s => {
+      const f52 = s.fcast.reduce((a, b) => a + b, 0);
       const cv = calcCV(s.hist);
-      const cat = (s.category || 'Other').replace(' Multiserve', '');
-      if (!catAgg[cat]) catAgg[cat] = { bear: 0, base: 0, bull: 0 };
-      catAgg[cat].bear += bear;
-      catAgg[cat].base += base;
-      catAgg[cat].bull += bull;
-      return { name: (s.name || '').replace(/,\s+[\d.]+\s+oz.*/i, '').substring(0, 36), cat, bear, base, bull, range: bull - bear, cv };
-    });
-    const totB = Object.values(catAgg).reduce((a, v) => a + v.bear, 0);
-    const totBa = Object.values(catAgg).reduce((a, v) => a + v.base, 0);
-    const totBu = Object.values(catAgg).reduce((a, v) => a + v.bull, 0);
-    return { rows, catAgg, totB, totBa, totBu };
-  }, [velFor]);
+      const promoWeeks = fWks.filter((_, i) => promo.isOnPromo(i, s.category)).length;
+      return {
+        name: s.name.replace(/,\s+[\d.]+\s+oz.*/, '').substring(0, 30),
+        category: s.category,
+        bear52: Math.round(f52 * 0.80), base52: Math.round(f52), bull52: Math.round(f52 * 1.20),
+        range52: Math.round(f52 * 0.40), cv: Math.round(cv * 100), promoWeeks,
+      };
+    }).sort((a, b) => b.base52 - a.base52);
+  }, [fWks, promo]);
 
   return (
     <PageShell
       title="Scenario Analysis"
-      subtitle={`Bear/Base/Bull · ${labels[0]} – ${labels[51]}`}
+      subtitle={`52-week what-if modeling · ${useCustom ? `Custom ×${customMult.toFixed(2)}` : `${scenario.charAt(0).toUpperCase() + scenario.slice(1)} ×${mult.toFixed(2)}`} · Promo-adjusted`}
       extra={
-        <ButtonGroup
-          options={[
-            { value: 'bear', label: 'Bear x0.80' },
-            { value: 'base', label: 'Base x1.00' },
-            { value: 'bull', label: 'Bull x1.20' },
-          ]}
-          active={scenario}
-          onChange={v => setScenario(v as Scenario)}
-        />
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <ButtonGroup options={VIEW_OPTS} active={view} onChange={setView} />
+          <ButtonGroup
+            options={[{ value: 'bear', label: 'Bear' }, { value: 'base', label: 'Base' }, { value: 'bull', label: 'Bull' }]}
+            active={useCustom ? '' : scenario}
+            onChange={v => { setScenario(v as ScenarioKey); setUseCustom(false); }}
+          />
+        </div>
       }
     >
-      <div style={{ padding: '0 24px 24px', display: 'flex', flexDirection: 'column', gap: 20 }}>
-
-        {/* ── KPIs ────────────────────────────────────────────────────── */}
-        <KpiGrid columns={4}>
-          <KpiCard icon="&#128176;" label="52-Wk Revenue" style={`--cc:${SC_COL[scenario]}`}
-            value={fmtDol(totRC)}
-            delta={(diffPct >= 0 ? '↑ ' : '↓ ') + fmtDol(Math.abs(diff)) + ' vs base'}
-            deltaClass={diffPct >= 0 ? 'up' : 'dn'}
-            sub={`Bear ${fmtDol(totRB)} · Bull ${fmtDol(totRBull)}`}
-          />
-          <KpiCard icon="&#128230;" label="52-Wk Units" style={`--cc:${SC_COL[scenario]}`}
-            value={fmt(totUC)}
-            delta={`Avg ${fmt(Math.round(totUC / 52))}/wk`}
-            deltaClass={scenario === 'bear' ? 'dn' : scenario === 'bull' ? 'up' : 'neu'}
-            sub={`Bear ${fmt(totUB)} · Bull ${fmt(totUBull)}`}
-          />
-          <KpiCard icon="&#127942;" label="Peak Week Revenue" style="--cc:var(--yw)"
-            value={fmtDol(peakR)} delta={peakWk || ''} deltaClass="neu"
-            sub={`${fmtDol(Math.round(totRC / 52))} avg weekly`}
-          />
-          <KpiCard icon="&#128200;" label="Fcast vs Omni Run Rate" style="--cc:var(--cy)"
-            value={((totRC / 52 - DATA_OMNI.lw_summary.sales) / DATA_OMNI.lw_summary.sales * 100).toFixed(1) + '%'}
-            delta={`${fmtDol(Math.round(totRC / 52))} avg vs ${fmtDol(DATA_OMNI.lw_summary.sales)} LW`}
-            deltaClass={totRC / 52 > DATA_OMNI.lw_summary.sales ? 'up' : 'dn'}
-            sub="52-wk forward avg vs last actual"
-          />
-        </KpiGrid>
-
-        {/* ── 26-Week Revenue Chart ───────────────────────────────────── */}
-        <div className="cc">
-          <div className="ct">52-Week Revenue Forecast — Bear / Base / Bull</div>
-          <div style={{ padding: '0 12px 12px' }}>
-            <LineChart
-              labels={revLabels}
-              datasets={[
-                { label: 'Actuals', data: revActuals as number[], borderColor: '#00E3CD', backgroundColor: 'rgba(0,227,205,.07)', fill: true },
-                { label: 'Bear', data: bR as number[], borderColor: '#ef4444', borderDash: [4, 3] },
-                { label: 'Base', data: bsR as number[], borderColor: '#00CF92' },
-                { label: 'Bull', data: buR as number[], borderColor: '#DC7BFF', borderDash: [4, 3] },
-              ]}
-              height={250}
-            />
-          </div>
-        </div>
-
-        {/* ── Weekly Units Band Chart ─────────────────────────────────── */}
-        <div className="cc">
-          <div className="ct">Weekly Units — Confidence Bands</div>
-          <div style={{ padding: '0 12px 12px' }}>
-            <LineChart
-              labels={labels}
-              datasets={[
-                { label: 'Bull +20%', data: bullU, borderColor: 'rgba(167,139,250,.5)', backgroundColor: 'rgba(167,139,250,.08)', fill: true, borderDash: [3, 3] },
-                { label: 'Base', data: baseU, borderColor: '#00E3CD', backgroundColor: 'rgba(0,227,205,.1)' },
-                { label: 'Bear -20%', data: bearU, borderColor: 'rgba(239,68,68,.5)', borderDash: [3, 3] },
-              ]}
-              height={200}
-            />
-          </div>
-        </div>
-
-        {/* ── Weekly Comparison Table ─────────────────────────────────── */}
-        <div className="cc">
-          <div className="ct">Week-by-Week Comparison</div>
-          <DataTable>
-            <table className="dt">
-              <thead>
-                <tr>
-                  <th>Week</th>
-                  <th className="tr">Bear Rev</th><th className="tr">Base Rev</th><th className="tr">Bull Rev</th>
-                  <th className="tr">Bear Units</th><th className="tr">Base Units</th><th className="tr">Bull Units</th>
-                  <th>Promos</th>
-                </tr>
-              </thead>
-              <tbody>
-                {labels.map((w, i) => {
-                  const isP = PROMO_WKS.has(i + 1);
-                  const evs = DATA_PROMO.filter(p => p.wk === i + 1).map(p => (p.event || '').substring(0, 28)).join(', ');
-                  return (
-                    <tr key={w} style={isP ? { background: 'rgba(245,158,11,.05)' } : undefined}>
-                      <td style={{ fontWeight: isP ? 700 : 400, color: isP ? 'var(--yw)' : 'var(--tx)' }}>{w}</td>
-                      <td className="tr dn">{fmtDol(bearR[i])}</td>
-                      <td className="tr" style={{ color: 'var(--ac2)' }}>{fmtDol(baseR[i])}</td>
-                      <td className="tr up">{fmtDol(bullR[i])}</td>
-                      <td className="tr dn">{fmt(bearU[i])}</td>
-                      <td className="tr" style={{ color: 'var(--ac2)' }}>{fmt(baseU[i])}</td>
-                      <td className="tr up">{fmt(bullU[i])}</td>
-                      <td style={{ fontSize: 11, color: 'var(--yw)' }}>{evs || '—'}</td>
-                    </tr>
-                  );
-                })}
-                <tr style={{ background: 'var(--s3)', fontWeight: 700, borderTop: '2px solid var(--bd)' }}>
-                  <td>TOTAL 52WK</td>
-                  <td className="tr dn">{fmtDol(totRB)}</td>
-                  <td className="tr" style={{ color: 'var(--ac2)' }}>{fmtDol(totR)}</td>
-                  <td className="tr up">{fmtDol(totRBull)}</td>
-                  <td className="tr dn">{fmt(totUB)}</td>
-                  <td className="tr" style={{ color: 'var(--ac2)' }}>{fmt(totU)}</td>
-                  <td className="tr up">{fmt(totUBull)}</td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </DataTable>
-        </div>
-
-        {/* ── SKU Breakdown ───────────────────────────────────────────── */}
-        <div className="cc">
-          <div className="ct">SKU-Level Breakdown — 13-Week Units (Bear · Base · Bull)</div>
-          <DataTable>
-            <table className="dt">
-              <thead>
-                <tr>
-                  <th style={{ textAlign: 'left', minWidth: 180 }}>SKU</th>
-                  <th style={{ textAlign: 'left' }}>Category</th>
-                  <th className="tr" style={{ color: '#ef4444' }}>Bear x0.80</th>
-                  <th className="tr" style={{ color: 'var(--ac2)' }}>Base x1.00</th>
-                  <th className="tr" style={{ color: 'var(--gr)' }}>Bull x1.20</th>
-                  <th className="tr">Range</th>
-                  <th className="tr" style={{ color: 'var(--tx3)' }}>Volatility</th>
-                </tr>
-              </thead>
-              <tbody>
-                {skuBreakdown.rows.map((r, i) => {
-                  const volCol = r.cv > 0.30 ? '#FF8766' : r.cv > 0.18 ? '#FFC711' : '#00F9B8';
-                  return (
-                    <tr key={i}>
-                      <td style={{ fontWeight: 500, maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.name}</td>
-                      <td style={{ fontSize: 10.5, color: 'var(--tx3)' }}>{r.cat}</td>
-                      <td className="tr" style={{ color: '#ef4444' }}>{fmt(r.bear)}</td>
-                      <td className="tr" style={{ color: 'var(--ac2)' }}>{fmt(r.base)}</td>
-                      <td className="tr" style={{ color: 'var(--gr)' }}>{fmt(r.bull)}</td>
-                      <td className="tr">{fmt(r.range)}</td>
-                      <td className="tr" style={{ color: volCol }}>{(r.cv * 100).toFixed(0)}%</td>
-                    </tr>
-                  );
-                })}
-                <tr><td colSpan={7} style={{ padding: 0, height: 4 }}></td></tr>
-                {Object.entries(skuBreakdown.catAgg).map(([cat, v]) => (
-                  <tr key={cat} style={{ background: 'var(--s2)', fontWeight: 600 }}>
-                    <td colSpan={2} style={{ fontSize: 12 }}>{cat} Subtotal</td>
-                    <td className="tr" style={{ color: '#ef4444' }}>{fmt(v.bear)}</td>
-                    <td className="tr" style={{ color: 'var(--ac2)' }}>{fmt(v.base)}</td>
-                    <td className="tr" style={{ color: 'var(--gr)' }}>{fmt(v.bull)}</td>
-                    <td className="tr">{fmt(v.bull - v.bear)}</td>
-                    <td className="tr" style={{ color: 'var(--tx3)' }}>{'—'}</td>
-                  </tr>
-                ))}
-                <tr style={{ background: 'var(--s3)', fontWeight: 800, borderTop: '2px solid var(--bd)' }}>
-                  <td colSpan={2} style={{ fontSize: 13 }}>GRAND TOTAL (13 Weeks)</td>
-                  <td className="tr" style={{ fontSize: 14, color: '#ef4444' }}>{fmt(skuBreakdown.totB)}</td>
-                  <td className="tr" style={{ fontSize: 14, color: 'var(--ac2)' }}>{fmt(skuBreakdown.totBa)}</td>
-                  <td className="tr" style={{ fontSize: 14, color: 'var(--gr)' }}>{fmt(skuBreakdown.totBu)}</td>
-                  <td className="tr" style={{ fontSize: 14 }}>{fmt(skuBreakdown.totBu - skuBreakdown.totB)}</td>
-                  <td className="tr" style={{ color: 'var(--tx3)' }}>{'—'}</td>
-                </tr>
-              </tbody>
-            </table>
-          </DataTable>
-          <div style={{ margin: '10px 12px', fontSize: 11, color: 'var(--tx3)', lineHeight: 1.8 }}>
-            <b>Methodology:</b> Bear/Base/Bull = base velocity x &#123;0.80, 1.00, 1.20&#125; · Base uses current UPSPW overrides from Assumptions page · Volatility = CV from 13-week Omni history · CV &gt;30% = high risk (red) · 18-30% = moderate (yellow) · &lt;18% = stable (green)
-          </div>
-        </div>
+      {/* ── Custom Scenario Slider ──────────────────────────────────── */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 16px', background: 'var(--s2)', borderRadius: 8, marginBottom: 16, fontSize: 12 }}>
+        <span style={{ fontWeight: 700, color: 'var(--tx3)' }}>Custom:</span>
+        <input type="range" min="0.5" max="1.5" step="0.01" value={customMult} onChange={e => { setCustomMult(parseFloat(e.target.value)); setUseCustom(true); }} style={{ flex: 1, accentColor: 'var(--ac)' }} />
+        <span style={{ fontWeight: 800, color: useCustom ? 'var(--ac)' : 'var(--tx3)', minWidth: 50 }}>×{customMult.toFixed(2)}</span>
+        {useCustom && <button onClick={() => setUseCustom(false)} style={{ background: 'var(--s3)', border: '1px solid var(--bd)', borderRadius: 4, padding: '2px 8px', color: 'var(--tx)', fontSize: 10, cursor: 'pointer' }}>Reset</button>}
       </div>
+
+      <KpiGrid columns={4}>
+        <KpiCard icon="💰" label="52-Wk Revenue" style={`--cc:${mult >= 1 ? 'var(--gr)' : 'var(--rd)'}`} value={`$${(totalRev / 1_000_000).toFixed(1)}M`} delta={`×${mult.toFixed(2)} scenario`} deltaClass={mult >= 1 ? 'up' : 'dn'} sub={`Avg $${fmt(avgWeeklyRev)}/wk`} />
+        <KpiCard icon="📦" label="52-Wk Units" style="--cc:var(--cy)" value={`${(totalUnits / 1_000_000).toFixed(2)}M`} delta={`${fmt(Math.round(totalUnits / 52))}/wk`} deltaClass="neu" sub={`${DATA_DP.skus.length} SKUs`} />
+        <KpiCard icon="📈" label="Peak Week" style="--cc:var(--gr)" value={`$${fmt(peakRev)}`} delta={fWks[peakRevIdx] || ''} deltaClass="up" sub={`${Math.round(peakRev / avgWeeklyRev * 100)}% of avg`} />
+        <KpiCard icon="🔮" label="vs Omni Run Rate" style={`--cc:${vsOmni >= 0 ? 'var(--gr)' : 'var(--rd)'}`} value={`${vsOmni >= 0 ? '+' : ''}${(vsOmni * 100).toFixed(1)}%`} delta={`Omni: $${(omniAnnualized / 1_000_000).toFixed(1)}M ann.`} deltaClass={vsOmni >= 0 ? 'up' : 'dn'} sub="" />
+      </KpiGrid>
+
+      {view === 'overview' && (
+        <>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 16 }}>
+            <div className="card">
+              <div className="card-title">52-Week Revenue Forecast</div>
+              <div style={{ padding: '0 12px 12px' }}>
+                <LineChart labels={[...actualLabels, ...fWks]} datasets={[
+                  { label: 'Actuals', data: [...actualWeeks.map(w => Math.round(w.sales)), ...new Array(52).fill(null)], borderColor: '#00E3CD', backgroundColor: 'rgba(0,227,205,.15)', fill: true },
+                  { label: 'Bear', data: [...new Array(actualWeeks.length).fill(null), ...p.weeklyRev.bear], borderColor: '#ef4444', borderDash: [4, 3], backgroundColor: 'transparent' },
+                  { label: 'Base', data: [...new Array(actualWeeks.length).fill(null), ...p.weeklyRev.base], borderColor: '#00CF92', backgroundColor: 'rgba(0,207,146,.05)', fill: true },
+                  { label: 'Bull', data: [...new Array(actualWeeks.length).fill(null), ...p.weeklyRev.bull], borderColor: '#DC7BFF', borderDash: [4, 3], backgroundColor: 'transparent' },
+                ]} height={280} />
+              </div>
+            </div>
+            <div className="card">
+              <div className="card-title">Unit Confidence Bands</div>
+              <div style={{ padding: '0 12px 12px' }}>
+                <LineChart labels={fWks} datasets={[
+                  { label: 'Bear', data: p.weeklyUnits.bear, borderColor: 'rgba(239,68,68,.5)', borderDash: [4, 3], backgroundColor: 'transparent' },
+                  { label: 'Base', data: p.weeklyUnits.base, borderColor: '#00E3CD', backgroundColor: 'rgba(0,227,205,.08)', fill: true },
+                  { label: 'Bull', data: p.weeklyUnits.bull, borderColor: 'rgba(220,123,255,.5)', borderDash: [4, 3], backgroundColor: 'transparent' },
+                ]} height={280} />
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 16 }}>
+            {(['bear', 'base', 'bull'] as const).map(s => {
+              const rev = p.weeklyRev[s].reduce((a, b) => a + b, 0);
+              const units = p.weeklyUnits[s].reduce((a, b) => a + b, 0);
+              const col = s === 'bear' ? '#ef4444' : s === 'bull' ? '#DC7BFF' : '#00CF92';
+              return (
+                <div key={s} style={{ background: `${col}08`, border: `1px solid ${col}20`, borderRadius: 10, padding: '14px 16px', cursor: 'pointer' }} onClick={() => { setScenario(s); setUseCustom(false); }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: col, textTransform: 'uppercase' }}>{s} (×{MULT[s].toFixed(2)})</div>
+                  <div style={{ fontSize: 22, fontWeight: 900, marginTop: 4 }}>${(rev / 1_000_000).toFixed(1)}M</div>
+                  <div style={{ fontSize: 11, color: 'var(--tx2)' }}>{(units / 1_000_000).toFixed(2)}M units · ${fmt(Math.round(rev / 52))}/wk</div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {view === 'sensitivity' && (
+        <>
+          <div className="card" style={{ marginTop: 16 }}>
+            <div className="card-title">Revenue Sensitivity (×0.70 → ×1.30)</div>
+            <div style={{ padding: '0 12px 12px' }}>
+              <BarChart labels={sensitivities.map(s => s.label)} datasets={[{ label: '52-Wk Revenue ($M)', data: sensitivities.map(s => Math.round(s.rev / 1_000_000 * 10) / 10), backgroundColor: sensitivities.map(s => s.mult < 0.9 ? 'rgba(239,68,68,.7)' : s.mult > 1.1 ? 'rgba(220,123,255,.7)' : 'rgba(0,207,146,.7)') }]} height={280} />
+            </div>
+          </div>
+          <DataTable>
+            <table style={{ marginTop: 16 }}>
+              <thead><tr><th>Scenario</th><th className="tr">52-Wk Revenue</th><th className="tr">52-Wk Units</th><th className="tr">$/Wk</th><th className="tr">vs Base</th></tr></thead>
+              <tbody>
+                {sensitivities.map(s => {
+                  const baseRev = sensitivities.find(x => x.mult === 1.0)?.rev ?? s.rev;
+                  const vsBase = baseRev > 0 ? (s.rev - baseRev) / baseRev : 0;
+                  return (
+                    <tr key={s.mult} style={{ background: s.mult === 1.0 ? 'rgba(0,207,146,.06)' : undefined, cursor: 'pointer' }} onClick={() => { setCustomMult(s.mult); setUseCustom(true); }}>
+                      <td style={{ fontWeight: s.mult === 1.0 ? 700 : 400 }}>{s.label}</td>
+                      <td className="tr" style={{ fontWeight: 600 }}>${(s.rev / 1_000_000).toFixed(1)}M</td>
+                      <td className="tr">{(s.units / 1_000_000).toFixed(2)}M</td>
+                      <td className="tr">${fmt(Math.round(s.rev / 52))}</td>
+                      <td className="tr" style={{ color: vsBase >= 0 ? 'var(--gr)' : 'var(--rd)', fontWeight: 600 }}>{vsBase >= 0 ? '+' : ''}{(vsBase * 100).toFixed(0)}%</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </DataTable>
+        </>
+      )}
+
+      {view === 'weekly' && (
+        <DataTable>
+          <table style={{ marginTop: 8 }}>
+            <thead><tr><th>Week</th><th className="tr">Bear Rev</th><th className="tr">Base Rev</th><th className="tr">Bull Rev</th><th className="tr">Base Units</th><th>Promos</th></tr></thead>
+            <tbody>
+              {fWks.map((w, i) => {
+                const hasPromo = DATA_DP.skus.some(s => promo.isOnPromo(i, s.category));
+                return (
+                  <tr key={i} style={{ background: hasPromo ? 'rgba(245,158,11,.06)' : undefined }}>
+                    <td style={{ fontWeight: 600, fontSize: 11 }}>{w}</td>
+                    <td className="tr" style={{ color: 'rgba(239,68,68,.7)' }}>{fmtDol(p.weeklyRev.bear[i])}</td>
+                    <td className="tr" style={{ fontWeight: 600 }}>{fmtDol(p.weeklyRev.base[i])}</td>
+                    <td className="tr" style={{ color: 'rgba(220,123,255,.7)' }}>{fmtDol(p.weeklyRev.bull[i])}</td>
+                    <td className="tr">{fmt(p.weeklyUnits.base[i])}</td>
+                    <td style={{ fontSize: 10, color: hasPromo ? 'var(--yw)' : 'var(--tx3)' }}>{hasPromo ? '🟡 Promo' : '—'}</td>
+                  </tr>
+                );
+              })}
+              <tr style={{ background: 'var(--s3)', fontWeight: 700 }}>
+                <td>TOTAL</td>
+                <td className="tr">${(p.weeklyRev.bear.reduce((a, b) => a + b, 0) / 1e6).toFixed(1)}M</td>
+                <td className="tr">${(p.weeklyRev.base.reduce((a, b) => a + b, 0) / 1e6).toFixed(1)}M</td>
+                <td className="tr">${(p.weeklyRev.bull.reduce((a, b) => a + b, 0) / 1e6).toFixed(1)}M</td>
+                <td className="tr">{(p.weeklyUnits.base.reduce((a, b) => a + b, 0) / 1e6).toFixed(2)}M</td>
+                <td />
+              </tr>
+            </tbody>
+          </table>
+        </DataTable>
+      )}
+
+      {view === 'sku' && (
+        <DataTable>
+          <table style={{ marginTop: 8 }}>
+            <thead><tr><th style={{ minWidth: 180 }}>SKU</th><th>Cat</th><th className="tr">Bear</th><th className="tr">Base</th><th className="tr">Bull</th><th className="tr">Range</th><th className="tr">CV%</th><th className="tr">Promo Wks</th></tr></thead>
+            <tbody>
+              {skuRows.map((s, i) => (
+                <tr key={i}>
+                  <td className="tn"><b>{s.name}</b></td>
+                  <td style={{ fontSize: 10 }}>{s.category}</td>
+                  <td className="tr" style={{ color: 'rgba(239,68,68,.7)' }}>{fmt(s.bear52)}</td>
+                  <td className="tr" style={{ fontWeight: 600 }}>{fmt(s.base52)}</td>
+                  <td className="tr" style={{ color: 'rgba(220,123,255,.7)' }}>{fmt(s.bull52)}</td>
+                  <td className="tr" style={{ color: 'var(--tx3)' }}>{fmt(s.range52)}</td>
+                  <td className="tr" style={{ color: s.cv > 30 ? 'var(--rd)' : s.cv > 18 ? 'var(--yw)' : 'var(--gr)', fontWeight: 600 }}>{s.cv}%</td>
+                  <td className="tr" style={{ color: s.promoWeeks > 0 ? 'var(--yw)' : 'var(--tx3)' }}>{s.promoWeeks}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </DataTable>
+      )}
     </PageShell>
   );
 }

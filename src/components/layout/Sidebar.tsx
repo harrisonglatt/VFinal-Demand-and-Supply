@@ -27,15 +27,15 @@ const NAV: NavSection[] = [
       { key: 'overview', href: '/overview', icon: '📊', label: 'Overview' },
       { key: 'demand', href: '/demand-plan', icon: '📈', label: 'Demand Plan' },
       { key: 'daily', href: '/daily', icon: '📅', label: 'Daily Performance', badge: 'Live', badgeClass: 'g' },
-      { key: 'avf', href: '/actuals-vs-forecast', icon: '🎯', label: 'Actuals vs Forecast', badge: '-8%', badgeClass: 'y' },
+      { key: 'avf', href: '/actuals-vs-forecast', icon: '🎯', label: 'ST vs Forecast', badge: 'MAPE', badgeClass: 'y' },
     ],
   },
   {
     heading: 'Inventory',
     items: [
       { key: 'inventory', href: '/inventory', icon: '📦', label: 'Inventory Intel', badge: '12 OOS' },
-      { key: 'shipment', href: '/shipment', icon: '🚚', label: 'Shipment Plan' },
-      { key: 'pofc', href: '/po-forecast', icon: '📦', label: 'PO Forecast', badge: '13wk', badgeClass: 'b' },
+      { key: 'shipment', href: '/shipment', icon: '🚚', label: 'Shipment Plan', badge: '52wk', badgeClass: 'b' },
+      { key: 'potracker', href: '/po-tracker', icon: '🦉', label: 'PO Tracker', badge: 'Owlery', badgeClass: 'g' },
     ],
   },
   {
@@ -50,7 +50,7 @@ const NAV: NavSection[] = [
     heading: 'Tools',
     items: [
       { key: 'scenario', href: '/scenario', icon: '🔮', label: 'Scenario Analysis' },
-      { key: 'endcap', href: '/endcap', icon: '📐', label: 'Endcap Lift' },
+      { key: 'endcap', href: '/endcap', icon: '📐', label: 'Promo Lift' },
       { key: 'assumptions', href: '/assumptions', icon: '⚙️', label: 'Assumptions' },
     ],
   },
@@ -58,8 +58,7 @@ const NAV: NavSection[] = [
   {
     items: [
       { key: 'fcastver', href: '/forecast-versions', icon: '🔒', label: 'Forecast Versions' },
-      { key: 'backtest', href: '/backtest', icon: '🔬', label: 'Backtest Lab' },
-      { key: 'modellearn', href: '/model-learning', icon: '🧠', label: 'Model Learning' },
+      { key: 'backtest', href: '/backtest', icon: '🧠', label: 'Model Learning Lab' },
     ],
   },
   { separator: true },

@@ -47,6 +47,9 @@ export default function OverviewPage() {
   const revWoW = (lw.sales - (lwPrev as any).sales) / ((lwPrev as any).sales || 1);
   const unitsWoW = (lw.units - (lwPrev as any).units) / ((lwPrev as any).units || 1);
 
+  /* ── Dynamic LW date label ──────────────────────────────────── */
+  const lwDateLabel = DATA_OMNI.lw_date ? DATA_OMNI.lw_date.replace(/,?\s*\d{4}/, '') : 'LW';
+
   /* ── AVF aggregation ───────────────────────────────────────────── */
   const totalA = useMemo(() => DATA_AVF.reduce((a, s) => a + sf(s.lw_units), 0), []);
   const totalF = useMemo(() => DATA_AVF.reduce((a, s) => a + sf(s.fcast_units), 0), []);
@@ -106,14 +109,14 @@ export default function OverviewPage() {
       {/* ── KPIs ─────────────────────────────────────────────────── */}
       <KpiGrid columns={4}>
         <KpiCard
-          icon="💰" label="LW Revenue (Mar 16)" style="--cc:var(--ac)"
+          icon="💰" label={`LW Revenue (${lwDateLabel})`} style="--cc:var(--ac)"
           value={fmtDol(lw.sales)}
           delta={`${revWoW >= 0 ? '↑' : '↓'} ${Math.abs(revWoW * 100).toFixed(1)}% WoW`}
           deltaClass={revWoW >= 0 ? 'up' : 'dn'}
           sub={`${fmtDol(cw.sales)} CW to date (2 days)`}
         />
         <KpiCard
-          icon="📦" label={unit === 'cases' ? 'LW Cases (Mar 16)' : 'LW Units (Mar 16)'}
+          icon="📦" label={unit === 'cases' ? `LW Cases (${lwDateLabel})` : `LW Units (${lwDateLabel})`}
           style="--cc:var(--gr)"
           value={unit === 'cases' ? fmt(Math.round(lw.units / (BLENDED_UPC || 14))) : fmt(lw.units)}
           delta={`${unitsWoW >= 0 ? '↑' : '↓'} ${Math.abs(unitsWoW * 100).toFixed(1)}% WoW`}
@@ -121,7 +124,7 @@ export default function OverviewPage() {
           sub={`${unit === 'cases' ? fmt(Math.round(cw.units / (BLENDED_UPC || 14))) + ' cases' : fmt(cw.units) + ' units'} CW to date`}
         />
         <KpiCard
-          icon="🎯" label="LW vs Locked Fcast (Mar 16)"
+          icon="🎯" label={`LW vs Locked Fcast (${lwDateLabel})`}
           style={`--cc:${avfP < 0 ? 'var(--rd)' : 'var(--gr)'}`}
           value={fmtP(avfP)}
           delta={`${avfP >= 0 ? '↑' : '↓'} ${fmt(totalA - totalF)} units`}
