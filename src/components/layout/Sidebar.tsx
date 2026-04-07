@@ -33,6 +33,7 @@ const NAV: NavSection[] = [
   {
     heading: 'Inventory',
     items: [
+      { key: 'supply', href: '/supply-planning', icon: '🏭', label: 'Supply Planning', badge: 'New', badgeClass: 'g' },
       { key: 'inventory', href: '/inventory', icon: '📦', label: 'Inventory Intel', badge: '12 OOS' },
       { key: 'shipment', href: '/shipment', icon: '🚚', label: 'Shipment Plan', badge: '52wk', badgeClass: 'b' },
       { key: 'potracker', href: '/po-tracker', icon: '🦉', label: 'PO Tracker', badge: 'Owlery', badgeClass: 'g' },
