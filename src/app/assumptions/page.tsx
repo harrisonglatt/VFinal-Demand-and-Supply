@@ -8,7 +8,8 @@ import ButtonGroup from '@/components/ui/ButtonGroup';
 import DataTable from '@/components/ui/DataTable';
 import { DATA_DP } from '@/data/index';
 import { useOverrides } from '@/hooks/useOverrides';
-import { usePromo, computeLift, CASE_CODE_MAP } from '@/context/PromoContext';
+import { usePromo, computeLift } from '@/context/PromoContext';
+import { CASE_CODE_MAP } from '@/lib/owlery/transform';
 import { fmt } from '@/lib/formatters';
 
 const VIEW_OPTS = [

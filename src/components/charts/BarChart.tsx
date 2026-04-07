@@ -13,7 +13,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 interface DatasetDef {
   label: string;
   data: number[];
-  backgroundColor: string;
+  backgroundColor: string | string[];
   borderColor?: string;
   borderWidth?: number;
 }

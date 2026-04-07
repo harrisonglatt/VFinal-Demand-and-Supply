@@ -12,7 +12,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 interface DatasetDef {
   label: string;
-  data: number[];
+  data: (number | null)[];
   borderColor: string;
   backgroundColor?: string;
   borderDash?: number[];
