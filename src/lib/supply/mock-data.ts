@@ -251,6 +251,9 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['Frozen', 'Smoothie'],
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Runs 3 production lines. 5-day run notice required. Frozen lines take priority over Smoothies when capacity is constrained. Q3 capacity limited due to seasonal soft-serve commitments.',
+    contactName: 'Rachel Torres',
+    contactEmail: 'rachel.torres@norcalcold.com',
+    contactPhone: '916-555-0142',
   },
   {
     id: 'cm-02',
@@ -260,6 +263,9 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['Baby', 'Kids', 'Snack'],
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Shared extrusion line across Baby Puffs and Kids Snacks. MOQ of 50 cases enforced strictly — no exceptions. Lead times extend to 5 weeks during Q4 holiday season. Allergen changeovers add 1–2 days.',
+    contactName: 'Mark Jensen',
+    contactEmail: 'mjensen@prairiesnackworks.com',
+    contactPhone: '507-555-0198',
   },
   {
     id: 'cm-03',
@@ -269,6 +275,9 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['YoGo'],
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Refrigerated facility. Weekly shipping windows (Mon/Wed). Smaller batch runs available at a 5% premium per case. Cold chain compliance required — all shipments must use temperature-controlled carriers.',
+    contactName: 'Sarah Kim',
+    contactEmail: 'skim@pacificfreshfoods.com',
+    contactPhone: '503-555-0167',
   },
 ];
 

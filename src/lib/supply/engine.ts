@@ -608,6 +608,9 @@ export interface ContractManufacturer {
   categories: string[];               // category keywords this CM handles
   poApprovalLeadTimeWeeks: number;    // time from PO release to production start
   capacityNotes: string;
+  contactName: string;                // primary supplier contact
+  contactEmail: string;
+  contactPhone?: string;
 }
 
 export interface ManufacturerPlan {
