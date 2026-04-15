@@ -21,6 +21,7 @@ import type {
   POFCData,
   FcastRev52Wk,
   PromoWkCats,
+  SkuSpec,
 } from './types';
 
 import {
@@ -48,6 +49,7 @@ import omni from './json/omni.json';
 import avf from './json/avf.json';
 import targetDc from './json/target-dc.json';
 import pofc from './json/pofc.json';
+import skuSpecs from './json/sku-specs.json';
 
 // ─── Raw data exports ─────────────────────────────────────────────────
 
@@ -70,6 +72,7 @@ export const DATA_OMNI = omni as unknown as OmniData;
 export const DATA_AVF = avf as unknown as AVFSku[];
 export const DATA_TARGET_DC = targetDc as unknown as TargetDCData;
 export const DATA_POFC = pofc as unknown as POFCData;
+export const DATA_SKU_SPECS = skuSpecs as unknown as SkuSpec[];
 
 // ─── Forecast revenue 52-week array ───────────────────────────────────
 
