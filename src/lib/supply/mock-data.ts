@@ -3,11 +3,12 @@
 // Replace these functions with real WMS/ERP API calls when available.
 // All inventory positions, lead times, and lot codes are mock until wired to reality.
 
-import { DATA_DP, DATA_INV } from '@/data/index';
+import { DATA_DP, DATA_INV, DATA_SKU_SPECS } from '@/data/index';
 import { CASE_CODE_MAP } from '@/lib/owlery/transform';
 import { sf } from '@/lib/formatters';
 import { computeATS } from './engine';
 import type { SupplySku, LotRecord, ContractManufacturer } from './engine';
+import type { SkuSpec } from '@/data/types';
 
 // ─── Lead time defaults by category (weeks) ──────────────────────────────────
 // Assumption: frozen/smoothies have longer production cycles due to co-man capacity.
@@ -51,6 +52,31 @@ function getShelfLife(category: string): { shelfLifeWeeks: number; stopShipBuffe
   return { shelfLifeWeeks: 52, stopShipBuffer: 4 };
 }
 
+// ─── SKU Spec lookup ─────────────────────────────────────────────────────────
+// Build a map from item number (case code) to spec data for fast lookups.
+
+function buildSpecMap(): Map<string, SkuSpec> {
+  const map = new Map<string, SkuSpec>();
+  for (const spec of DATA_SKU_SPECS) {
+    map.set(spec.itemNumber, spec);
+  }
+  return map;
+}
+
+/** Read user-entered spec overrides from localStorage (client-side only). */
+function getSpecOverrides(): Record<string, {
+  coPacker?: string; storageTransit?: string; unitsPerCase?: number;
+  shelfLifeDays?: number; stopShipDays?: number; moqCases?: number;
+  unitWeightLbs?: number; caseWeightLbs?: number; casesPerPallet?: number;
+  prodLead?: number; transitLead?: number;
+}> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem('sku-spec-overrides') || localStorage.getItem('sku-lead-times');
+    return raw ? JSON.parse(raw) : {};
+  } catch { return {}; }
+}
+
 // ─── Reverse-map dpci → caseCode ─────────────────────────────────────────────
 function buildDpciToCaseCode(): Record<string, string> {
   const map: Record<string, string> = {};
@@ -77,17 +103,34 @@ function buildDpciToInv(): Record<string, { eoh_units: number; on_order_units: n
 export function buildSupplySkus(): SupplySku[] {
   const dpciToCaseCode = buildDpciToCaseCode();
   const dpciToInv = buildDpciToInv();
+  const specMap = buildSpecMap();
+  const specOverrides = getSpecOverrides();
 
   return DATA_DP.skus.map(s => {
     const caseCode = dpciToCaseCode[s.dpci] || '';
     const caseInfo = caseCode ? CASE_CODE_MAP[caseCode] : undefined;
     const invData = dpciToInv[s.dpci];
+    const spec = caseCode ? specMap.get(caseCode) : undefined;
+    const ov = caseCode ? specOverrides[caseCode] : undefined;
 
     const lt = getLeadTimes(s.category);
     const woc = getWOCTargets(s.category);
     const shelf = getShelfLife(s.category);
 
-    const unitsPerCase = caseInfo?.upc ?? (sf(s.ucase) || 12);
+    // Priority: user override > spec JSON > category default
+    const unitsPerCase = ov?.unitsPerCase ?? spec?.unitsPerCase ?? caseInfo?.upc ?? (sf(s.ucase) || 12);
+    const shelfLifeDays = ov?.shelfLifeDays ?? spec?.shelfLifeDays ?? (shelf.shelfLifeWeeks * 7);
+    const shelfLifeWeeks = Math.round(shelfLifeDays / 7);
+    const stopShipDays = ov?.stopShipDays ?? spec?.stopShipDays ?? (shelf.stopShipBuffer * 7);
+    const stopShipBuffer = Math.round(stopShipDays / 7);
+    const coPacker = ov?.coPacker ?? spec?.coPacker ?? '';
+    const storageTransit = ov?.storageTransit ?? spec?.storageTransit ?? (s.category.toLowerCase().includes('frozen') ? 'Frozen' : s.category.toLowerCase().includes('smooth') || s.category.toLowerCase().includes('yogo') ? 'Refrigerated' : 'Ambient');
+
+    // Lead times: user overrides > spec data > category defaults
+    const prodLead = ov?.prodLead ?? (spec?.productionLeadTimeWeeks ?? lt.prod);
+    const transitLead = ov?.transitLead ?? (spec?.transitLeadTimeWeeks ?? lt.transit);
+    const receiptLag = lt.receipt;
+
     const avgWeeklyDemand = s.fcast.slice(0, 8).reduce((a, b) => a + sf(b), 0) / 8;
 
     // Inventory — real if in inv.json, otherwise estimated from demand plan
@@ -97,17 +140,23 @@ export function buildSupplySkus(): SupplySku[] {
 
     const inTransitUnits = invData?.on_order_units
       ? invData.on_order_units
-      : Math.round(avgWeeklyDemand * lt.transit);
+      : Math.round(avgWeeklyDemand * transitLead);
 
     const onOrderUnits = 0; // Assumption: no pre-confirmed POs beyond what's in transit
 
-    // At-risk / expiry fractions — derived from shelf life category
-    // Assumption: shorter-shelf products have higher at-risk fraction due to lot age
-    const atRiskFraction = shelf.shelfLifeWeeks <= 26 ? 0.12 : 0.05;
+    // At-risk / expiry fractions — derived from shelf life
+    const atRiskFraction = shelfLifeWeeks <= 26 ? 0.12 : 0.05;
     const atRiskUnits = Math.round(onHandUnits * atRiskFraction);
     const expiringSoonUnits = Math.round(onHandUnits * atRiskFraction * 0.5);
     const stopShipRestrictedUnits = Math.round(onHandUnits * atRiskFraction * 0.25);
-    const allocatedUnits = Math.round(onHandUnits * 0.04); // 4% allocated to confirmed retail replenishment
+    const allocatedUnits = Math.round(onHandUnits * 0.04);
+
+    // MOQ: user override > spec data > estimate
+    const moqCases = ov?.moqCases
+      ? ov.moqCases
+      : spec?.moqCases
+        ? Math.ceil(spec.moqCases / unitsPerCase)   // spec MOQ is in units, convert to cases
+        : Math.max(50, Math.ceil(avgWeeklyDemand / unitsPerCase) * 2);
 
     const mockSku: Omit<SupplySku, 'availableToSellUnits'> = {
       dpci: s.dpci,
@@ -115,6 +164,8 @@ export function buildSupplySkus(): SupplySku[] {
       name: (s.name || '').replace(/,\s+[\d.]+\s+oz.*/i, '').substring(0, 42),
       category: s.category,
       unitsPerCase,
+      coPacker,
+      storageTransit,
       onHandUnits,
       inTransitUnits,
       onOrderUnits,
@@ -122,17 +173,17 @@ export function buildSupplySkus(): SupplySku[] {
       atRiskUnits,
       expiringSoonUnits,
       stopShipRestrictedUnits,
-      productionLeadTimeWeeks: lt.prod,
-      transitLeadTimeWeeks: lt.transit,
-      receiptLagWeeks: lt.receipt,
-      totalLeadTimeWeeks: lt.prod + lt.transit + lt.receipt,
+      productionLeadTimeWeeks: prodLead,
+      transitLeadTimeWeeks: transitLead,
+      receiptLagWeeks: receiptLag,
+      totalLeadTimeWeeks: prodLead + transitLead + receiptLag,
       targetWOC: woc.target,
       minWOC: woc.min,
       safetyStockWeeks: woc.safety,
-      moqCases: Math.max(50, Math.ceil(avgWeeklyDemand / unitsPerCase) * 2),
+      moqCases,
       batchSizeCases: Math.max(25, Math.ceil(avgWeeklyDemand / unitsPerCase)),
-      shelfLifeWeeks: shelf.shelfLifeWeeks,
-      stopShipWeeksBeforeExpiry: shelf.stopShipBuffer,
+      shelfLifeWeeks,
+      stopShipWeeksBeforeExpiry: stopShipBuffer,
       casePrice: caseInfo?.casePrice ?? s.price * unitsPerCase,
       unitPrice: caseInfo?.unitPrice ?? s.price,
       msrp: caseInfo?.msrp ?? s.price * 1.45,
@@ -239,45 +290,100 @@ export function buildLots(skus: SupplySku[]): Record<string, LotRecord[]> {
 }
 
 // ─── Contract Manufacturer Registry ──────────────────────────────────────────
-// 3 co-mans covering all Little Spoon × Target categories.
+// Registered co-manufacturers for Little Spoon × Target supply planning.
 // Replace with real partner names and details when ready to operationalize.
 
 const CM_REGISTRY: ContractManufacturer[] = [
   {
-    id: 'cm-01',
-    name: 'NorCal Cold Co.',
-    shortName: 'NorCal',
-    location: 'Sacramento, CA',
-    categories: ['Frozen', 'Smoothie'],
+    id: 'cm-ifi',
+    name: 'IFI/APC',
+    shortName: 'IFI',
+    location: 'National',
+    categories: ['IFI', 'APC'],  // matches coPacker field
     poApprovalLeadTimeWeeks: 1,
-    capacityNotes: 'Runs 3 production lines. 5-day run notice required. Frozen lines take priority over Smoothies when capacity is constrained. Q3 capacity limited due to seasonal soft-serve commitments.',
+    capacityNotes: 'Primary co-packer for all Smoothies and YoGos. Refrigerated facility. Weekly shipping windows (Mon/Wed). MOQ of 50,000 units enforced. Cold chain compliance required for all shipments.',
     contactName: 'Rachel Torres',
     contactEmail: 'rachel.torres@norcalcold.com',
     contactPhone: '916-555-0142',
   },
   {
-    id: 'cm-02',
-    name: 'Prairie Snack Works',
-    shortName: 'Prairie',
-    location: 'Mankato, MN',
-    categories: ['Baby', 'Kids', 'Snack'],
+    id: 'cm-suzannas',
+    name: "Suzanna's",
+    shortName: "Suzanna's",
+    location: 'National',
+    categories: ["Suzanna"],  // matches "Suzanna's"
     poApprovalLeadTimeWeeks: 1,
-    capacityNotes: 'Shared extrusion line across Baby Puffs and Kids Snacks. MOQ of 50 cases enforced strictly — no exceptions. Lead times extend to 5 weeks during Q4 holiday season. Allergen changeovers add 1–2 days.',
+    capacityNotes: 'Produces Chicken Dippers (frozen multi-serve). Single-product line — scheduling is straightforward. Long shelf life (547 days) provides flexibility.',
     contactName: 'Mark Jensen',
     contactEmail: 'mjensen@prairiesnackworks.com',
     contactPhone: '507-555-0198',
   },
   {
-    id: 'cm-03',
-    name: 'Pacific Fresh Foods',
-    shortName: 'Pacific',
-    location: 'Portland, OR',
-    categories: ['YoGo'],
+    id: 'cm-maidrite',
+    name: 'Maid Rite/Truvant',
+    shortName: 'Maid Rite',
+    location: 'National',
+    categories: ['Maid Rite', 'Truvant'],  // matches "Maid Rite/Truvant"
     poApprovalLeadTimeWeeks: 1,
-    capacityNotes: 'Refrigerated facility. Weekly shipping windows (Mon/Wed). Smaller batch runs available at a 5% premium per case. Cold chain compliance required — all shipments must use temperature-controlled carriers.',
+    capacityNotes: 'Produces Chicken Veggie Sliders and Turkey Meatballs (frozen multi-serve). MOQ of 30,000 lbs / 48,000 units. Shared production line between both SKUs — allergen changeovers may add 1-2 days.',
     contactName: 'Sarah Kim',
     contactEmail: 'skim@pacificfreshfoods.com',
     contactPhone: '503-555-0167',
+  },
+  {
+    id: 'cm-aveno',
+    name: 'Aveno',
+    shortName: 'Aveno',
+    location: 'National',
+    categories: ['Aveno'],
+    poApprovalLeadTimeWeeks: 1,
+    capacityNotes: 'Produces Broccoli Bites and Cauliflower Bites (frozen multi-serve). Newer co-packer relationship. Smaller pallet configuration (40 cases/pallet).',
+    contactName: '',
+    contactEmail: '',
+  },
+  {
+    id: 'cm-frankies',
+    name: 'Frankies',
+    shortName: 'Frankies',
+    location: 'National',
+    categories: ['Frankies'],
+    poApprovalLeadTimeWeeks: 1,
+    capacityNotes: 'Produces Baby Puffs (Kale Apple, Banana Pitaya, Blueberry Carrot) and Stellar Puffs (Cheddar, Cinna-Banana). Ambient snacks. MOQ of 67,500 units on puffs. Large-format packaging for Stellar Puffs.',
+    contactName: '',
+    contactEmail: '',
+  },
+  {
+    id: 'cm-fcc',
+    name: 'FCC',
+    shortName: 'FCC',
+    location: 'National',
+    categories: ['FCC'],
+    poApprovalLeadTimeWeeks: 1,
+    capacityNotes: 'Produces all Baked Bars (Chocolate Chip, Blueberry Muffin, Apple Pie). Ambient snacks. MOQ of 20,925 units. 5-count multipack format.',
+    contactName: '',
+    contactEmail: '',
+  },
+  {
+    id: 'cm-cfs',
+    name: 'CFS',
+    shortName: 'CFS',
+    location: 'National',
+    categories: ['CFS'],
+    poApprovalLeadTimeWeeks: 1,
+    capacityNotes: 'Produces Veggie Loops (Mac & Cheese, Pizzalicious). Ambient snacks. MOQ of 6,000 units. Smaller pallet configuration (32 cases/pallet). Double-stackable pallets.',
+    contactName: '',
+    contactEmail: '',
+  },
+  {
+    id: 'cm-vd',
+    name: 'VD/Greenseed',
+    shortName: 'VD',
+    location: 'National',
+    categories: ['VD', 'Greenseed'],
+    poApprovalLeadTimeWeeks: 1,
+    capacityNotes: 'Produces Organic Oatmeal Baby Cereal and Freeze Dried Bites (Strawberry Banana Butternut, Pineapple Blueberry Zucchini). Ambient products. MOQ of 80,000 units on cereal.',
+    contactName: '',
+    contactEmail: '',
   },
 ];
 

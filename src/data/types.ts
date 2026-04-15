@@ -348,6 +348,34 @@ export interface POFCData {
   skus: POFCSku[];
 }
 
+// ─── SKU Specs (sku-specs.json) ─────────────────────────────────────────
+
+export interface SkuSpec {
+  itemNumber: string;           // fulfillment/retail SKU code (LS-XZR01, LS-WMR01)
+  productionSku: string;        // production SKU code (LS-ZR01, LS-MR01)
+  description: string;
+  category: string;             // Multi-Serve, Smoothies, Yogos, Snacks
+  storageTransit: string;       // Frozen, Refrigerated, Ambient
+  coPacker: string;             // real co-packer name
+  shelfLifeDays: number;
+  stopShipDays: number;
+  moqCases: number | null;
+  unitsPerCase: number;
+  unitCount: number;            // selling units per retail unit (1 or 4 for multipacks)
+  unitWeightLbs: number;
+  caseWeightLbs: number;
+  caseDimensions: string;
+  casesPerPallet: number;
+  casesPerLayer: number;
+  layers: number;
+  palletDimensions: string | null;
+  unitsPerPallet: number;
+  upc: string;
+  gtin: string;
+  productionLeadTimeWeeks: number | null;  // user-editable — order to product ready
+  transitLeadTimeWeeks: number | null;     // user-editable — ship to warehouse delivery
+}
+
 // ─── Backtest (backtest.json) ───────────────────────────────────────────
 
 export interface BacktestCatBias {

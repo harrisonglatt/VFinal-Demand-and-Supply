@@ -13,6 +13,8 @@ export interface SupplySku {
   name: string;
   category: string;
   unitsPerCase: number;
+  coPacker: string;              // real co-packer name from spec data
+  storageTransit: string;        // Frozen, Refrigerated, Ambient
   // Inventory states (all in units)
   onHandUnits: number;
   inTransitUnits: number;
@@ -644,10 +646,15 @@ export function buildManufacturerPlans(
   const sevOrd: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3, none: 4 };
 
   return cms.map(cm => {
-    // Match SKUs to this CM by category keyword overlap
-    const cmSkus = skus.filter(s =>
-      cm.categories.some(c => s.category.toLowerCase().includes(c.toLowerCase())),
-    );
+    // Match SKUs to this CM by co-packer name (primary) or category keyword (fallback)
+    const cmSkus = skus.filter(s => {
+      // Primary: match by co-packer name from spec data
+      if (s.coPacker) {
+        return cm.categories.some(c => s.coPacker.toLowerCase().includes(c.toLowerCase()));
+      }
+      // Fallback: match by category keyword overlap
+      return cm.categories.some(c => s.category.toLowerCase().includes(c.toLowerCase()));
+    });
     const cmDpcis = new Set(cmSkus.map(s => s.dpci));
 
     // Actionable PO lines for this CM, sorted by severity
