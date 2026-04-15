@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import PageShell from '@/components/layout/PageShell';
 import KpiCard from '@/components/ui/KpiCard';
 import KpiGrid from '@/components/ui/KpiGrid';
@@ -25,18 +25,21 @@ import {
 } from '@/lib/supply/engine';
 import type { ManufacturerPlan } from '@/lib/supply/engine';
 import { fmt, fmtDol, sf } from '@/lib/formatters';
+import { buildPOFromRecommendations, downloadPO, generatePONumber } from '@/lib/supply/po-generator';
+import type { PurchaseOrder } from '@/lib/supply/po-generator';
 import type { ScenarioKey } from '@/data/types';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const VIEW_OPTS = [
-  { value: 'tower',   label: 'Control Tower' },
-  { value: 'states',  label: 'Inventory States' },
-  { value: 'sim',     label: 'WOC Simulation' },
-  { value: 'po',      label: 'PO Recommendations' },
-  { value: 'risk',    label: 'Risk Center' },
-  { value: 'finance', label: 'Finance' },
-  { value: 'mfr',    label: 'CM Plans' },
+  { value: 'tower',     label: 'Control Tower' },
+  { value: 'states',    label: 'Inventory States' },
+  { value: 'sim',       label: 'WOC Simulation' },
+  { value: 'po',        label: 'PO Recommendations' },
+  { value: 'po-create', label: 'PO Creator' },
+  { value: 'risk',      label: 'Risk Center' },
+  { value: 'finance',   label: 'Finance' },
+  { value: 'mfr',       label: 'CM Plans' },
 ];
 
 const HORIZON_OPTS = [
@@ -107,6 +110,33 @@ export default function SupplyPlanningPage() {
   const [horizon, setHorizon]     = useState('12wk');
   const [mfrFilter, setMfrFilter] = useState('');
   const [planView, setPlanView]   = useState('internal');
+  // PO Creator state
+  const [poMfr, setPoMfr]                 = useState('');
+  const [poSelected, setPoSelected]       = useState<Set<string>>(new Set());
+  const [poNumber, setPoNumber]           = useState(() => generatePONumber());
+  const [poDate, setPoDate]               = useState(() => new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }));
+  const [poShipTo, setPoShipTo]           = useState('');
+  const [poShipDate, setPoShipDate]       = useState('');
+  const [poGenerated, setPoGenerated]     = useState<PurchaseOrder | null>(null);
+  const [poSendStatus, setPoSendStatus]   = useState<'idle' | 'confirm' | 'sent'>('idle');
+  const [poSignature, setPoSignature]     = useState<string | null>(null);
+  const [poSignedDate, setPoSignedDate]   = useState<string | null>(null);
+  const [sigMode, setSigMode]             = useState<'draw' | 'type'>('draw');
+  const [poTypedName, setPoTypedName]     = useState('');
+  const sigCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const sigDrawingRef = useRef(false);
+  const [sigFontLoaded, setSigFontLoaded] = useState(false);
+
+  // Load cursive script font for typed signatures
+  useEffect(() => {
+    if (document.querySelector('link[data-sig-font]')) { setSigFontLoaded(true); return; }
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap';
+    link.dataset.sigFont = '1';
+    document.head.appendChild(link);
+    document.fonts.ready.then(() => setSigFontLoaded(true));
+  }, []);
 
   const promoCtx    = usePromo();
   const calibration = useCalibration();
@@ -1132,6 +1162,588 @@ export default function SupplyPlanningPage() {
                 </div>
               );
             })}
+          </>
+        );
+      })()}
+
+      {/* ═══════════════ PO CREATOR ═══════════════════════════════════ */}
+      {view === 'po-create' && (() => {
+        // Recs grouped by selected manufacturer
+        const activeCm = manufacturers.find(m => m.id === poMfr) || manufacturers[0];
+        const cmRecs = recommendations.filter(r => {
+          if (!activeCm) return false;
+          const catLower = r.category.toLowerCase();
+          return activeCm.categories.some(c => catLower.includes(c.toLowerCase())) && r.severity !== 'none' && r.recommendedCases > 0;
+        });
+
+        const toggleLine = (dpci: string) => {
+          setPoSelected(prev => {
+            const next = new Set(prev);
+            if (next.has(dpci)) next.delete(dpci); else next.add(dpci);
+            return next;
+          });
+          setPoGenerated(null);
+          setPoSendStatus('idle');
+        };
+
+        const toggleAll = () => {
+          if (poSelected.size === cmRecs.length) {
+            setPoSelected(new Set());
+          } else {
+            setPoSelected(new Set(cmRecs.map(r => r.dpci)));
+          }
+          setPoGenerated(null);
+          setPoSendStatus('idle');
+        };
+
+        const selectedRecs = cmRecs.filter(r => poSelected.has(r.dpci));
+        const poTotal = selectedRecs.reduce((a, r) => {
+          const sku = supplySkus.find(s => s.dpci === r.dpci);
+          return a + r.recommendedUnits * (sku?.unitPrice ?? 0);
+        }, 0);
+        const poCases = selectedRecs.reduce((a, r) => a + r.recommendedCases, 0);
+
+        const handleGeneratePO = () => {
+          if (selectedRecs.length === 0) return;
+          const po = buildPOFromRecommendations(selectedRecs, supplySkus, activeCm, {
+            poNumber,
+            date: poDate,
+            shipTo: poShipTo || `FOB ${activeCm.location}`,
+            shipDate: poShipDate || undefined,
+          });
+          // Attach signature if signed
+          if (poSignature) {
+            po.signatureDataUrl = poSignature;
+            po.signedDate = poSignedDate || undefined;
+          }
+          setPoGenerated(po);
+          setPoSendStatus('idle');
+        };
+
+        const handleDownload = () => {
+          if (poGenerated) downloadPO(poGenerated);
+        };
+
+        // Auto-select critical/high on CM change
+        const handleCmChange = (id: string) => {
+          setPoMfr(id);
+          setPoGenerated(null);
+          setPoSendStatus('idle');
+          const cm = manufacturers.find(m => m.id === id);
+          if (cm) {
+            const recs = recommendations.filter(r => {
+              const catLower = r.category.toLowerCase();
+              return cm.categories.some(c => catLower.includes(c.toLowerCase())) && (r.severity === 'critical' || r.severity === 'high') && r.recommendedCases > 0;
+            });
+            setPoSelected(new Set(recs.map(r => r.dpci)));
+            setPoShipTo(`FOB ${cm.location}`);
+          }
+        };
+
+        return (
+          <>
+            <FilterBar>
+              <select
+                value={poMfr || activeCm?.id || ''}
+                onChange={e => handleCmChange(e.target.value)}
+                style={{
+                  padding: '5px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,.12)',
+                  background: 'var(--bg2)', color: 'var(--tx)', fontSize: 12, fontFamily: 'inherit',
+                }}
+              >
+                {manufacturers.map(m => (
+                  <option key={m.id} value={m.id}>{m.name}</option>
+                ))}
+              </select>
+            </FilterBar>
+
+            {/* PO Details Form */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 12, marginBottom: 16 }}>
+              {[
+                { label: 'PO Number', value: poNumber, onChange: (v: string) => setPoNumber(v) },
+                { label: 'PO Date', value: poDate, onChange: (v: string) => setPoDate(v) },
+                { label: 'Ship To', value: poShipTo || `FOB ${activeCm?.location || ''}`, onChange: (v: string) => setPoShipTo(v) },
+                { label: 'Ship Date', value: poShipDate, onChange: (v: string) => setPoShipDate(v), placeholder: 'Auto from recs' },
+              ].map(f => (
+                <div key={f.label}>
+                  <label style={{ fontSize: 10, color: 'var(--tx3)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>{f.label}</label>
+                  <input
+                    type="text"
+                    value={f.value}
+                    placeholder={f.placeholder || ''}
+                    onChange={e => f.onChange(e.target.value)}
+                    style={{
+                      display: 'block', width: '100%', marginTop: 4, padding: '7px 10px',
+                      background: 'var(--bg2)', border: '1px solid rgba(255,255,255,.1)', borderRadius: 6,
+                      color: 'var(--tx)', fontSize: 13, fontFamily: 'inherit',
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Vendor contact info strip */}
+            {activeCm && (
+              <div style={{ marginBottom: 16, padding: '10px 14px', borderRadius: 6, background: 'rgba(0,227,205,.06)', border: '1px solid rgba(0,227,205,.15)', fontSize: 12, display: 'flex', gap: 24, alignItems: 'center' }}>
+                <span><strong style={{ color: 'var(--ac)' }}>Vendor:</strong> {activeCm.name}</span>
+                <span><strong style={{ color: 'var(--ac)' }}>Contact:</strong> {activeCm.contactName}</span>
+                <span><strong style={{ color: 'var(--ac)' }}>Email:</strong> {activeCm.contactEmail}</span>
+                {activeCm.contactPhone && <span><strong style={{ color: 'var(--ac)' }}>Phone:</strong> {activeCm.contactPhone}</span>}
+              </div>
+            )}
+
+            {/* Summary strip */}
+            <div style={{ display: 'flex', gap: 16, marginBottom: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 12, color: 'var(--tx3)' }}>
+                <strong style={{ color: 'var(--tx)' }}>{poSelected.size}</strong> of {cmRecs.length} lines selected
+              </span>
+              <span style={{ fontSize: 12, color: 'var(--tx3)' }}>
+                Total cases: <strong style={{ color: 'var(--tx)' }}>{fmt(poCases)}</strong>
+              </span>
+              <span style={{ fontSize: 12, color: 'var(--tx3)' }}>
+                PO value: <strong style={{ color: 'var(--ac)' }}>{fmtDol(Math.round(poTotal))}</strong>
+              </span>
+              <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+                <button
+                  onClick={handleGeneratePO}
+                  disabled={selectedRecs.length === 0}
+                  style={{
+                    padding: '8px 20px', borderRadius: 6, border: 'none', cursor: selectedRecs.length > 0 ? 'pointer' : 'not-allowed',
+                    background: selectedRecs.length > 0 ? '#00E3CD' : 'rgba(255,255,255,.08)',
+                    color: selectedRecs.length > 0 ? '#0f172a' : 'var(--tx3)',
+                    fontWeight: 700, fontSize: 13,
+                  }}
+                >
+                  Generate PO
+                </button>
+                {poGenerated && (
+                  <>
+                    <button
+                      onClick={handleDownload}
+                      style={{
+                        padding: '8px 20px', borderRadius: 6, border: '1px solid rgba(0,227,205,.3)', cursor: 'pointer',
+                        background: 'transparent', color: '#00E3CD', fontWeight: 700, fontSize: 13,
+                      }}
+                    >
+                      Download PDF
+                    </button>
+                    <button
+                      onClick={() => setPoSendStatus('confirm')}
+                      style={{
+                        padding: '8px 20px', borderRadius: 6, border: '1px solid rgba(0,207,146,.3)', cursor: 'pointer',
+                        background: poSendStatus === 'sent' ? 'rgba(0,207,146,.15)' : 'transparent',
+                        color: poSendStatus === 'sent' ? '#00CF92' : '#00CF92', fontWeight: 700, fontSize: 13,
+                      }}
+                    >
+                      {poSendStatus === 'sent' ? 'Sent!' : poSendStatus === 'confirm' ? 'Confirm Send?' : `Send to ${activeCm.contactName}`}
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Send confirmation banner */}
+            {poSendStatus === 'confirm' && poGenerated && activeCm && (
+              <div style={{
+                marginBottom: 12, padding: '12px 16px', borderRadius: 8,
+                background: 'rgba(0,207,146,.08)', border: '1px solid rgba(0,207,146,.25)',
+                display: 'flex', alignItems: 'center', gap: 12, fontSize: 13,
+              }}>
+                <span style={{ color: 'var(--tx)' }}>
+                  Send <strong>{poGenerated.poNumber}</strong> ({fmtDol(Math.round(poGenerated.total))}) to <strong>{activeCm.contactName}</strong> at <strong style={{ color: '#00CF92' }}>{activeCm.contactEmail}</strong>?
+                </span>
+                <button
+                  onClick={() => setPoSendStatus('sent')}
+                  style={{
+                    marginLeft: 'auto', padding: '6px 16px', borderRadius: 6, border: 'none',
+                    background: '#00CF92', color: '#0f172a', fontWeight: 700, fontSize: 12, cursor: 'pointer',
+                  }}
+                >
+                  Confirm & Send via Outlook
+                </button>
+                <button
+                  onClick={() => setPoSendStatus('idle')}
+                  style={{
+                    padding: '6px 16px', borderRadius: 6, border: '1px solid rgba(255,255,255,.1)',
+                    background: 'transparent', color: 'var(--tx3)', fontWeight: 600, fontSize: 12, cursor: 'pointer',
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+
+            {/* Line items selection table */}
+            <DataTable>
+              <table>
+                <thead>
+                  <tr>
+                    <th style={{ width: 36 }}>
+                      <input
+                        type="checkbox"
+                        checked={poSelected.size === cmRecs.length && cmRecs.length > 0}
+                        onChange={toggleAll}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </th>
+                    <th>SKU</th>
+                    <th style={{ minWidth: 140 }}>Product</th>
+                    <th>Category</th>
+                    <th>Severity</th>
+                    <th className="tr">Cases</th>
+                    <th className="tr">Units</th>
+                    <th className="tr">Unit Price</th>
+                    <th className="tr">Line Total</th>
+                    <th>Ship Date</th>
+                    <th className="tr">Current WOC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cmRecs.length === 0 ? (
+                    <tr><td colSpan={11} style={{ textAlign: 'center', color: 'var(--tx3)', padding: 24 }}>No actionable PO recommendations for this manufacturer.</td></tr>
+                  ) : cmRecs.map(rec => {
+                    const sku = supplySkus.find(s => s.dpci === rec.dpci);
+                    const isChecked = poSelected.has(rec.dpci);
+                    const lineTotal = rec.recommendedUnits * (sku?.unitPrice ?? 0);
+                    return (
+                      <tr
+                        key={rec.dpci}
+                        onClick={() => toggleLine(rec.dpci)}
+                        style={{
+                          cursor: 'pointer',
+                          background: isChecked ? 'rgba(0,227,205,.06)' : undefined,
+                        }}
+                      >
+                        <td><input type="checkbox" checked={isChecked} onChange={() => toggleLine(rec.dpci)} style={{ cursor: 'pointer' }} /></td>
+                        <td style={{ fontFamily: 'monospace', fontSize: 11 }}>{rec.caseCode || rec.dpci}</td>
+                        <td>{rec.name}</td>
+                        <td>{rec.category}</td>
+                        <td><SevBadge s={rec.severity} /></td>
+                        <td className="tr" style={{ fontWeight: 700 }}>{fmt(rec.recommendedCases)}</td>
+                        <td className="tr">{fmt(rec.recommendedUnits)}</td>
+                        <td className="tr">${sku?.unitPrice.toFixed(2) ?? '—'}</td>
+                        <td className="tr" style={{ fontWeight: 700, color: 'var(--ac)' }}>{fmtDol(Math.round(lineTotal))}</td>
+                        <td>{rec.shipDate}</td>
+                        <td className="tr">
+                          <WocBadge woc={rec.currentWOC} min={sku?.minWOC ?? 2} target={sku?.targetWOC ?? 6} />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </DataTable>
+
+            {/* Signature Pad */}
+            {(() => {
+              const applySignature = (dataUrl: string) => {
+                const now = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+                setPoSignature(dataUrl);
+                setPoSignedDate(now);
+                if (poGenerated) {
+                  setPoGenerated({ ...poGenerated, signatureDataUrl: dataUrl, signedDate: now });
+                }
+              };
+
+              const clearSig = () => {
+                const c = sigCanvasRef.current;
+                if (c) { const ctx = c.getContext('2d'); if (ctx) ctx.clearRect(0, 0, c.width, c.height); }
+                setPoSignature(null);
+                setPoSignedDate(null);
+                setPoTypedName('');
+                if (poGenerated) {
+                  setPoGenerated({ ...poGenerated, signatureDataUrl: undefined, signedDate: undefined });
+                }
+              };
+
+              const renderTypedSignature = (name: string) => {
+                const offscreen = document.createElement('canvas');
+                offscreen.width = 600;
+                offscreen.height = 100;
+                const ctx = offscreen.getContext('2d');
+                if (!ctx) return;
+                ctx.clearRect(0, 0, 600, 100);
+                ctx.font = '700 46px "Dancing Script", cursive';
+                ctx.fillStyle = '#1e293b';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(name, 16, 54);
+                const dataUrl = offscreen.toDataURL('image/png');
+                applySignature(dataUrl);
+              };
+
+              return (
+                <div style={{ marginTop: 20, padding: 16, borderRadius: 8, background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.08)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--tx)', margin: 0 }}>
+                        Sign Purchase Order
+                      </h3>
+                      {/* Draw / Type toggle */}
+                      <div style={{ display: 'flex', borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,.12)' }}>
+                        {(['draw', 'type'] as const).map(m => (
+                          <button
+                            key={m}
+                            onClick={() => { setSigMode(m); clearSig(); }}
+                            style={{
+                              padding: '4px 14px', border: 'none', fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                              background: sigMode === m ? '#00E3CD' : 'transparent',
+                              color: sigMode === m ? '#0f172a' : 'var(--tx3)',
+                              textTransform: 'capitalize',
+                            }}
+                          >
+                            {m}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      {poSignature && (
+                        <span style={{ fontSize: 11, color: '#00CF92', fontWeight: 600 }}>
+                          Signed {poSignedDate}
+                        </span>
+                      )}
+                      <button
+                        onClick={clearSig}
+                        style={{
+                          padding: '5px 14px', borderRadius: 6, border: '1px solid rgba(255,255,255,.1)',
+                          background: 'transparent', color: 'var(--tx3)', fontSize: 11, cursor: 'pointer', fontWeight: 600,
+                        }}
+                      >
+                        Clear
+                      </button>
+                    </div>
+                  </div>
+
+                  {sigMode === 'draw' ? (
+                    <>
+                      <canvas
+                        ref={(el) => {
+                          sigCanvasRef.current = el;
+                          if (el && !el.dataset.init) {
+                            el.dataset.init = '1';
+                            const ctx = el.getContext('2d');
+                            if (ctx) {
+                              ctx.strokeStyle = '#1e293b';
+                              ctx.lineWidth = 2;
+                              ctx.lineCap = 'round';
+                              ctx.lineJoin = 'round';
+                            }
+                          }
+                        }}
+                        width={600}
+                        height={100}
+                        style={{
+                          width: '100%', maxWidth: 600, height: 100, borderRadius: 6,
+                          background: '#ffffff', cursor: 'crosshair', display: 'block',
+                          border: poSignature ? '2px solid #00CF92' : '2px dashed rgba(255,255,255,.2)',
+                        }}
+                        onMouseDown={(e) => {
+                          sigDrawingRef.current = true;
+                          const c = e.currentTarget;
+                          const ctx = c.getContext('2d');
+                          if (!ctx) return;
+                          const rect = c.getBoundingClientRect();
+                          const sx = c.width / rect.width;
+                          const sy = c.height / rect.height;
+                          ctx.beginPath();
+                          ctx.moveTo((e.clientX - rect.left) * sx, (e.clientY - rect.top) * sy);
+                        }}
+                        onMouseMove={(e) => {
+                          if (!sigDrawingRef.current) return;
+                          const c = e.currentTarget;
+                          const ctx = c.getContext('2d');
+                          if (!ctx) return;
+                          const rect = c.getBoundingClientRect();
+                          const sx = c.width / rect.width;
+                          const sy = c.height / rect.height;
+                          ctx.lineTo((e.clientX - rect.left) * sx, (e.clientY - rect.top) * sy);
+                          ctx.stroke();
+                        }}
+                        onMouseUp={() => {
+                          sigDrawingRef.current = false;
+                          const c = sigCanvasRef.current;
+                          if (c) applySignature(c.toDataURL('image/png'));
+                        }}
+                        onMouseLeave={() => { sigDrawingRef.current = false; }}
+                        onTouchStart={(e) => {
+                          e.preventDefault();
+                          sigDrawingRef.current = true;
+                          const c = e.currentTarget;
+                          const ctx = c.getContext('2d');
+                          if (!ctx) return;
+                          const rect = c.getBoundingClientRect();
+                          const sx = c.width / rect.width;
+                          const sy = c.height / rect.height;
+                          const t = e.touches[0];
+                          ctx.beginPath();
+                          ctx.moveTo((t.clientX - rect.left) * sx, (t.clientY - rect.top) * sy);
+                        }}
+                        onTouchMove={(e) => {
+                          e.preventDefault();
+                          if (!sigDrawingRef.current) return;
+                          const c = e.currentTarget;
+                          const ctx = c.getContext('2d');
+                          if (!ctx) return;
+                          const rect = c.getBoundingClientRect();
+                          const sx = c.width / rect.width;
+                          const sy = c.height / rect.height;
+                          const t = e.touches[0];
+                          ctx.lineTo((t.clientX - rect.left) * sx, (t.clientY - rect.top) * sy);
+                          ctx.stroke();
+                        }}
+                        onTouchEnd={() => {
+                          sigDrawingRef.current = false;
+                          const c = sigCanvasRef.current;
+                          if (c) applySignature(c.toDataURL('image/png'));
+                        }}
+                      />
+                      <p style={{ fontSize: 10, color: 'var(--tx3)', marginTop: 6, marginBottom: 0 }}>
+                        Draw your signature above.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <input
+                        type="text"
+                        value={poTypedName}
+                        placeholder="Type your full name"
+                        onChange={(e) => {
+                          setPoTypedName(e.target.value);
+                          if (e.target.value.trim()) {
+                            renderTypedSignature(e.target.value.trim());
+                          } else {
+                            clearSig();
+                          }
+                        }}
+                        style={{
+                          display: 'block', width: '100%', maxWidth: 600, padding: '10px 14px',
+                          background: '#ffffff', border: poSignature ? '2px solid #00CF92' : '2px dashed rgba(255,255,255,.2)',
+                          borderRadius: 6, fontSize: 15, fontFamily: 'inherit', color: '#1e293b',
+                        }}
+                      />
+                      {/* Live typed signature preview */}
+                      {poTypedName.trim() && (
+                        <div style={{
+                          marginTop: 8, padding: '12px 16px', background: '#ffffff', borderRadius: 6,
+                          maxWidth: 600, minHeight: 50, display: 'flex', alignItems: 'center',
+                        }}>
+                          <span style={{
+                            fontFamily: '"Dancing Script", cursive', fontWeight: 700,
+                            fontSize: 36, color: '#1e293b', userSelect: 'none',
+                          }}>
+                            {poTypedName}
+                          </span>
+                        </div>
+                      )}
+                      <p style={{ fontSize: 10, color: 'var(--tx3)', marginTop: 6, marginBottom: 0 }}>
+                        Type your name and it will render as a signature.
+                      </p>
+                    </>
+                  )}
+                </div>
+              );
+            })()}
+
+            {/* PO Preview */}
+            {poGenerated && (
+              <div style={{ marginTop: 20 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--tx)', marginBottom: 12 }}>PO Preview</h3>
+                <div style={{
+                  background: '#ffffff', color: '#1e293b', borderRadius: 10, padding: 32,
+                  fontFamily: 'Helvetica, Arial, sans-serif', maxWidth: 700, lineHeight: 1.5,
+                }}>
+                  {/* Header */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 14, textDecoration: 'underline' }}>Little Spoon, Inc.</div>
+                      <div style={{ fontSize: 10, color: '#64748b' }}>31 Bond Street, 4th Floor</div>
+                      <div style={{ fontSize: 10, color: '#64748b' }}>NY</div>
+                      <div style={{ fontSize: 10, color: '#64748b' }}>888.878.7807</div>
+                    </div>
+                    <div style={{ fontFamily: 'Georgia, serif', fontSize: 24, fontWeight: 700, color: '#00E3CD', fontStyle: 'italic' }}>little spoon</div>
+                  </div>
+
+                  <h2 style={{ color: '#00E3CD', fontSize: 22, fontWeight: 700, margin: '16px 0 4px' }}>Purchase Order</h2>
+                  <div style={{ height: 2, background: '#00E3CD', marginBottom: 16 }} />
+
+                  {/* Metadata */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, fontSize: 11, marginBottom: 20 }}>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 10, textTransform: 'uppercase' }}>Vendor</div>
+                      <div>{poGenerated.vendor.name}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 10, textTransform: 'uppercase' }}>Ship To</div>
+                      <div>{poGenerated.shipTo}</div>
+                      <div>SHIP DATE {poGenerated.shipDate}</div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div><strong>P.O. NO.</strong> {poGenerated.poNumber}</div>
+                      <div><strong>DATE</strong> {poGenerated.date}</div>
+                    </div>
+                  </div>
+
+                  {/* Line items table */}
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11, marginBottom: 20 }}>
+                    <thead>
+                      <tr style={{ background: '#00E3CD', color: '#fff' }}>
+                        <th style={{ padding: '6px 8px', textAlign: 'left', fontWeight: 700 }}>ITEM</th>
+                        <th style={{ padding: '6px 8px', textAlign: 'right', fontWeight: 700 }}>QTY</th>
+                        <th style={{ padding: '6px 8px', textAlign: 'right', fontWeight: 700 }}>RATE</th>
+                        <th style={{ padding: '6px 8px', textAlign: 'right', fontWeight: 700 }}>AMOUNT</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {poGenerated.lineItems.map((li, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#f8fafc' : '#fff' }}>
+                          <td style={{ padding: '8px', whiteSpace: 'pre-line', lineHeight: 1.5 }}>{li.itemDescription}</td>
+                          <td style={{ padding: '8px', textAlign: 'right' }}>{li.qty.toLocaleString()}</td>
+                          <td style={{ padding: '8px', textAlign: 'right' }}>{li.rate.toFixed(2)}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', fontWeight: 700 }}>{li.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                  {/* Totals */}
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 20, fontSize: 12, marginBottom: 12 }}>
+                    <div><strong>SUBTOTAL</strong></div>
+                    <div style={{ fontWeight: 700 }}>{poGenerated.subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 20, fontSize: 14, fontWeight: 700 }}>
+                    <div>TOTAL</div>
+                    <div>USD {poGenerated.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+                  </div>
+
+                  {/* Signature lines */}
+                  <div style={{ marginTop: 40 }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, marginBottom: 20 }}>
+                      <span style={{ fontSize: 11, flexShrink: 0 }}>Approved By</span>
+                      <div style={{ flex: 1, position: 'relative' }}>
+                        {poGenerated.signatureDataUrl && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={poGenerated.signatureDataUrl}
+                            alt="Signature"
+                            style={{ height: 36, position: 'absolute', bottom: 2, left: 0 }}
+                          />
+                        )}
+                        <div style={{ borderBottom: '1px solid #e2e8f0', width: '100%' }} />
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <span style={{ fontSize: 11, flexShrink: 0 }}>Date</span>
+                      <div style={{ flex: 1, position: 'relative' }}>
+                        {poGenerated.signedDate && (
+                          <span style={{ position: 'absolute', bottom: 2, left: 0, fontSize: 11 }}>{poGenerated.signedDate}</span>
+                        )}
+                        <div style={{ borderBottom: '1px solid #e2e8f0', width: '100%' }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         );
       })()}

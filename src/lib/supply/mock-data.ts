@@ -290,7 +290,7 @@ export function buildLots(skus: SupplySku[]): Record<string, LotRecord[]> {
 }
 
 // ─── Contract Manufacturer Registry ──────────────────────────────────────────
-// 3 co-mans covering all Little Spoon × Target categories.
+// Registered co-manufacturers for Little Spoon × Target supply planning.
 // Replace with real partner names and details when ready to operationalize.
 
 const CM_REGISTRY: ContractManufacturer[] = [
@@ -302,6 +302,9 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['IFI', 'APC'],  // matches coPacker field
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Primary co-packer for all Smoothies and YoGos. Refrigerated facility. Weekly shipping windows (Mon/Wed). MOQ of 50,000 units enforced. Cold chain compliance required for all shipments.',
+    contactName: 'Rachel Torres',
+    contactEmail: 'rachel.torres@norcalcold.com',
+    contactPhone: '916-555-0142',
   },
   {
     id: 'cm-suzannas',
@@ -311,6 +314,9 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ["Suzanna"],  // matches "Suzanna's"
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Produces Chicken Dippers (frozen multi-serve). Single-product line — scheduling is straightforward. Long shelf life (547 days) provides flexibility.',
+    contactName: 'Mark Jensen',
+    contactEmail: 'mjensen@prairiesnackworks.com',
+    contactPhone: '507-555-0198',
   },
   {
     id: 'cm-maidrite',
@@ -320,6 +326,9 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['Maid Rite', 'Truvant'],  // matches "Maid Rite/Truvant"
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Produces Chicken Veggie Sliders and Turkey Meatballs (frozen multi-serve). MOQ of 30,000 lbs / 48,000 units. Shared production line between both SKUs — allergen changeovers may add 1-2 days.',
+    contactName: 'Sarah Kim',
+    contactEmail: 'skim@pacificfreshfoods.com',
+    contactPhone: '503-555-0167',
   },
   {
     id: 'cm-aveno',
@@ -329,6 +338,8 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['Aveno'],
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Produces Broccoli Bites and Cauliflower Bites (frozen multi-serve). Newer co-packer relationship. Smaller pallet configuration (40 cases/pallet).',
+    contactName: '',
+    contactEmail: '',
   },
   {
     id: 'cm-frankies',
@@ -338,6 +349,8 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['Frankies'],
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Produces Baby Puffs (Kale Apple, Banana Pitaya, Blueberry Carrot) and Stellar Puffs (Cheddar, Cinna-Banana). Ambient snacks. MOQ of 67,500 units on puffs. Large-format packaging for Stellar Puffs.',
+    contactName: '',
+    contactEmail: '',
   },
   {
     id: 'cm-fcc',
@@ -347,6 +360,8 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['FCC'],
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Produces all Baked Bars (Chocolate Chip, Blueberry Muffin, Apple Pie). Ambient snacks. MOQ of 20,925 units. 5-count multipack format.',
+    contactName: '',
+    contactEmail: '',
   },
   {
     id: 'cm-cfs',
@@ -356,6 +371,8 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['CFS'],
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Produces Veggie Loops (Mac & Cheese, Pizzalicious). Ambient snacks. MOQ of 6,000 units. Smaller pallet configuration (32 cases/pallet). Double-stackable pallets.',
+    contactName: '',
+    contactEmail: '',
   },
   {
     id: 'cm-vd',
@@ -365,6 +382,8 @@ const CM_REGISTRY: ContractManufacturer[] = [
     categories: ['VD', 'Greenseed'],
     poApprovalLeadTimeWeeks: 1,
     capacityNotes: 'Produces Organic Oatmeal Baby Cereal and Freeze Dried Bites (Strawberry Banana Butternut, Pineapple Blueberry Zucchini). Ambient products. MOQ of 80,000 units on cereal.',
+    contactName: '',
+    contactEmail: '',
   },
 ];
 
