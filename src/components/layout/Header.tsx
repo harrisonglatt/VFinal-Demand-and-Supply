@@ -1,11 +1,6 @@
 'use client';
 
 export default function Header() {
-  async function handleSignOut() {
-    await fetch('/api/auth', { method: 'DELETE' });
-    window.location.href = '/sign-in';
-  }
-
   return (
     <header className="hdr">
       <div className="hdr-brand-mark" aria-label="Little Spoon">LS</div>
@@ -21,9 +16,6 @@ export default function Header() {
           <span className="dot" />
           Auto-Refresh
         </span>
-        <button className="hdr-sign-out" onClick={handleSignOut}>
-          Sign Out
-        </button>
       </div>
     </header>
   );
