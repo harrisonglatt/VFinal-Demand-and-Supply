@@ -11,6 +11,7 @@ import KpiCard from '@/components/ui/KpiCard';
 import { DATA_PROMO_CAL } from '@/data/index';
 import { fmt } from '@/lib/formatters';
 import { usePromo, computeLift, type PromoEvent } from '@/context/PromoContext';
+import { useMeasuredLifts } from '@/context/MeasuredLiftsContext';
 
 /* ── Lift benchmarks now come from PromoContext (computeLift function) ─ */
 
@@ -42,6 +43,10 @@ export default function PromoCalendarPage() {
   // Global promo state — changes here flow to demand plan, shipments, executive
   const promoCtx = usePromo();
   const events = promoCtx.events;
+  const measured = useMeasuredLifts();
+  const lastSyncedAtLabel = measured.state.syncedAt
+    ? new Date(measured.state.syncedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+    : null;
 
   // New promo form state
   const [newPromo, setNewPromo] = useState({
@@ -129,7 +134,7 @@ export default function PromoCalendarPage() {
       subtitle={`${events.length} events · ${weeks.length} weeks · Feb 2026 → Jan 2027`}
       extra={<ButtonGroup options={VIEW_OPTS} active={view} onChange={setView} />}
     >
-      {/* ── Module callout — link to Promo Intel for measured-lift analysis ── */}
+      {/* ── Module callout — link to Promo Intel + measured-lift sync state ── */}
       <div
         style={{
           display: 'flex',
@@ -138,20 +143,30 @@ export default function PromoCalendarPage() {
           padding: '12px 16px',
           marginBottom: 16,
           borderRadius: 12,
-          background: 'var(--ac-soft)',
-          border: '1px solid rgba(0,181,162,.25)',
+          background: measured.hasMeasured ? 'rgba(0,207,146,.08)' : 'var(--ac-soft)',
+          border: `1px solid ${measured.hasMeasured ? 'rgba(0,207,146,.28)' : 'rgba(0,181,162,.25)'}`,
         }}
       >
-        <span style={{ fontSize: 18 }}>🎯</span>
+        <span style={{ fontSize: 18 }}>{measured.hasMeasured ? '✅' : '🎯'}</span>
         <div style={{ flex: 1, fontSize: 12.5, color: 'var(--tx)', lineHeight: 1.55 }}>
-          <strong style={{ color: 'var(--ls-blue-dark)' }}>This calendar drives the demand plan.</strong>
-          {' '}
-          Events here flow into <em>Demand Plan, Shipments, Supply Planning, Executive Summary</em> via the lift matrix.
-          For <strong>measured</strong> lift / ROI / incrementality / cannibalization on actual sales, open
-          {' '}
-          <a href="/promo-tracker" style={{ color: 'var(--ls-blue-dark)', fontWeight: 700 }}>
-            Promo Intel →
-          </a>
+          <strong style={{ color: measured.hasMeasured ? '#067A56' : 'var(--ls-blue-dark)' }}>
+            {measured.hasMeasured
+              ? `Demand plan using ${measured.state.categoryCount} measured lifts from Promo Intel`
+              : 'This calendar drives the demand plan.'}
+          </strong>{' '}
+          {measured.hasMeasured ? (
+            <>
+              Synced {lastSyncedAtLabel} from {measured.state.weeksCovered} weeks of sales data.
+              Other (type × category) combos still use the lift matrix.{' '}
+              <a href="/promo-tracker" style={{ color: '#067A56', fontWeight: 700 }}>Re-sync →</a>
+            </>
+          ) : (
+            <>
+              Events here flow into <em>Demand Plan, Shipments, Supply Planning, Executive Summary</em> via the lift matrix.
+              For <strong>measured</strong> lift / ROI / incrementality / cannibalization on actual sales, open{' '}
+              <a href="/promo-tracker" style={{ color: 'var(--ls-blue-dark)', fontWeight: 700 }}>Promo Intel →</a>
+            </>
+          )}
         </div>
       </div>
 

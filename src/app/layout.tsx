@@ -6,6 +6,7 @@ import { PromoProvider } from '@/context/PromoContext';
 import { NewSkuProvider } from '@/context/NewSkuContext';
 import { CalibrationProvider } from '@/context/CalibrationContext';
 import { PlannedPOsProvider } from '@/context/PlannedPOsContext';
+import { MeasuredLiftsProvider } from '@/context/MeasuredLiftsContext';
 import { AppShell } from '@/components/layout/AppShell';
 
 const mulish = Mulish({
@@ -35,15 +36,17 @@ export default function RootLayout({
     <html lang="en" className={`${mulish.variable} ${roboto.variable}`}>
       <body>
         <OverridesProvider>
-          <PromoProvider>
-            <NewSkuProvider>
-              <CalibrationProvider>
-                <PlannedPOsProvider>
-                  <AppShell>{children}</AppShell>
-                </PlannedPOsProvider>
-              </CalibrationProvider>
-            </NewSkuProvider>
-          </PromoProvider>
+          <MeasuredLiftsProvider>
+            <PromoProvider>
+              <NewSkuProvider>
+                <CalibrationProvider>
+                  <PlannedPOsProvider>
+                    <AppShell>{children}</AppShell>
+                  </PlannedPOsProvider>
+                </CalibrationProvider>
+              </NewSkuProvider>
+            </PromoProvider>
+          </MeasuredLiftsProvider>
         </OverridesProvider>
       </body>
     </html>

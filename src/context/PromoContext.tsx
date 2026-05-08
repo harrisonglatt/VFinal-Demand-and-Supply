@@ -13,6 +13,7 @@ import { createContext, useContext, useCallback, useMemo, useState, type ReactNo
 import { DATA_PROMO_CAL } from '@/data/index';
 import histPromoJson from '@/data/json/hist-promo.json';
 import { CASE_CODE_MAP } from '@/lib/owlery/transform';
+import { useMeasuredLifts } from './MeasuredLiftsContext';
 
 // ─── PromoEvent Type ──────────────────────────────────────────────────
 
@@ -158,17 +159,21 @@ function mapPromoCatToDPCat(promoCat: string): string {
   return promoCat; // pass through if already DP format
 }
 
-export function computeLift(promoType: string, category: string): { liftPct: number; source: string; confidence: 'high' | 'medium' | 'low' } {
-  // Map input promo type to matrix key
-  const t = promoType.toLowerCase();
-  let matrixType = 'TPC';
+/** Normalize any free-form promo type string to a LIFT_MATRIX key. */
+export function normalizePromoType(promoType: string): string {
+  const t = (promoType || '').toLowerCase();
   if (t.includes('co-space') || t.includes('cospace')) {
-    matrixType = t.includes('circle') ? 'Circle + Co-space' : 'Co-space';
+    return t.includes('circle') ? 'Circle + Co-space' : 'Co-space';
   }
-  else if (t.includes('dwa')) matrixType = 'DWA';
-  else if (t.includes('circle')) matrixType = 'Circle';
-  else if (t.includes('bogo')) matrixType = 'BOGO';
-  else if (t.includes('tpc')) matrixType = 'TPC';
+  if (t.includes('dwa')) return 'DWA';
+  if (t.includes('circle')) return 'Circle';
+  if (t.includes('bogo')) return 'BOGO';
+  if (t.includes('tpc')) return 'TPC';
+  return 'TPC';
+}
+
+export function computeLift(promoType: string, category: string): { liftPct: number; source: string; confidence: 'high' | 'medium' | 'low' } {
+  const matrixType = normalizePromoType(promoType);
 
   // Map promo calendar category to DP category
   const dpCat = mapPromoCatToDPCat(category);
@@ -264,6 +269,10 @@ interface PromoContextValue {
   isOnPromo: (weekIdx: number, dpCategory: string) => boolean;
   getPromoEvents: (weekIdx: number, dpCategory: string) => PromoEvent[];
   liftBenchmarks: Record<string, LiftBenchmark>;
+  /** True iff measured lifts are currently overriding the matrix. */
+  usingMeasuredLifts: boolean;
+  /** Returns 'measured' or 'matrix' for an event, indicating which source produced its lift. */
+  getLiftSource: (event: PromoEvent, dpCategory?: string) => 'measured' | 'matrix';
 }
 
 const PromoCtx = createContext<PromoContextValue | null>(null);
@@ -298,6 +307,18 @@ export function PromoProvider({ children }: { children: ReactNode }) {
       });
   });
 
+  // ── Measured lifts override layer (synced from /promo-tracker) ──
+  const measured = useMeasuredLifts();
+
+  // Resolves an event's effective lift% — measured overrides matrix when available
+  // for the event's (normalized type × DP category) combo.
+  const getEffectiveLiftFor = useCallback((e: PromoEvent, dpCat: string): number => {
+    if (!measured.hasMeasured) return e.liftPct;
+    const matrixType = normalizePromoType(e.promoType);
+    const m = measured.getMeasuredLift(matrixType, dpCat);
+    return m ? m.liftPct : e.liftPct;
+  }, [measured]);
+
   // ── Derived: lift map (weekIdx|dpCategory → max lift %) ──────────
   const liftMap = useMemo(() => {
     const map: Record<string, number> = {};
@@ -319,13 +340,31 @@ export function PromoProvider({ children }: { children: ReactNode }) {
 
       for (const dpCat of dpCats) {
         const key = `${e.weekIdx}|${dpCat}`;
-        // Take max lift if multiple promos overlap (don't stack)
-        map[key] = Math.max(map[key] ?? 0, e.liftPct);
+        // Take max lift if multiple promos overlap (don't stack).
+        // Use measured lift when available for this (type, category), else matrix-derived.
+        const effective = getEffectiveLiftFor(e, dpCat);
+        map[key] = Math.max(map[key] ?? 0, effective);
       }
     }
 
     return map;
-  }, [events]);
+  }, [events, getEffectiveLiftFor]);
+
+  const getLiftSource = useCallback((e: PromoEvent, dpCategory?: string): 'measured' | 'matrix' => {
+    if (!measured.hasMeasured) return 'matrix';
+    const matrixType = normalizePromoType(e.promoType);
+    // If a dpCategory is specified, check that combo.
+    // Otherwise, return 'measured' if ANY DP category for this event has a measured value.
+    if (dpCategory) {
+      return measured.getMeasuredLift(matrixType, dpCategory) ? 'measured' : 'matrix';
+    }
+    for (const [dpCat, promoNames] of Object.entries(DP_TO_PROMO_CAT)) {
+      if (promoNames.some(p => e.category.toLowerCase().includes(p.toLowerCase()))) {
+        if (measured.getMeasuredLift(matrixType, dpCat)) return 'measured';
+      }
+    }
+    return 'matrix';
+  }, [measured]);
 
   // ── Methods ──────────────────────────────────────────────────────
   const addPromo = useCallback((event: Omit<PromoEvent, 'id' | 'skus' | 'liftPct' | 'liftSource' | 'confidence' | 'isNew'>) => {
@@ -388,7 +427,9 @@ export function PromoProvider({ children }: { children: ReactNode }) {
   const value = useMemo(() => ({
     events, addPromo, updatePromo, deletePromo, getLift, isOnPromo, getPromoEvents,
     liftBenchmarks: getLiftByType(),
-  }), [events, addPromo, updatePromo, deletePromo, getLift, isOnPromo, getPromoEvents]);
+    usingMeasuredLifts: measured.hasMeasured,
+    getLiftSource,
+  }), [events, addPromo, updatePromo, deletePromo, getLift, isOnPromo, getPromoEvents, measured.hasMeasured, getLiftSource]);
 
   return <PromoCtx.Provider value={value}>{children}</PromoCtx.Provider>;
 }

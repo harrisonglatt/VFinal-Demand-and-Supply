@@ -5301,5 +5301,117 @@ document.addEventListener('DOMContentLoaded', async () => {
   setInterval(updateLastUpdatedLabel, 60000);
 });
 </script>
+
+<script>
+// ─── Bridge: postMessage measured lifts to host (Little Spoon Retail OS) ────────
+// When the host page sends 'ls:promo-intel:request-sync', this iframe computes
+// type x dp-category aggregated lifts from the loaded sales data and posts them
+// back. The host then writes them to localStorage and PromoContext consults
+// those measured values before the hardcoded LIFT_MATRIX.
+(function () {
+  if (typeof window === 'undefined' || window.parent === window) return;
+
+  // tracker productLine -> PromoContext DP category
+  var DP_CAT_MAP = {
+    'BFY Snacks':       'Kids Snacks',
+    'Baby Cereal':      'Baby Snacks',
+    'Kids Lunchbox':    'Kids Snacks',
+    'Kids Meals':       'Frozen Multiserve',
+    'Smoothie Pouches': 'Smoothies',
+    'Toddler Snack':    'Baby Snacks',
+  };
+
+  function mapType(rawType) {
+    if (!rawType) return null;
+    var t = String(rawType).toLowerCase();
+    var hasCircle = t.indexOf('circle') >= 0;
+    var hasCospace = t.indexOf('co-space') >= 0 || t.indexOf('cospace') >= 0 || t.indexOf('endcap') >= 0;
+    if (hasCircle && hasCospace) return 'Circle + Co-space';
+    if (hasCospace) return 'Co-space';
+    if (t.indexOf('dwa') >= 0) return 'DWA';
+    if (t.indexOf('circle') >= 0) return 'Circle';
+    if (t.indexOf('bogo') >= 0) return 'BOGO';
+    if (t.indexOf('tpc') >= 0) return 'TPC';
+    return null;
+  }
+
+  function buildPayload() {
+    if (typeof computeAllLifts !== 'function' || typeof getCurrentOpts !== 'function') {
+      return { error: 'Tracker not initialized - load data first.' };
+    }
+    var opts;
+    try { opts = getCurrentOpts(); } catch (e) { return { error: 'getCurrentOpts failed: ' + e.message }; }
+    var rows;
+    try { rows = computeAllLifts(opts); } catch (e) { return { error: 'computeAllLifts failed: ' + e.message }; }
+    if (!rows || rows.length === 0) return { error: 'No rows computed - has data been loaded?' };
+
+    var agg = {};
+    var weeksSet = {};
+    var skipped = { noType: 0, noCat: 0, noPromo: 0 };
+
+    rows.forEach(function (r) {
+      if (!r.hasPromo) { skipped.noPromo++; return; }
+      var t = mapType(r.type);
+      if (!t) { skipped.noType++; return; }
+      var rawCat = r.sku && r.sku.productLine;
+      var dp = DP_CAT_MAP[rawCat];
+      if (!dp) { skipped.noCat++; return; }
+      var key = t + '|' + dp;
+      if (!agg[key]) {
+        agg[key] = { type: t, category: dp, n: 0, incSales: 0, baseSales: 0, incUnits: 0, baseUnits: 0 };
+      }
+      var bucket = agg[key];
+      bucket.n += 1;
+      bucket.incSales += (r.incSales || 0);
+      bucket.baseSales += (r.baseline && r.baseline.baseSales) || 0;
+      bucket.incUnits += (r.incUnits || 0);
+      bucket.baseUnits += (r.baseline && r.baseline.baseUnits) || 0;
+      if (r.week) weeksSet[r.week] = true;
+    });
+
+    var measuredLifts = {};
+    Object.keys(agg).forEach(function (k) {
+      var b = agg[k];
+      if (b.baseSales <= 0) return;
+      if (b.n < 3) return;
+      var liftPct = Math.round((b.incSales / b.baseSales) * 100);
+      if (liftPct < -50 || liftPct > 300) return;
+      measuredLifts[k] = {
+        type: b.type,
+        category: b.category,
+        liftPct: liftPct,
+        n: b.n,
+        incSales: Math.round(b.incSales),
+        baseSales: Math.round(b.baseSales),
+      };
+    });
+
+    var weeks = Object.keys(weeksSet).sort();
+    return {
+      measuredLifts: measuredLifts,
+      sampleCount: rows.length,
+      categoryCount: Object.keys(measuredLifts).length,
+      weeksCovered: weeks.length,
+      weekRange: weeks.length ? (weeks[0] + ' to ' + weeks[weeks.length - 1]) : null,
+      syncedAt: new Date().toISOString(),
+      skipped: skipped,
+    };
+  }
+
+  window.addEventListener('message', function (ev) {
+    if (!ev.data || ev.data.type !== 'ls:promo-intel:request-sync') return;
+    var payload = buildPayload();
+    window.parent.postMessage(
+      { type: 'ls:promo-intel:sync-response', payload: payload },
+      ev.origin || '*'
+    );
+  });
+
+  try {
+    window.parent.postMessage({ type: 'ls:promo-intel:ready' }, '*');
+  } catch (e) { /* ignore */ }
+})();
+</script>
+
 </body>
 </html>
