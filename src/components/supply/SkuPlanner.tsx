@@ -209,7 +209,7 @@ export default function SkuPlanner({
           label="Current WOC"
           before={recWithout?.currentWOC ?? 0}
           after={recWith?.currentWOC ?? 0}
-          format={(v) => v.toFixed(1)}
+          format={(v) => typeof v === 'number' ? v.toFixed(1) : '—'}
           better="up"
           target={sku.targetWOC}
           min={sku.minWOC}

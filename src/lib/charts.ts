@@ -93,10 +93,10 @@ export function initChartDefaults(): void {
   Chart.defaults.plugins.tooltip.displayColors = true;
   Chart.defaults.plugins.tooltip.boxPadding = 4;
 
-  // Scales
+  // Scales — border.display is set per-scale in brandXScale/brandYScale
+  // (the property isn't exposed on the global ScaleOptionsByType union).
   Chart.defaults.scale.grid.color = COLORS.gridLine;
   Chart.defaults.scale.grid.lineWidth = 1;
-  Chart.defaults.scale.border.display = false;
 
   // Element defaults
   Chart.defaults.elements.bar.borderRadius = 4;

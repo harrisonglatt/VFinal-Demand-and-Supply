@@ -61,9 +61,10 @@ export default function ChartProvider({ children }: ChartProviderProps) {
     ChartJS.defaults.plugins.tooltip.boxPadding = 4;
 
     // ─── Scales ─────────────────────────────────────────────────
+    // (border.display is set per-scale in brandXScale/brandYScale —
+    // it's not exposed on the global ScaleOptionsByType union.)
     ChartJS.defaults.scale.grid.color = LS.gray100;
     ChartJS.defaults.scale.grid.lineWidth = 1;
-    ChartJS.defaults.scale.border.display = false;
 
     // ─── Element defaults ───────────────────────────────────────
     ChartJS.defaults.elements.bar.borderRadius = 4;
