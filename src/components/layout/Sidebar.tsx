@@ -39,6 +39,7 @@ const NAV: NavSection[] = [
       { key: 'inventory', href: '/inventory', icon: '📦', label: 'Inventory Intel', badge: '12 OOS' },
       { key: 'shipment', href: '/shipment', icon: '🚚', label: 'Shipment Plan', badge: '52wk', badgeClass: 'b' },
       { key: 'potracker', href: '/po-tracker', icon: '🦉', label: 'PO Tracker', badge: 'Owlery', badgeClass: 'g' },
+      { key: 'potrackerweb', href: '/po-tracker-web', icon: '📥', label: 'PO Delivery Tracker', badge: 'CSV', badgeClass: 'b' },
     ],
   },
   {

@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Little Spoon — PO Delivery Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Mulish','Segoe UI','Helvetica Neue',Arial,sans-serif;background:#FFFEF8;color:#141414;padding:20px}
+
+/* ── Upload screen ───────────────────────────────────────────────────── */
+.upload-wrap{max-width:900px;margin:40px auto;background:#fff;padding:32px;border-radius:16px;box-shadow:0 2px 14px rgba(20,20,20,.08);border:1px solid #FBF7E8}
+.upload-wrap h1{font-size:28px;font-weight:900;letter-spacing:-.3px;margin-bottom:4px}
+.upload-wrap .subtitle{font-size:13px;color:#666;font-weight:600;margin-bottom:24px}
+.file-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:18px}
+.file-card{border:2px dashed #E8E3D0;border-radius:12px;padding:18px;background:#FBF7E8;transition:all .15s;cursor:pointer;position:relative}
+.file-card:hover{border-color:#00E3CD;background:#EFFDFA}
+.file-card.ready{border-color:#00E3CD;background:#D6F9F3;border-style:solid}
+.file-card.optional{background:#fff}
+.file-card.optional:hover{background:#EFFDFA}
+.file-card.ready.optional{background:#D6F9F3}
+.file-card .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#141414;margin-bottom:4px}
+.file-card .hint{font-size:11px;color:#666;font-weight:600;margin-bottom:10px}
+.file-card .fname{font-size:13px;color:#141414;font-weight:700;word-break:break-all;margin-top:6px;min-height:18px}
+.file-card input[type="file"]{display:none}
+.file-card .btn-pick{display:inline-block;padding:5px 12px;border:1.5px solid #141414;border-radius:20px;background:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.file-card.ready .btn-pick{background:#141414;color:#fff}
+.file-card .opt-tag{position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#666;background:#fff;border:1px solid #E8E3D0;padding:2px 6px;border-radius:10px}
+.build-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.build-row button{padding:10px 24px;font-size:14px;background:#141414;color:#fff;border:none;border-radius:24px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px;transition:all .15s}
+.build-row button:hover:not(:disabled){background:#00E3CD;color:#141414}
+.build-row button:disabled{opacity:.4;cursor:not-allowed}
+.build-row button.secondary{background:#fff;color:#141414;border:1.5px solid #141414}
+.build-row button.secondary:hover{background:#D6F9F3}
+.build-log{margin-top:18px;padding:14px 16px;border-radius:10px;background:#FBF7E8;font-family:'Roboto',monospace;font-size:12px;line-height:1.55;color:#333;max-height:280px;overflow:auto;display:none;font-variant-numeric:tabular-nums}
+.build-log.show{display:block}
+.build-log .ok{color:#059669;font-weight:700}
+.build-log .warn{color:#C2410C;font-weight:700}
+.build-log .err{color:#B91C1C;font-weight:700}
+.build-log table{width:auto;border-collapse:collapse;margin-top:4px;font-size:11px}
+.build-log td{padding:1px 10px 1px 0}
+.build-log td:nth-child(2),.build-log td:nth-child(3){text-align:right;font-variant-numeric:tabular-nums}
+
+/* ── Dashboard ───────────────────────────────────────────────────────── */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.header h1{font-size:24px;font-weight:900;color:#141414;letter-spacing:-.2px}
+.header .subtitle{font-size:12px;color:#666;font-weight:600}
+.header .reset-upload{padding:6px 14px;border:1.5px solid #141414;border-radius:20px;background:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.header .reset-upload:hover{background:#D6F9F3}
+.controls{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px;background:#fff;padding:14px 18px;border-radius:12px;box-shadow:0 1px 4px rgba(20,20,20,.07);border:1px solid #FBF7E8}
+.control-group{display:flex;flex-direction:column;gap:4px}
+.controls label{font-size:11px;font-weight:700;color:#141414;text-transform:uppercase;letter-spacing:.5px}
+.toggle-group{display:flex;border:1.5px solid #141414;border-radius:20px;overflow:hidden}
+.toggle-group button{padding:6px 16px;font-size:13px;border:none;cursor:pointer;background:#fff;color:#141414;font-weight:700;transition:all .15s;font-family:inherit}
+.toggle-group button.active{background:#141414;color:#fff}
+.tabs{display:flex;gap:2px;margin:6px 0 14px 0;border-bottom:2px solid #141414}
+.tab-btn{padding:9px 22px;font-size:13px;font-weight:700;background:#FBF7E8;color:#141414;border:1px solid #E8E3D0;border-bottom:none;border-radius:8px 8px 0 0;cursor:pointer;transition:all .15s;letter-spacing:.3px;font-family:inherit}
+.tab-btn:hover{background:#EAFDF4}
+.tab-btn.active{background:#141414;color:#fff;border-color:#141414;box-shadow:inset 0 -3px 0 #00E3CD}
+.hier-actions{display:flex;gap:8px;margin:0 0 10px 0;flex-wrap:wrap}
+.hier-actions button{padding:5px 14px;font-size:12px;background:#fff;color:#141414;border:1.5px solid #141414;border-radius:20px;cursor:pointer;font-weight:700;font-family:inherit}
+.hier-actions button:hover{background:#D6F9F3}
+.hier-actions .spacer{flex:1}
+.hier-actions .toggle-violations{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#141414}
+.stats{display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.stat-card{background:#fff;padding:12px 18px;border-radius:12px;box-shadow:0 1px 4px rgba(20,20,20,.07);min-width:130px;border:1px solid #FBF7E8}
+.stat-card .label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.stat-card .value{font-size:24px;font-weight:900;color:#141414;margin-top:2px;font-family:'Mulish',sans-serif}
+.stat-card.alert .value{color:#C2410C}
+.stat-card.alert{border-color:#FED7AA;background:#FFF7ED}
+.table-wrap{overflow:auto;max-height:calc(100vh - 360px);background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(20,20,20,.07);border:1px solid #FBF7E8}
+table{border-collapse:collapse;width:max-content;min-width:100%}
+thead th{position:sticky;top:0;z-index:2;background:#141414;color:#fff;font-size:11px;padding:8px 6px;text-align:center;white-space:nowrap;font-weight:700;letter-spacing:.3px}
+thead th:first-child{position:sticky;left:0;z-index:3;background:#141414;min-width:320px;text-align:left;padding-left:12px}
+tbody td{padding:5px 8px;text-align:center;font-size:12px;border-bottom:1px solid #F5F1DE;white-space:nowrap;font-family:'Roboto',sans-serif;font-variant-numeric:tabular-nums}
+tbody td:first-child{position:sticky;left:0;z-index:1;background:#fff;font-weight:500;text-align:left;padding-left:12px;min-width:320px;font-family:'Mulish',sans-serif}
+tbody tr:hover td{background:#EFFDFA}
+tbody tr:hover td:first-child{background:#D6F9F3}
+tbody tr.total-row td{background:#141414!important;color:#fff;font-weight:700;font-family:'Roboto',sans-serif;font-variant-numeric:tabular-nums}
+tbody tr.total-row td:first-child{background:#141414!important;font-family:'Mulish',sans-serif}
+tbody tr.lvl-parent td{background:#D6F9F3;font-weight:700;color:#141414}
+tbody tr.lvl-parent td:first-child{background:#D6F9F3}
+tbody tr.lvl-parent:hover td{background:#A8F0E4}
+tbody tr.lvl-parent:hover td:first-child{background:#A8F0E4}
+tbody tr.lvl-dc td{background:#EFFDFA}
+tbody tr.lvl-dc td:first-child{background:#EFFDFA;font-weight:600;padding-left:30px}
+tbody tr.lvl-dc:hover td{background:#D6F9F3}
+tbody tr.lvl-dc:hover td:first-child{background:#D6F9F3}
+tbody tr.lvl-sku td:first-child{padding-left:58px;font-weight:500}
+tbody tr.lvl-sku.partial-layer td:first-child{background:#FFF7ED;border-left:3px solid #EA580C}
+tbody tr.lvl-dc.dc-has-partial td:first-child{box-shadow:inset 3px 0 0 #EA580C}
+.caret{display:inline-block;width:14px;font-size:10px;color:#141414;cursor:pointer;text-align:center;user-select:none}
+.caret:hover{color:#00E3CD}
+.non-caret{display:inline-block;width:14px}
+.row-click{cursor:pointer}
+.zero{color:#bbb}.has-value{color:#141414;font-weight:500}
+.sku-name{font-size:11px;color:#666;font-weight:400;margin-left:4px}
+.warn-pill{display:inline-block;background:#EA580C;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:6px;font-family:'Roboto',sans-serif}
+.fb-tag{color:#C2410C;font-weight:700;margin-left:2px;cursor:help;font-size:12px;position:relative}
+#fbTip{position:fixed;z-index:9999;background:#141414;color:#fff;padding:8px 12px;border-radius:8px;font-size:11px;font-family:'Mulish',sans-serif;font-weight:600;line-height:1.5;box-shadow:0 4px 14px rgba(0,0,0,.28);pointer-events:none;display:none;max-width:320px;white-space:normal}
+#fbTip .fbTipTitle{color:#00E3CD;font-weight:700;letter-spacing:.3px;font-size:10px;text-transform:uppercase;margin-bottom:4px}
+#fbTip ul{margin:0;padding-left:14px}
+#fbTip li{margin:2px 0}
+.clean-pill{display:inline-block;background:#00E3CD;color:#141414;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:6px;font-family:'Roboto',sans-serif}
+.multi-select-wrap{position:relative;display:inline-block}
+.multi-select-btn{padding:6px 12px;border:1px solid #E8E3D0;border-radius:20px;font-size:13px;background:#fff;cursor:pointer;min-width:140px;max-width:210px;text-align:left;color:#141414;display:flex;justify-content:space-between;align-items:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:inherit;font-weight:600}
+.multi-select-btn::after{content:"\25BE";margin-left:8px;color:#666;flex-shrink:0}
+.multi-select-dropdown{position:absolute;top:100%;left:0;background:#fff;border:1px solid #E8E3D0;border-radius:12px;box-shadow:0 4px 12px rgba(20,20,20,.12);z-index:100;min-width:220px;max-height:320px;overflow-y:auto;display:none;padding:4px 0;margin-top:4px}
+.multi-select-dropdown.show{display:block}
+.multi-select-dropdown label{display:flex;align-items:center;padding:5px 12px;font-size:13px;cursor:pointer;gap:8px}
+.multi-select-dropdown label:hover{background:#EFFDFA}
+.multi-select-dropdown label.hidden{display:none}
+.multi-select-dropdown input[type="checkbox"]{accent-color:#00E3CD;flex-shrink:0}
+.select-actions{display:flex;gap:8px;padding:6px 12px;border-bottom:1px solid #F5F1DE;margin-bottom:2px}
+.select-actions a{font-size:11px;color:#141414;cursor:pointer;text-decoration:underline;font-weight:700}
+.dd-search{width:calc(100% - 24px);margin:6px 12px;padding:5px 10px;border:1px solid #E8E3D0;border-radius:12px;font-size:12px;font-family:inherit}
+.clear-btn{padding:6px 14px;border:1.5px solid #141414;border-radius:20px;font-size:12px;background:#fff;cursor:pointer;color:#141414;font-weight:700;font-family:inherit}
+.clear-btn:hover{background:#D6F9F3}
+.sku-panel{margin-top:16px;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(20,20,20,.07);border:1px solid #FBF7E8;overflow:hidden}
+.sku-panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:#FBF7E8;cursor:pointer;user-select:none;font-weight:700;color:#141414;font-size:13px;letter-spacing:.3px}
+.sku-panel-header .caret{font-size:14px;margin-right:8px}
+.sku-panel-header .hint{font-size:11px;color:#666;font-weight:600}
+.sku-panel-body{display:none;padding:14px 18px;max-height:500px;overflow:auto}
+.sku-panel.open .sku-panel-body{display:block}
+.sku-panel-actions{display:flex;gap:10px;margin-bottom:10px;align-items:center}
+.sku-panel-actions button{padding:5px 14px;font-size:12px;background:#fff;color:#141414;border:1.5px solid #141414;border-radius:20px;cursor:pointer;font-weight:700;font-family:inherit}
+.sku-panel-actions button:hover{background:#D6F9F3}
+.sku-panel-actions .search-input{padding:5px 12px;font-size:12px;border:1px solid #E8E3D0;border-radius:20px;min-width:220px;font-family:inherit}
+.sku-ref-table{width:100%;border-collapse:collapse;font-size:12px}
+.sku-ref-table thead th{position:sticky;top:0;background:#141414;color:#fff;padding:8px;text-align:left;font-size:11px;letter-spacing:.3px}
+.sku-ref-table tbody td{padding:6px 8px;border-bottom:1px solid #F5F1DE;font-family:'Roboto',sans-serif}
+.sku-ref-table tbody td.sku-cell{font-family:'Mulish',sans-serif;font-weight:700}
+.sku-ref-table input.layer-input{width:70px;padding:4px 8px;border:1px solid #E8E3D0;border-radius:6px;font-size:12px;font-family:inherit;text-align:center;font-variant-numeric:tabular-nums}
+.sku-ref-table input.layer-input:focus{outline:none;border-color:#00E3CD;box-shadow:0 0 0 2px rgba(0,227,205,.2)}
+.sku-ref-table input.layer-input.changed{background:#FFFBEB;border-color:#F59E0B}
+
+/* ── Custom Pivot builder ────────────────────────────────────────────── */
+.pivot-builder{background:#fff;border:1px solid #FBF7E8;border-radius:12px;padding:12px 16px;margin:0 0 14px 0;box-shadow:0 1px 4px rgba(20,20,20,.07);display:none;flex-direction:column;gap:9px}
+.pivot-builder.show{display:flex}
+.pivot-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pivot-lbl{font-size:11px;font-weight:700;color:#141414;text-transform:uppercase;letter-spacing:.5px;width:70px;flex-shrink:0}
+.pivot-chips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.pivot-chip{padding:5px 12px;border:1.5px solid #E8E3D0;border-radius:18px;background:#FBF7E8;font-size:12px;font-weight:700;cursor:pointer;color:#141414;font-family:inherit;transition:all .12s;user-select:none;line-height:1.2;display:inline-flex;align-items:center;gap:5px}
+.pivot-chip:hover{border-color:#00E3CD;background:#EFFDFA}
+.pivot-chip.active{background:#141414;color:#fff;border-color:#141414;box-shadow:inset 0 -3px 0 #00E3CD}
+.pivot-chip.active:hover{background:#222;color:#fff}
+.pivot-chip .pos{color:#00E3CD;font-family:'Roboto',sans-serif;font-variant-numeric:tabular-nums;font-size:11px;background:rgba(0,227,205,.12);padding:1px 5px;border-radius:8px}
+.pivot-spacer{flex:1}
+.pivot-hint{font-size:11px;color:#666;font-weight:600;font-style:italic}
+#pivotValueSel{padding:5px 14px;border:1.5px solid #141414;border-radius:18px;background:#fff;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;color:#141414}
+#pivotValueSel:focus{outline:none;border-color:#00E3CD;box-shadow:0 0 0 2px rgba(0,227,205,.2)}
+.pivot-builder .clear-btn{padding:5px 14px;font-size:12px}
+</style>
+</head>
+<body>
+
+<!-- ── UPLOAD SCREEN ───────────────────────────────────────────────────── -->
+<div id="uploadScreen" class="upload-wrap">
+  <h1>Little Spoon — PO Delivery Tracker</h1>
+  <div class="subtitle">Drop in your Extensiv exports + SKU Reference to build a live tracker. Everything runs in your browser — no data leaves this tab.</div>
+
+  <div class="file-grid">
+    <label class="file-card" id="cardItems" for="itemsFile">
+      <div class="lbl">Items CSV</div>
+      <div class="hint">Extensiv shipment/load detail export</div>
+      <span class="btn-pick">Choose file</span>
+      <div class="fname" id="nameItems"></div>
+      <input type="file" id="itemsFile" accept=".csv">
+    </label>
+
+    <label class="file-card" id="cardSales" for="salesFile">
+      <div class="lbl">Sales Orders CSV</div>
+      <div class="hint">Extensiv sales order export</div>
+      <span class="btn-pick">Choose file</span>
+      <div class="fname" id="nameSales"></div>
+      <input type="file" id="salesFile" accept=".csv">
+    </label>
+
+    <label class="file-card optional" id="cardRef" for="refFile">
+      <span class="opt-tag">Optional</span>
+      <div class="lbl">SKU Reference XLSX</div>
+      <div class="hint">Enables Layer Check + cost + descriptions</div>
+      <span class="btn-pick">Choose file</span>
+      <div class="fname" id="nameRef"></div>
+      <input type="file" id="refFile" accept=".xlsx,.xls">
+    </label>
+  </div>
+
+  <div class="build-row">
+    <button id="buildBtn" disabled>Build Tracker</button>
+    <button id="clearBtn" class="secondary">Clear</button>
+    <span style="font-size:12px;color:#666;font-weight:600">Items + Sales are required. SKU Reference is optional.</span>
+  </div>
+
+  <div id="buildLog" class="build-log"></div>
+</div>
+
+<!-- ── DASHBOARD SCREEN (hidden until built) ──────────────────────────── -->
+<div id="dashboardScreen" style="display:none">
+<div class="header">
+  <div>
+    <h1>Little Spoon — PO Delivery Tracker</h1>
+    <div class="subtitle">Ordered cases + delivery dates across every SKU, PO + DC</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="reset-upload" onclick="exportExcel()" style="background:#141414;color:#fff">Download Excel</button>
+    <button class="reset-upload" onclick="exportCurrentCsv()">Download CSV (current view)</button>
+    <button class="reset-upload" onclick="goBackToUpload()">Load new files</button>
+  </div>
+</div>
+<div class="controls">
+  <div class="control-group"><label>Status</label><div class="multi-select-wrap" id="statusWrap"><div class="multi-select-btn" id="statusBtn">All Statuses</div><div class="multi-select-dropdown" id="statusDropdown"></div></div></div>
+  <div class="control-group"><label>SKU</label><div class="multi-select-wrap" id="skuWrap"><div class="multi-select-btn" id="skuBtn">All SKUs</div><div class="multi-select-dropdown" id="skuDropdown"></div></div></div>
+  <div class="control-group"><label>PO #</label><div class="multi-select-wrap" id="poWrap"><div class="multi-select-btn" id="poBtn">All POs</div><div class="multi-select-dropdown" id="poDropdown"></div></div></div>
+  <div class="control-group"><label>Parent PO</label><div class="multi-select-wrap" id="parentWrap"><div class="multi-select-btn" id="parentBtn">All Parent POs</div><div class="multi-select-dropdown" id="parentDropdown"></div></div></div>
+  <div class="control-group"><label>Date Basis</label><div class="toggle-group"><button id="btnDeliv" class="active" onclick="setBasis('delivery')">Delivery</button><button id="btnPlan" onclick="setBasis('planned')">Planned Ship</button><button id="btnAct" onclick="setBasis('actual')">Actual Ship</button></div></div>
+  <div class="control-group"><label>View</label><div class="toggle-group"><button id="btnDays" class="active" onclick="setView('days')">Days</button><button id="btnWeeks" onclick="setView('weeks')">Weeks</button></div></div>
+  <div class="control-group"><label>&nbsp;</label><button class="clear-btn" onclick="resetAll()">Reset Filters</button></div>
+</div>
+<div class="tabs">
+  <button id="tabSku" class="tab-btn active" onclick="setGroup('sku')">By SKU</button>
+  <button id="tabPo" class="tab-btn" onclick="setGroup('po')">By PO</button>
+  <button id="tabHier" class="tab-btn" onclick="setGroup('hier')">Hierarchy (Parent PO &rarr; DC &rarr; SKU)</button>
+  <button id="tabLayer" class="tab-btn" onclick="setGroup('layer')">Layer Check</button>
+  <button id="tabPivot" class="tab-btn" onclick="setGroup('pivot')">Custom Pivot</button>
+</div>
+<div class="pivot-builder" id="pivotBuilder">
+  <div class="pivot-row">
+    <span class="pivot-lbl">Rows</span>
+    <div class="pivot-chips" id="pivotRowChips"></div>
+  </div>
+  <div class="pivot-row">
+    <span class="pivot-lbl">Columns</span>
+    <div class="pivot-chips" id="pivotColChips"></div>
+  </div>
+  <div class="pivot-row">
+    <span class="pivot-lbl">Value</span>
+    <select id="pivotValueSel" onchange="setPivotValue(this.value)"></select>
+    <span class="pivot-spacer"></span>
+    <button class="clear-btn" onclick="savePivotPreset()" title="Download current pivot setup as a JSON file you can re-load later">Save preset</button>
+    <button class="clear-btn" onclick="document.getElementById('pivotPresetFile').click()" title="Load a previously saved preset">Load preset</button>
+    <input type="file" id="pivotPresetFile" accept=".json" style="display:none" onchange="loadPivotPreset(this)">
+    <button class="clear-btn" onclick="resetPivot()">Reset</button>
+  </div>
+  <div class="pivot-hint">Click a field to add it to that section &bull; click again to remove &bull; numbers show row order &bull; Columns hold one field at most &bull; the top filters (Status / SKU / PO / Parent PO) still apply</div>
+</div>
+<div class="hier-actions" id="hierActions" style="display:none">
+  <button onclick="expandAll()">Expand All</button>
+  <button onclick="collapseAll()">Collapse All</button>
+  <button onclick="expandParents()">Parent + DC Only</button>
+  <div class="spacer"></div>
+  <label class="toggle-violations"><input type="checkbox" id="partialOnlyHier" onchange="render()"> Highlight partial-layer SKUs only</label>
+</div>
+<div class="hier-actions" id="layerActions" style="display:none">
+  <label class="toggle-violations"><input type="checkbox" id="partialOnly" onchange="render()"> Show partial layers only</label>
+  <div class="spacer"></div>
+  <button onclick="document.getElementById('skuPanel').classList.add('open');window.scrollTo(0,document.body.scrollHeight)">Open SKU Reference</button>
+</div>
+<div class="stats">
+  <div class="stat-card"><div class="label">Total Cases</div><div class="value" id="statTotal">0</div></div>
+  <div class="stat-card"><div class="label">Total Value</div><div class="value" id="statValue">$0</div></div>
+  <div class="stat-card"><div class="label">SKUs Shown</div><div class="value" id="statSKUs">0</div></div>
+  <div class="stat-card"><div class="label">POs Shown</div><div class="value" id="statPOs">0</div></div>
+  <div class="stat-card"><div class="label">Date Columns</div><div class="value" id="statDates">0</div></div>
+  <div class="stat-card alert"><div class="label">Partial-Layer DC &times; SKUs</div><div class="value" id="statPartial">0</div></div>
+  <div class="stat-card alert" id="statFbCard" style="display:none"><div class="label">Using Requested Delivery (No Ship Date)</div><div class="value" id="statFb">0</div></div>
+</div>
+<div id="basisLegend" style="display:none;font-size:11px;color:#666;font-weight:600;margin:-4px 0 10px 2px"><span class="fb-tag" style="margin:0 4px 0 0">*</span>Cell includes cases with no <span id="basisLegendName">ship</span> date — pivoted on requested delivery date as a fallback.</div>
+<div class="table-wrap"><table id="mainTable"><thead><tr><th>Loading...</th></tr></thead></table></div>
+
+<div class="sku-panel" id="skuPanel">
+  <div class="sku-panel-header" onclick="document.getElementById('skuPanel').classList.toggle('open')">
+    <span><span class="caret">&#9656;</span>SKU Reference + Layer Settings</span>
+    <span class="hint">Edit cases-per-layer to see live Layer Check updates &bull; first-occurrence wins</span>
+  </div>
+  <div class="sku-panel-body">
+    <div class="sku-panel-actions">
+      <input type="text" class="search-input" id="skuRefSearch" placeholder="Search SKU or description..." oninput="filterSkuRef(this.value)">
+      <button onclick="resetSkuRef()">Reset to defaults</button>
+      <span id="skuRefDirty" style="font-size:11px;color:#C2410C;font-weight:700;display:none">&bull; Unsaved overrides</span>
+    </div>
+    <table class="sku-ref-table" id="skuRefTable">
+      <thead><tr>
+        <th>SKU</th><th>Description</th><th>Cost / Each</th><th>Cost / Case</th>
+        <th>Units / Case</th><th>Cases / Layer</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<div id="fbTip"></div>
+
+<!-- ── External deps ──────────────────────────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════
+// UPLOAD LAYER — pick files, parse, join, verify, hand off to dashboard
+// ══════════════════════════════════════════════════════════════════════
+
+const pickedFiles = { items: null, sales: null, ref: null };
+
+function fileCard(id, nameId, key) {
+  const input = document.getElementById(id);
+  const nameEl = document.getElementById(nameId);
+  input.addEventListener('change', () => {
+    const f = input.files[0];
+    if (!f) return;
+    pickedFiles[key] = f;
+    nameEl.textContent = f.name;
+    input.closest('.file-card').classList.add('ready');
+    updateBuildBtn();
+  });
+}
+fileCard('itemsFile', 'nameItems', 'items');
+fileCard('salesFile', 'nameSales', 'sales');
+fileCard('refFile', 'nameRef', 'ref');
+
+function updateBuildBtn() {
+  document.getElementById('buildBtn').disabled = !(pickedFiles.items && pickedFiles.sales);
+}
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  ['items','sales','ref'].forEach(k => { pickedFiles[k] = null; });
+  ['itemsFile','salesFile','refFile'].forEach(id => { document.getElementById(id).value = ''; });
+  ['nameItems','nameSales','nameRef'].forEach(id => { document.getElementById(id).textContent = ''; });
+  document.querySelectorAll('.file-card').forEach(c => c.classList.remove('ready'));
+  document.getElementById('buildLog').className = 'build-log';
+  document.getElementById('buildLog').innerHTML = '';
+  updateBuildBtn();
+});
+
+document.getElementById('buildBtn').addEventListener('click', async () => {
+  try {
+    await buildTracker();
+  } catch (err) {
+    console.error(err);
+    logLine('<span class="err">ERROR:</span> ' + (err.message || err), true);
+  }
+});
+
+function logLine(html, isHtml) {
+  const el = document.getElementById('buildLog');
+  el.classList.add('show');
+  el.innerHTML += (isHtml ? html : escapeHtml(html)) + '<br>';
+  el.scrollTop = el.scrollHeight;
+}
+function clearLog() {
+  const el = document.getElementById('buildLog');
+  el.className = 'build-log show';
+  el.innerHTML = '';
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+function readFileText(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+    r.readAsText(file);
+  });
+}
+function readFileBuffer(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+    r.readAsArrayBuffer(file);
+  });
+}
+
+function parseCsv(text) {
+  const res = Papa.parse(text, { header: true, skipEmptyLines: true, dynamicTyping: false });
+  return res.data;
+}
+
+// ── Logic ported from build_tracker.py ──────────────────────────────
+function parseDeliveryDate(d) {
+  if (d == null) return null;
+  let s = String(d).trim();
+  if (!s || s.toLowerCase() === 'nan') return null;
+  if (s.includes(' - ')) s = s.split(' - ')[0].trim();
+  if (s.includes(',')) s = s.split(',')[0].trim();
+  // Prefer strict M/D/YYYY
+  let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) return new Date(parseInt(m[3]), parseInt(m[1]) - 1, parseInt(m[2]));
+  // Fallback to JS Date parser (ISO etc.)
+  const d2 = new Date(s);
+  return isNaN(d2.getTime()) ? null : new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
+}
+
+function getSunday(d) {
+  // JS: Sunday = 0, so subtracting d.getDay() always lands on Sunday.
+  const r = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  r.setDate(r.getDate() - r.getDay());
+  return r;
+}
+
+const STATUS_MAP = {
+  'open': 'Open', 'Open': 'Open',
+  'Planned': 'Planned', 'planned': 'Planned',
+  'InProgress': 'In Progress', 'in_progress': 'In Progress',
+  'Delivered': 'Delivered', 'delivered': 'Delivered',
+  'Completed': 'Completed', 'completed': 'Completed',
+  'cancelled': 'Cancelled', 'Cancelled': 'Cancelled',
+};
+function titleCase(s) {
+  // Approximate Python's str.title() (word-boundary aware)
+  return String(s).toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+}
+function normalizeStatus(s) {
+  if (STATUS_MAP[s]) return STATUS_MAP[s];
+  if (typeof s === 'string' && s.length > 0) return titleCase(s);
+  return 'Unknown';
+}
+
+function parentPoFromRef(ref) {
+  if (ref == null) return '#N/A';
+  const s = String(ref).trim();
+  if (!s || s.toLowerCase() === 'nan') return '#N/A';
+  const first = s.split(',')[0].trim();
+  if (!first) return '#N/A';
+  const stripped = first.replace(/-\d{3,4}$/, '');
+  return stripped || '#N/A';
+}
+
+function toInt(v) {
+  if (v == null || v === '') return 0;
+  const n = parseFloat(String(v).replace(/,/g, ''));
+  return isNaN(n) ? 0 : Math.round(n);
+}
+
+function getStatus(row) {
+  const order = String(row['Order Status'] || '').trim();
+  const load = String(row['Load Status'] || '').trim();
+  if (load && load !== 'nan') return load;
+  if (order && order !== 'nan') return order;
+  return 'Unknown';
+}
+
+function joinFiles(items, sales) {
+  const refLookup = {}, orderLookup = {};
+  sales.forEach(row => {
+    const status = getStatus(row);
+    const info = {
+      dropoff: row['Dropoff Date'],
+      order: String(row['Order #'] || ''),
+      reference: String(row['Reference #s'] || ''),
+      tp: String(row['Trading Partner'] || ''),
+      status,
+    };
+    String(row['Reference #s'] || '').split(',').forEach(ref => {
+      const r = ref.trim();
+      if (r && r.toLowerCase() !== 'nan') refLookup[r] = info;
+    });
+    const ord = String(row['Order #'] || '').trim();
+    if (ord && ord.toLowerCase() !== 'nan') orderLookup[ord] = info;
+  });
+
+  const results = [];
+  items.forEach(row => {
+    const sku = row['Item'];
+    const ordered = toInt(row['Ordered']);
+    let matched = null;
+    const refs = String(row['Reference #s'] || '').trim();
+    if (refs && refs.toLowerCase() !== 'nan') {
+      for (const ref of refs.split(',')) {
+        const r = ref.trim();
+        if (refLookup[r]) { matched = refLookup[r]; break; }
+      }
+    }
+    if (!matched) {
+      const load = String(row['Order/Load Number'] || '').trim();
+      if (orderLookup[load]) matched = orderLookup[load];
+    }
+    const shipPlanned = parseDeliveryDate(row['Scheduled Pickup Start']);
+    const shipActual = parseDeliveryDate(row['Actual Pickup Start'])
+                    || parseDeliveryDate(row['Actual Pickup'])
+                    || parseDeliveryDate(row['Actual Pickup Date'])
+                    || parseDeliveryDate(row['Pickup Date'])
+                    || parseDeliveryDate(row['Shipped Date'])
+                    || parseDeliveryDate(row['Ship Date']);
+    if (matched) {
+      let dp = parseDeliveryDate(matched.dropoff);
+      if (!dp) dp = parseDeliveryDate(row['Scheduled Dropoff Start']);
+      results.push({
+        sku, ordered, date: dp,
+        shipPlanned, shipActual,
+        status: normalizeStatus(matched.status),
+        po: matched.order,
+        reference: matched.reference,
+        tp: matched.tp,
+      });
+    } else {
+      results.push({
+        sku, ordered, date: null, shipPlanned, shipActual, status: 'Unknown',
+        po: String(row['Order/Load Number'] || ''),
+        reference: String(row['Reference #s'] || ''),
+        tp: '',
+      });
+    }
+  });
+  return results;
+}
+
+function verifyTotals(items, joined) {
+  const bySkuSrc = {}, bySkuTrk = {};
+  items.forEach(r => {
+    const sku = r['Item']; if (!sku) return;
+    bySkuSrc[sku] = (bySkuSrc[sku] || 0) + toInt(r['Ordered']);
+  });
+  joined.forEach(r => {
+    const sku = r.sku; if (!sku) return;
+    bySkuTrk[sku] = (bySkuTrk[sku] || 0) + r.ordered;
+  });
+  const allSkus = Array.from(new Set([...Object.keys(bySkuSrc), ...Object.keys(bySkuTrk)])).sort();
+  let allMatch = true;
+  const rows = [];
+  let srcTot = 0, trkTot = 0;
+  allSkus.forEach(sku => {
+    const src = bySkuSrc[sku] || 0;
+    const trk = bySkuTrk[sku] || 0;
+    srcTot += src; trkTot += trk;
+    const ok = src === trk;
+    if (!ok) allMatch = false;
+    rows.push({ sku, src, trk, ok });
+  });
+  return { allMatch, rows, srcTot, trkTot };
+}
+
+// ── SKU Reference ingestion (XLSX) ──────────────────────────────────
+function toFloat(v) {
+  if (v == null || v === '') return null;
+  const n = parseFloat(String(v).replace(/,/g, '').replace(/\$/g, ''));
+  return isNaN(n) ? null : n;
+}
+function loadSkuRef(arrayBuffer) {
+  const wb = XLSX.read(arrayBuffer, { type: 'array' });
+  const sheet = wb.Sheets[wb.SheetNames[0]];
+  // Produce array-of-arrays, header: 1 gives raw rows
+  const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
+  const ref = {};
+  // Start at row 2 (index 1) — row 1 is header
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r) continue;
+    const sku = r[0];
+    if (sku == null || String(sku).trim() === '') continue;
+    const key = String(sku).trim();
+    if (ref[key]) continue; // first occurrence wins
+    let cpl = toFloat(r[9]);
+    if (cpl != null && cpl <= 0) cpl = null;
+    ref[key] = {
+      name: String(r[1] || '').trim(),
+      cost_case: toFloat(r[5]),
+      units_case: toFloat(r[6]),
+      cost_each: toFloat(r[7]),
+      cs_per_layer: cpl,
+    };
+  }
+  return ref;
+}
+
+// ── Orchestration ──────────────────────────────────────────────────
+async function buildTracker() {
+  clearLog();
+  logLine('<span class="ok">&#10003;</span> Reading files...', true);
+
+  const [itemsText, salesText, refBuf] = await Promise.all([
+    readFileText(pickedFiles.items),
+    readFileText(pickedFiles.sales),
+    pickedFiles.ref ? readFileBuffer(pickedFiles.ref) : Promise.resolve(null),
+  ]);
+
+  const items = parseCsv(itemsText);
+  const sales = parseCsv(salesText);
+  logLine('&nbsp;&nbsp;Items: <b>' + items.length.toLocaleString() + '</b> rows · Sales: <b>' + sales.length.toLocaleString() + '</b> rows', true);
+
+  const skuRef = refBuf ? loadSkuRef(refBuf) : {};
+  if (pickedFiles.ref) {
+    logLine('<span class="ok">&#10003;</span> Loaded SKU reference: <b>' + Object.keys(skuRef).length + '</b> SKUs', true);
+  } else {
+    logLine('<span class="warn">!</span> No SKU Reference uploaded &mdash; Layer Check will show "no ref" rows', true);
+  }
+
+  logLine('<span class="ok">&#10003;</span> Joining files...', true);
+  const joined = joinFiles(items, sales);
+
+  logLine('<span class="ok">&#10003;</span> Verifying totals...', true);
+  const ver = verifyTotals(items, joined);
+  if (ver.allMatch) {
+    logLine('&nbsp;&nbsp;<span class="ok">All ' + ver.rows.length + ' SKUs tied out</span> &bull; Total cases: <b>' + ver.srcTot.toLocaleString() + '</b>', true);
+  } else {
+    logLine('<span class="err">! Mismatches detected:</span>', true);
+    let tbl = '<table>';
+    ver.rows.filter(r => !r.ok).forEach(r => {
+      tbl += '<tr><td>' + escapeHtml(r.sku) + '</td><td>' + r.src.toLocaleString() + '</td><td>' + r.trk.toLocaleString() + '</td></tr>';
+    });
+    tbl += '</table>';
+    logLine(tbl, true);
+  }
+
+  // Build payload in same shape the dashboard expects
+  const dated = joined.filter(r => r.date != null);
+  const payload = buildPayload(dated, skuRef);
+
+  logLine('<span class="ok">&#10003;</span> Rendering dashboard...', true);
+  setTimeout(() => initDashboard(payload), 150); // let the log render
+}
+
+function ymd(d) {
+  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), da = String(d.getDate()).padStart(2,'0');
+  return y + '-' + m + '-' + da;
+}
+
+function buildPayload(dated, skuRefIn) {
+  const agg = {};
+  dated.forEach(r => {
+    const parent = parentPoFromRef(r.reference);
+    let tp = String(r.tp || '').trim();
+    if (!tp || tp.toLowerCase() === 'nan') tp = '#N/A';
+    const pKey = r.shipPlanned ? ymd(r.shipPlanned) : '';
+    const aKey = r.shipActual ? ymd(r.shipActual) : '';
+    const key = [parent, tp, r.po, r.sku, ymd(r.date), pKey, aKey, r.status].join('||');
+    if (!agg[key]) {
+      agg[key] = {
+        sku: r.sku,
+        date: ymd(r.date),
+        ship_planned: pKey || null,
+        ship_actual: aKey || null,
+        status: r.status,
+        po: r.po,
+        tp,
+        parent_po: parent,
+        qty: 0,
+      };
+    }
+    agg[key].qty += r.ordered;
+  });
+  const data = Object.values(agg);
+  const skuSet = new Set(), statusSet = new Set(), poSet = new Set(), parentSet = new Set();
+  data.forEach(r => { skuSet.add(r.sku); statusSet.add(r.status); poSet.add(r.po); parentSet.add(r.parent_po); });
+
+  // Backfill skuRef so every SKU in data has an entry
+  const skuRef = { ...(skuRefIn || {}) };
+  skuSet.forEach(s => {
+    if (!skuRef[s]) {
+      skuRef[s] = { name: '', cost_case: null, units_case: null, cost_each: null, cs_per_layer: null };
+    }
+  });
+
+  const cmpKey = (a, b) => {
+    const na = parseFloat(a), nb = parseFloat(b);
+    if (!isNaN(na) && !isNaN(nb)) return na - nb;
+    return String(a).localeCompare(String(b));
+  };
+  return {
+    data,
+    skus: [...skuSet].sort(cmpKey),
+    statuses: [...statusSet].sort(cmpKey),
+    pos: [...poSet].sort(cmpKey),
+    parents: [...parentSet].sort(cmpKey),
+    skuRef,
+  };
+}
+
+function goBackToUpload() {
+  document.getElementById('dashboardScreen').style.display = 'none';
+  document.getElementById('uploadScreen').style.display = 'block';
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// DASHBOARD LAYER — identical to Python-generated output
+// ══════════════════════════════════════════════════════════════════════
+
+let RAW, allData, allSKUs, allStatuses, allPOs, allParents, skuRefDefaults, skuRef;
+let currentView = 'days', currentGroup = 'sku', currentBasis = 'delivery';
+let selectedStatuses, selectedSKUs, selectedPOs, selectedParents;
+let expandedParents = new Set(), expandedDCs = new Set();
+let dashboardInitialized = false;
+
+function initDashboard(payload) {
+  RAW = payload;
+  allData = RAW.data;
+  allSKUs = RAW.skus;
+  allStatuses = RAW.statuses;
+  allPOs = RAW.pos;
+  allParents = RAW.parents;
+  skuRefDefaults = RAW.skuRef;
+  skuRef = JSON.parse(JSON.stringify(skuRefDefaults));
+
+  selectedStatuses = new Set(allStatuses);
+  selectedSKUs = new Set(allSKUs);
+  selectedPOs = new Set(allPOs);
+  selectedParents = new Set(allParents);
+  expandedParents = new Set();
+  expandedDCs = new Set();
+
+  document.getElementById('uploadScreen').style.display = 'none';
+  document.getElementById('dashboardScreen').style.display = 'block';
+
+  if (!dashboardInitialized) {
+    initDD('statusWrap','statusBtn','statusDropdown',allStatuses,selectedStatuses,render,'All Statuses',false);
+    initDD('skuWrap','skuBtn','skuDropdown',allSKUs,selectedSKUs,render,'All SKUs',true);
+    initDD('poWrap','poBtn','poDropdown',allPOs,selectedPOs,render,'All POs',true);
+    initDD('parentWrap','parentBtn','parentDropdown',allParents,selectedParents,render,'All Parent POs',true);
+    dashboardInitialized = true;
+  } else {
+    // Rebuild dropdowns for the fresh data
+    rebuildDD('statusWrap','statusBtn','statusDropdown',allStatuses,selectedStatuses,'All Statuses',false);
+    rebuildDD('skuWrap','skuBtn','skuDropdown',allSKUs,selectedSKUs,'All SKUs',true);
+    rebuildDD('poWrap','poBtn','poDropdown',allPOs,selectedPOs,'All POs',true);
+    rebuildDD('parentWrap','parentBtn','parentDropdown',allParents,selectedParents,'All Parent POs',true);
+  }
+  buildSkuRefTable();
+  buildPivotChips();
+  render();
+  window.scrollTo(0, 0);
+}
+
+function skuLabel(sku) {
+  const r = skuRef[sku];
+  if (!r || !r.name) return sku;
+  return sku + ' <span class="sku-name">&mdash; ' + r.name + '</span>';
+}
+function cpLayer(sku) { const r = skuRef[sku]; return r && r.cs_per_layer ? r.cs_per_layer : null; }
+function costCase(sku) { const r = skuRef[sku]; return r && r.cost_case ? r.cost_case : null; }
+
+function initDD(wId, bId, dId, items, sel, onChange, allLbl, search) {
+  const dd = document.getElementById(dId);
+  renderDDContent(dd, items, sel, search);
+  wireDD(dd, bId, dId, items, sel, onChange, allLbl, wId);
+}
+function rebuildDD(wId, bId, dId, items, sel, allLbl, search) {
+  const dd = document.getElementById(dId);
+  renderDDContent(dd, items, sel, search);
+  updBtn(bId, sel, items.length, allLbl);
+  // Re-wire checkbox handlers since innerHTML was replaced
+  dd.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      if (cb.checked) sel.add(cb.value); else sel.delete(cb.value);
+      updBtn(bId, sel, items.length, allLbl);
+      render();
+    });
+  });
+}
+function renderDDContent(dd, items, sel, search) {
+  const dId = dd.id;
+  let h = '<div class="select-actions"><a onclick="selAll_' + dId + '()">All</a> <a onclick="selNone_' + dId + '()">None</a></div>';
+  if (search) h += '<input type="text" class="dd-search" placeholder="Search..." oninput="fDD_' + dId + '(this.value)">';
+  items.forEach(i => {
+    h += '<label data-val="' + String(i).toLowerCase() + '"><input type="checkbox" value="' + String(i).replace(/"/g,'&quot;') + '" ' + (sel.has(i)?'checked':'') + '>' + escapeHtml(i) + '</label>';
+  });
+  dd.innerHTML = h;
+  window['selAll_' + dId] = () => { dd.querySelectorAll('label:not(.hidden) input[type="checkbox"]').forEach(c => { c.checked = true; sel.add(c.value); }); updBtn_byId(dId, sel, items.length); render(); };
+  window['selNone_' + dId] = () => { dd.querySelectorAll('label:not(.hidden) input[type="checkbox"]').forEach(c => { c.checked = false; sel.delete(c.value); }); updBtn_byId(dId, sel, items.length); render(); };
+  window['fDD_' + dId] = (q) => { q = q.toLowerCase(); dd.querySelectorAll('label').forEach(l => l.classList.toggle('hidden', !l.dataset.val.includes(q))); };
+}
+// Map dropdown id -> (btn id, all-label). Used by selAll/selNone helpers.
+const _ddMap = {
+  statusDropdown: { btn:'statusBtn', lbl:'All Statuses' },
+  skuDropdown:    { btn:'skuBtn',    lbl:'All SKUs' },
+  poDropdown:     { btn:'poBtn',     lbl:'All POs' },
+  parentDropdown: { btn:'parentBtn', lbl:'All Parent POs' },
+};
+function updBtn_byId(dId, sel, tot) {
+  const m = _ddMap[dId]; if (!m) return;
+  updBtn(m.btn, sel, tot, m.lbl);
+}
+function wireDD(dd, bId, dId, items, sel, onChange, allLbl, wId) {
+  dd.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      if (cb.checked) sel.add(cb.value); else sel.delete(cb.value);
+      updBtn(bId, sel, items.length, allLbl);
+      onChange();
+    });
+  });
+  document.getElementById(wId).querySelector('.multi-select-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    document.querySelectorAll('.multi-select-dropdown.show').forEach(d => { if (d.id !== dId) d.classList.remove('show'); });
+    dd.classList.toggle('show');
+  });
+}
+function updBtn(bId, sel, tot, allLbl) {
+  const b = document.getElementById(bId);
+  if (!sel.size) b.textContent = 'None';
+  else if (sel.size === tot) b.textContent = allLbl;
+  else if (sel.size <= 2) b.textContent = [...sel].join(', ');
+  else b.textContent = sel.size + ' selected';
+}
+document.addEventListener('click', () => { document.querySelectorAll('.multi-select-dropdown.show').forEach(d => d.classList.remove('show')); });
+document.querySelectorAll('.multi-select-dropdown').forEach(d => d.addEventListener('click', e => e.stopPropagation()));
+
+function getSundayStr(s) { const d = new Date(s + 'T00:00:00'); d.setDate(d.getDate() - d.getDay()); return d.toISOString().split('T')[0]; }
+function fmtDate(s) { const [y,m,d] = s.split('-'); return parseInt(m) + '/' + parseInt(d) + '/' + y; }
+function fmtWeek(s) { const sun = new Date(s + 'T00:00:00'), sat = new Date(sun); sat.setDate(sat.getDate() + 6); const f = d => (d.getMonth()+1) + '/' + d.getDate(); return f(sun) + ' - ' + f(sat) + '/' + sat.getFullYear(); }
+function cmpKey(a, b) { const na = parseFloat(a), nb = parseFloat(b); if (!isNaN(na) && !isNaN(nb)) return na - nb; return String(a).localeCompare(String(b)); }
+function filteredRows() { return allData.filter(r => selectedStatuses.has(r.status) && selectedSKUs.has(r.sku) && selectedPOs.has(r.po) && selectedParents.has(r.parent_po)); }
+function bucketKey(d) { return currentView === 'weeks' ? getSundayStr(d) : d; }
+function getRowDate(r) {
+  if (currentBasis === 'delivery') return { date: r.date, source: 'delivery' };
+  if (currentBasis === 'planned') {
+    if (r.ship_planned) return { date: r.ship_planned, source: 'planned' };
+    return { date: r.date, source: 'delivery' };
+  }
+  if (r.ship_actual) return { date: r.ship_actual, source: 'actual' };
+  if (r.ship_planned) return { date: r.ship_planned, source: 'planned' };
+  return { date: r.date, source: 'delivery' };
+}
+function expectedSource() { return currentBasis === 'delivery' ? 'delivery' : currentBasis === 'planned' ? 'planned' : 'actual'; }
+function rowBucket(r) {
+  const g = getRowDate(r);
+  if (!g.date) return null;
+  return { k: currentView === 'weeks' ? getSundayStr(g.date) : g.date, source: g.source, fallback: g.source !== expectedSource() };
+}
+function sourceLabel(s) { return s === 'actual' ? 'Actual Pickup' : s === 'planned' ? 'Scheduled Pickup' : 'Requested Delivery'; }
+function _cellMark(sk) {
+  if (!sk) return '';
+  const exp = expectedSource();
+  const parts = [];
+  if (sk.actual)   parts.push({ src: 'actual',   label: 'Actual Pickup',      qty: sk.actual,   fb: exp !== 'actual' });
+  if (sk.planned)  parts.push({ src: 'planned',  label: 'Scheduled Pickup',   qty: sk.planned,  fb: exp !== 'planned' });
+  if (sk.delivery) parts.push({ src: 'delivery', label: 'Requested Delivery', qty: sk.delivery, fb: exp !== 'delivery' });
+  const hasFallback = parts.some(p => p.fb);
+  if (!hasFallback) return '';
+  const payload = JSON.stringify(parts).replace(/"/g, '&quot;');
+  return '<span class="fb-tag" data-fb="' + payload + '">*</span>';
+}
+
+function _fbTipShow(e, el) {
+  const tip = document.getElementById('fbTip');
+  let parts;
+  try { parts = JSON.parse(el.dataset.fb); } catch (e2) { return; }
+  const total = parts.reduce((a, p) => a + p.qty, 0);
+  let html = '<div class="fbTipTitle">Source breakdown (' + total.toLocaleString() + ' cs)</div><ul>';
+  parts.forEach(p => {
+    const pct = total > 0 ? ' (' + Math.round(p.qty * 100 / total) + '%)' : '';
+    html += '<li>' + (p.fb ? '<span style="color:#FDBA74">↳ fallback</span> ' : '') + '<b>' + p.qty.toLocaleString() + '</b> cs · ' + p.label + pct + '</li>';
+  });
+  html += '</ul>';
+  tip.innerHTML = html;
+  tip.style.display = 'block';
+  _fbTipMove(e);
+}
+function _fbTipMove(e) {
+  const tip = document.getElementById('fbTip');
+  if (tip.style.display !== 'block') return;
+  const pad = 14;
+  let x = e.clientX + pad, y = e.clientY + pad;
+  const rect = tip.getBoundingClientRect();
+  if (x + rect.width  > window.innerWidth)  x = e.clientX - rect.width  - pad;
+  if (y + rect.height > window.innerHeight) y = e.clientY - rect.height - pad;
+  tip.style.left = x + 'px';
+  tip.style.top  = y + 'px';
+}
+function _fbTipHide() { document.getElementById('fbTip').style.display = 'none'; }
+document.addEventListener('mouseover', e => { const t = e.target.closest('.fb-tag'); if (t && t.dataset.fb) _fbTipShow(e, t); });
+document.addEventListener('mousemove', e => { if (e.target.closest('.fb-tag')) _fbTipMove(e); });
+document.addEventListener('mouseout',  e => { if (e.target.closest('.fb-tag')) _fbTipHide(); });
+function basisLabel() { return currentBasis === 'delivery' ? 'Delivery' : currentBasis === 'planned' ? 'Planned Ship' : 'Actual Ship'; }
+function fmtMoney(n) { if (!n || isNaN(n)) return '-'; if (n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M'; if (n >= 1e3) return '$' + (n/1e3).toFixed(1) + 'K'; return '$' + n.toFixed(0); }
+function fmtMoneyFull(n) { if (!n || isNaN(n)) return '-'; return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+function dcRollup(fil) {
+  const map = {};
+  fil.forEach(r => {
+    const k = r.parent_po + '|' + (r.tp || '#N/A') + '|' + r.sku;
+    if (!map[k]) map[k] = { parent: r.parent_po, dc: r.tp || '#N/A', sku: r.sku, qty: 0 };
+    map[k].qty += r.qty;
+  });
+  return Object.values(map).map(x => {
+    const cpl = cpLayer(x.sku), cc = costCase(x.sku);
+    let layers = null, rem = null, status = 'no-ref';
+    if (cpl) { layers = x.qty / cpl; rem = x.qty % cpl; status = (rem === 0) ? 'clean' : 'partial'; }
+    return { ...x, cpl, layers, rem, status, desc: (skuRef[x.sku] && skuRef[x.sku].name) || '', value: cc ? x.qty * cc : null };
+  });
+}
+function computeTotalValue(fil) {
+  let v = 0;
+  fil.forEach(r => { const cc = costCase(r.sku); if (cc) v += r.qty * cc; });
+  return v;
+}
+
+function renderFlat(fil, groupFn, headerLabel, isSkuGroup) {
+  const piv = {}, src = {}, ds = new Set();
+  fil.forEach(r => {
+    const rb = rowBucket(r); if (!rb) return;
+    const g = groupFn(r);
+    if (!piv[g]) { piv[g] = {}; src[g] = {}; }
+    piv[g][rb.k] = (piv[g][rb.k] || 0) + r.qty;
+    const sk = src[g][rb.k] = src[g][rb.k] || { actual: 0, planned: 0, delivery: 0 };
+    sk[rb.source] += r.qty;
+    ds.add(rb.k);
+  });
+  const dates = [...ds].sort();
+  const rowKeys = Object.keys(piv).sort(cmpKey);
+  let h = '<thead><tr><th>' + headerLabel + '</th>';
+  dates.forEach(d => { h += '<th>' + (currentView === 'weeks' ? fmtWeek(d) : fmtDate(d)) + '</th>'; });
+  h += '<th>Total</th></tr></thead><tbody>';
+  const ct = new Array(dates.length).fill(0); let gt = 0;
+  rowKeys.forEach(key => {
+    let rt = 0;
+    const lbl = isSkuGroup ? skuLabel(key) : key;
+    h += '<tr><td>' + lbl + '</td>';
+    dates.forEach((d, i) => {
+      const v = piv[key][d] || 0; rt += v; ct[i] += v;
+      const sk = (src[key] && src[key][d]) || null;
+      const mark = _cellMark(sk);
+      h += '<td class="' + (v > 0 ? 'has-value' : 'zero') + '">' + (v > 0 ? v.toLocaleString() + mark : '-') + '</td>';
+    });
+    gt += rt; h += '<td class="has-value" style="font-weight:700;background:#D3FBEC">' + rt.toLocaleString() + '</td></tr>';
+  });
+  h += '<tr class="total-row"><td>TOTAL</td>';
+  ct.forEach(v => { h += '<td>' + v.toLocaleString() + '</td>'; });
+  h += '<td>' + gt.toLocaleString() + '</td></tr></tbody>';
+  return h;
+}
+
+function renderHier(fil) {
+  const roll = dcRollup(fil);
+  const partialSet = new Set(), dcPartialSet = new Set();
+  roll.forEach(x => { if (x.status === 'partial') { partialSet.add(x.parent + '|' + x.dc + '|' + x.sku); dcPartialSet.add(x.parent + '|' + x.dc); } });
+  const partialOnly = document.getElementById('partialOnlyHier') && document.getElementById('partialOnlyHier').checked;
+
+  const tree = {}, ds = new Set();
+  fil.forEach(r => {
+    const rb = rowBucket(r); if (!rb) return;
+    const k = rb.k; const p = r.parent_po, dc = r.tp || '#N/A', s = r.sku;
+    if (!tree[p]) tree[p] = { _tot: {}, _src: {}, dcs: {} };
+    if (!tree[p].dcs[dc]) tree[p].dcs[dc] = { _tot: {}, _src: {}, skus: {} };
+    if (!tree[p].dcs[dc].skus[s]) tree[p].dcs[dc].skus[s] = { _tot: 0, dates: {}, src: {} };
+    const _bump = (obj, key, src, qty) => {
+      obj[key] = (obj[key] || 0) + qty;
+      const m = obj; // not used
+    };
+    tree[p]._tot[k] = (tree[p]._tot[k] || 0) + r.qty;
+    tree[p].dcs[dc]._tot[k] = (tree[p].dcs[dc]._tot[k] || 0) + r.qty;
+    tree[p].dcs[dc].skus[s].dates[k] = (tree[p].dcs[dc].skus[s].dates[k] || 0) + r.qty;
+    tree[p].dcs[dc].skus[s]._tot += r.qty;
+    const addSrc = (bucket, qty) => { const b = bucket[k] = bucket[k] || { actual: 0, planned: 0, delivery: 0 }; b[rb.source] += qty; };
+    addSrc(tree[p]._src, r.qty);
+    addSrc(tree[p].dcs[dc]._src, r.qty);
+    addSrc(tree[p].dcs[dc].skus[s].src, r.qty);
+    ds.add(k);
+  });
+  const dates = [...ds].sort();
+  const parents = Object.keys(tree).sort(cmpKey);
+  let h = '<thead><tr><th>Parent PO &nbsp;/&nbsp; DC &nbsp;/&nbsp; SKU</th>';
+  dates.forEach(d => { h += '<th>' + (currentView === 'weeks' ? fmtWeek(d) : fmtDate(d)) + '</th>'; });
+  h += '<th>Total</th></tr></thead><tbody>';
+  const gct = new Array(dates.length).fill(0); let gt = 0;
+  parents.forEach(p => {
+    const pData = tree[p]; let pTot = 0;
+    const openP = expandedParents.has(p);
+    h += '<tr class="lvl-parent row-click" onclick="toggleParent(\'' + escAttr(p) + '\')"><td><span class="caret">' + (openP ? '&#9660;' : '&#9654;') + '</span> ' + escapeHtml(p) + '</td>';
+    dates.forEach((d, i) => { const v = pData._tot[d] || 0; pTot += v; gct[i] += v; const mk = _cellMark(pData._src[d]); h += '<td class="' + (v > 0 ? 'has-value' : 'zero') + '">' + (v > 0 ? v.toLocaleString() + mk : '-') + '</td>'; });
+    gt += pTot;
+    h += '<td class="has-value" style="font-weight:700;background:#D3FBEC">' + pTot.toLocaleString() + '</td></tr>';
+    if (!openP) return;
+    const dcs = Object.keys(pData.dcs).sort();
+    dcs.forEach(dc => {
+      const dcData = pData.dcs[dc]; let dcTot = 0;
+      const dcKey = p + '|' + dc; const openD = expandedDCs.has(dcKey);
+      const dcPartial = dcPartialSet.has(dcKey);
+      h += '<tr class="lvl-dc row-click ' + (dcPartial ? 'dc-has-partial' : '') + '" onclick="toggleDC(\'' + escAttr(dcKey) + '\')"><td><span class="caret">' + (openD ? '&#9660;' : '&#9654;') + '</span> ' + escapeHtml(dc) + (dcPartial ? ' <span class="warn-pill">PARTIAL</span>' : '') + '</td>';
+      dates.forEach(d => { const v = dcData._tot[d] || 0; dcTot += v; const mk = _cellMark(dcData._src[d]); h += '<td class="' + (v > 0 ? 'has-value' : 'zero') + '">' + (v > 0 ? v.toLocaleString() + mk : '-') + '</td>'; });
+      h += '<td class="has-value" style="font-weight:600;background:#D3FBEC">' + dcTot.toLocaleString() + '</td></tr>';
+      if (!openD) return;
+      const skus = Object.keys(dcData.skus).sort();
+      skus.forEach(s => {
+        const skuData = dcData.skus[s]; let sTot = 0;
+        const skuKey = p + '|' + dc + '|' + s;
+        const isPartial = partialSet.has(skuKey);
+        if (partialOnly && !isPartial) return;
+        const cpl = cpLayer(s);
+        let layerBadge = '';
+        if (cpl) {
+          if (isPartial) { const layers = skuData._tot / cpl; layerBadge = ' <span class="warn-pill">' + layers.toFixed(2) + ' layers &middot; ' + (skuData._tot % cpl) + ' cs over</span>'; }
+          else { layerBadge = ' <span class="clean-pill">' + (skuData._tot / cpl) + ' layers</span>'; }
+        }
+        h += '<tr class="lvl-sku ' + (isPartial ? 'partial-layer' : '') + '"><td><span class="non-caret"></span> ' + skuLabel(s) + layerBadge + '</td>';
+        dates.forEach(d => { const v = skuData.dates[d] || 0; sTot += v; const mk = _cellMark(skuData.src[d]); h += '<td class="' + (v > 0 ? 'has-value' : 'zero') + '">' + (v > 0 ? v.toLocaleString() + mk : '-') + '</td>'; });
+        h += '<td class="has-value" style="background:#EAFDF4">' + sTot.toLocaleString() + '</td></tr>';
+      });
+    });
+  });
+  h += '<tr class="total-row"><td>TOTAL</td>';
+  gct.forEach(v => { h += '<td>' + v.toLocaleString() + '</td>'; });
+  h += '<td>' + gt.toLocaleString() + '</td></tr></tbody>';
+  window._visParents = parents;
+  window._visDCs = [];
+  parents.forEach(p => { Object.keys(tree[p].dcs).forEach(dc => { window._visDCs.push(p + '|' + dc); }); });
+  return h;
+}
+
+function renderLayer(fil) {
+  const roll = dcRollup(fil).sort((a, b) => {
+    if (a.status !== b.status) { if (a.status === 'partial') return -1; if (b.status === 'partial') return 1; }
+    return (a.parent + a.dc + a.sku).localeCompare(b.parent + b.dc + b.sku);
+  });
+  const partialOnly = document.getElementById('partialOnly') && document.getElementById('partialOnly').checked;
+  const rows = partialOnly ? roll.filter(x => x.status === 'partial') : roll;
+  let h = '<thead><tr>';
+  ['SKU / DC / Parent PO','Parent PO','DC','Cases','Cases / Layer','Layers','Remainder','$ / Case','$ Value','Status'].forEach(c => { h += '<th>' + c + '</th>'; });
+  h += '</tr></thead><tbody>';
+  let totalQty = 0, totalVal = 0, partialCt = 0;
+  rows.forEach(x => {
+    if (x.status === 'partial') partialCt++;
+    totalQty += x.qty; totalVal += x.value || 0;
+    const statusPill = x.status === 'partial' ? '<span class="warn-pill">PARTIAL</span>' : (x.status === 'clean' ? '<span class="clean-pill">CLEAN</span>' : '<span style="color:#999;font-size:11px">no ref</span>');
+    const rowCls = x.status === 'partial' ? 'partial-layer' : '';
+    h += '<tr class="lvl-sku ' + rowCls + '">';
+    h += '<td>' + skuLabel(x.sku) + '</td>';
+    h += '<td>' + escapeHtml(x.parent) + '</td>';
+    h += '<td>' + escapeHtml(x.dc) + '</td>';
+    h += '<td class="has-value">' + x.qty.toLocaleString() + '</td>';
+    h += '<td>' + (x.cpl != null ? x.cpl : '-') + '</td>';
+    h += '<td>' + (x.layers != null ? x.layers.toFixed(2) : '-') + '</td>';
+    h += '<td>' + (x.rem != null ? x.rem : '-') + '</td>';
+    h += '<td>' + (costCase(x.sku) ? fmtMoneyFull(costCase(x.sku)) : '-') + '</td>';
+    h += '<td>' + (x.value ? fmtMoney(x.value) : '-') + '</td>';
+    h += '<td>' + statusPill + '</td>';
+    h += '</tr>';
+  });
+  h += '<tr class="total-row"><td>TOTAL</td><td></td><td></td><td>' + totalQty.toLocaleString() + '</td><td></td><td></td><td></td><td></td><td>' + fmtMoney(totalVal) + '</td><td>' + partialCt + ' partial</td></tr>';
+  h += '</tbody>';
+  return h;
+}
+
+function escAttr(s) { return String(s).replace(/'/g, "\\'"); }
+
+function updateStats(fil) {
+  const sset = new Set(), pset = new Set(), dset = new Set();
+  let total = 0, fbQty = 0;
+  fil.forEach(r => {
+    total += r.qty; sset.add(r.sku); pset.add(r.po);
+    const rb = rowBucket(r); if (rb) { dset.add(rb.k); if (rb.fallback) fbQty += r.qty; }
+  });
+  document.getElementById('statTotal').textContent = total.toLocaleString();
+  document.getElementById('statValue').textContent = fmtMoney(computeTotalValue(fil));
+  document.getElementById('statSKUs').textContent = sset.size;
+  document.getElementById('statPOs').textContent = pset.size;
+  document.getElementById('statDates').textContent = dset.size;
+  const partial = dcRollup(fil).filter(x => x.status === 'partial').length;
+  document.getElementById('statPartial').textContent = partial;
+  const fbCard = document.getElementById('statFbCard');
+  if (fbCard) {
+    if (currentBasis === 'delivery' || fbQty === 0) fbCard.style.display = 'none';
+    else { fbCard.style.display = ''; document.getElementById('statFb').textContent = fbQty.toLocaleString(); }
+  }
+}
+
+function render() {
+  if (!allData) return;
+  const fil = filteredRows();
+  document.getElementById('hierActions').style.display = currentGroup === 'hier' ? 'flex' : 'none';
+  document.getElementById('layerActions').style.display = currentGroup === 'layer' ? 'flex' : 'none';
+  const showLegend = currentBasis !== 'delivery' && currentGroup !== 'layer';
+  document.getElementById('basisLegend').style.display = showLegend ? 'block' : 'none';
+  if (showLegend) {
+    const txt = currentBasis === 'planned'
+      ? 'Pivoting on Scheduled Pickup Start. <span class="fb-tag">*</span> = cell includes cases without a scheduled pickup, so Requested Delivery is used as the fallback. Hover the asterisk to see the breakdown.'
+      : 'Pivoting on Actual Pickup Start → falls back to Scheduled Pickup Start → then Requested Delivery. <span class="fb-tag">*</span> = cell mixes one or more fallback dates. Hover the asterisk to see the exact source breakdown.';
+    document.getElementById('basisLegend').innerHTML = txt;
+  }
+  updateStats(fil);
+  let h;
+  if (currentGroup === 'sku') h = renderFlat(fil, r => r.sku, 'SKU', true);
+  else if (currentGroup === 'po') h = renderFlat(fil, r => r.po, 'PO #', false);
+  else if (currentGroup === 'hier') h = renderHier(fil);
+  else if (currentGroup === 'pivot') h = renderPivot(fil);
+  else h = renderLayer(fil);
+  document.getElementById('mainTable').innerHTML = h;
+}
+
+function toggleParent(p) { if (expandedParents.has(p)) expandedParents.delete(p); else expandedParents.add(p); render(); }
+function toggleDC(k) { if (expandedDCs.has(k)) expandedDCs.delete(k); else expandedDCs.add(k); render(); }
+function expandAll() { (window._visParents || []).forEach(p => expandedParents.add(p)); (window._visDCs || []).forEach(k => expandedDCs.add(k)); render(); (window._visDCs || []).forEach(k => expandedDCs.add(k)); render(); }
+function collapseAll() { expandedParents.clear(); expandedDCs.clear(); render(); }
+function expandParents() { expandedDCs.clear(); (window._visParents || []).forEach(p => expandedParents.add(p)); render(); }
+function setView(v) { currentView = v; document.getElementById('btnDays').classList.toggle('active', v === 'days'); document.getElementById('btnWeeks').classList.toggle('active', v === 'weeks'); render(); }
+function setBasis(b) { currentBasis = b; ['btnDeliv','btnPlan','btnAct'].forEach(id => document.getElementById(id).classList.remove('active')); document.getElementById({ delivery:'btnDeliv', planned:'btnPlan', actual:'btnAct' }[b]).classList.add('active'); render(); }
+function setGroup(g) {
+  currentGroup = g;
+  ['tabSku','tabPo','tabHier','tabLayer','tabPivot'].forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById({ sku: 'tabSku', po: 'tabPo', hier: 'tabHier', layer: 'tabLayer', pivot: 'tabPivot' }[g]).classList.add('active');
+  document.getElementById('pivotBuilder').classList.toggle('show', g === 'pivot');
+  render();
+}
+function resetAll() {
+  allStatuses.forEach(s => selectedStatuses.add(s));
+  allSKUs.forEach(s => selectedSKUs.add(s));
+  allPOs.forEach(s => selectedPOs.add(s));
+  allParents.forEach(s => selectedParents.add(s));
+  document.querySelectorAll('.multi-select-dropdown input[type="checkbox"]').forEach(c => c.checked = true);
+  document.querySelectorAll('.dd-search').forEach(s => s.value = '');
+  document.querySelectorAll('.multi-select-dropdown').forEach(dd => dd.querySelectorAll('label').forEach(l => l.classList.remove('hidden')));
+  updBtn('statusBtn', selectedStatuses, allStatuses.length, 'All Statuses');
+  updBtn('skuBtn', selectedSKUs, allSKUs.length, 'All SKUs');
+  updBtn('poBtn', selectedPOs, allPOs.length, 'All POs');
+  updBtn('parentBtn', selectedParents, allParents.length, 'All Parent POs');
+  expandedParents.clear(); expandedDCs.clear();
+  render();
+}
+
+function fmtNum(v) { if (v == null || v === '') return ''; if (isNaN(v)) return ''; return (+v).toString(); }
+function buildSkuRefTable() {
+  const tbody = document.querySelector('#skuRefTable tbody');
+  const skus = Object.keys(skuRef).sort();
+  let h = '';
+  skus.forEach(s => {
+    const r = skuRef[s];
+    const rowData = (r.name + ' ' + s).toLowerCase();
+    h += '<tr data-search="' + rowData.replace(/"/g,'&quot;') + '" data-sku="' + s + '">';
+    h += '<td class="sku-cell">' + escapeHtml(s) + '</td>';
+    h += '<td>' + escapeHtml(r.name || '') + '</td>';
+    h += '<td>' + (r.cost_each != null ? fmtMoneyFull(r.cost_each) : '-') + '</td>';
+    h += '<td>' + (r.cost_case != null ? fmtMoneyFull(r.cost_case) : '-') + '</td>';
+    h += '<td>' + (r.units_case != null ? r.units_case : '-') + '</td>';
+    h += '<td><input type="number" class="layer-input" min="1" step="1" value="' + fmtNum(r.cs_per_layer) + '" data-sku="' + escapeHtml(s) + '" oninput="onLayerEdit(this)"></td>';
+    h += '</tr>';
+  });
+  tbody.innerHTML = h;
+}
+function onLayerEdit(inp) {
+  const sku = inp.dataset.sku;
+  const v = inp.value.trim();
+  const num = v === '' ? null : parseFloat(v);
+  skuRef[sku].cs_per_layer = (num && num > 0) ? num : null;
+  const def = skuRefDefaults[sku] && skuRefDefaults[sku].cs_per_layer;
+  const changed = (skuRef[sku].cs_per_layer !== def);
+  inp.classList.toggle('changed', changed);
+  updateSkuRefDirty();
+  render();
+}
+function updateSkuRefDirty() {
+  let dirty = false;
+  Object.keys(skuRef).forEach(s => {
+    if ((skuRef[s].cs_per_layer || null) !== (skuRefDefaults[s] && skuRefDefaults[s].cs_per_layer || null)) dirty = true;
+  });
+  document.getElementById('skuRefDirty').style.display = dirty ? 'inline' : 'none';
+}
+function resetSkuRef() {
+  skuRef = JSON.parse(JSON.stringify(skuRefDefaults));
+  buildSkuRefTable();
+  updateSkuRefDirty();
+  render();
+}
+function filterSkuRef(q) {
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('#skuRefTable tbody tr').forEach(tr => {
+    tr.style.display = (!q || tr.dataset.search.includes(q)) ? '' : 'none';
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// CUSTOM PIVOT — pick rows / columns / value on the fly
+// ══════════════════════════════════════════════════════════════════════
+
+const _MO_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function _quarterOf(d) { const m = parseInt(d.slice(5,7)); return d.slice(0,4) + ' Q' + (Math.floor((m-1)/3) + 1); }
+function _formatMonth(ym) { const p = ym.split('-'); return _MO_NAMES[parseInt(p[1])-1] + ' ' + p[0]; }
+
+const PIVOT_DIMS = [
+  { key: 'sku',       label: 'SKU',        extract: r => r.sku,                fmt: v => skuLabel(v) },
+  { key: 'status',    label: 'Status',     extract: r => r.status,             fmt: v => escapeHtml(String(v)) },
+  { key: 'po',        label: 'PO #',       extract: r => r.po,                 fmt: v => escapeHtml(String(v)) },
+  { key: 'parent_po', label: 'Parent PO',  extract: r => r.parent_po,          fmt: v => escapeHtml(String(v)) },
+  { key: 'tp',        label: 'DC',         extract: r => r.tp || '#N/A',       fmt: v => escapeHtml(String(v)) },
+  { key: 'date',      label: 'Date',       extract: r => r.date,               fmt: v => fmtDate(v) },
+  { key: 'week',      label: 'Week',       extract: r => getSundayStr(r.date), fmt: v => fmtWeek(v) },
+  { key: 'month',     label: 'Month',      extract: r => r.date.slice(0,7),    fmt: v => _formatMonth(v) },
+  { key: 'quarter',   label: 'Quarter',    extract: r => _quarterOf(r.date),   fmt: v => escapeHtml(String(v)) },
+  { key: 'year',      label: 'Year',       extract: r => r.date.slice(0,4),    fmt: v => escapeHtml(String(v)) },
+];
+
+const PIVOT_AGGS = [
+  { key: 'qty_sum',      label: 'Sum of Cases',       init: () => 0,         add: (a, r) => a + r.qty,                                  read: v => v || 0,                fmt: v => v ? v.toLocaleString() : '-' },
+  { key: 'val_sum',      label: 'Sum of $ Value',     init: () => 0,         add: (a, r) => a + (r.qty * (costCase(r.sku) || 0)),       read: v => +(v || 0).toFixed(2),  fmt: v => v ? fmtMoney(v) : '-' },
+  { key: 'line_count',   label: 'Line Count',         init: () => 0,         add: (a, r) => a + 1,                                      read: v => v || 0,                fmt: v => v ? v.toLocaleString() : '-' },
+  { key: 'sku_distinct', label: 'Distinct SKU Count', init: () => new Set(), add: (a, r) => { a.add(r.sku); return a; },                read: v => v ? v.size : 0,        fmt: v => v && v.size ? v.size.toLocaleString() : '-' },
+  { key: 'po_distinct',  label: 'Distinct PO Count',  init: () => new Set(), add: (a, r) => { a.add(r.po); return a; },                 read: v => v ? v.size : 0,        fmt: v => v && v.size ? v.size.toLocaleString() : '-' },
+];
+
+let pivotRows = ['sku'];
+let pivotCols = ['week'];
+let pivotValue = 'qty_sum';
+
+function _dim(k) { return PIVOT_DIMS.find(d => d.key === k); }
+function _agg(k) { return PIVOT_AGGS.find(a => a.key === k); }
+
+function buildPivotChips() {
+  const rowEl = document.getElementById('pivotRowChips');
+  const colEl = document.getElementById('pivotColChips');
+  if (!rowEl || !colEl) return;
+  rowEl.innerHTML = '';
+  colEl.innerHTML = '';
+  PIVOT_DIMS.forEach(d => {
+    const rIdx = pivotRows.indexOf(d.key);
+    const rChip = document.createElement('button');
+    rChip.className = 'pivot-chip' + (rIdx >= 0 ? ' active' : '');
+    rChip.innerHTML = (rIdx >= 0 ? '<span class="pos">' + (rIdx + 1) + '</span>' : '') + escapeHtml(d.label);
+    rChip.onclick = () => togglePivotChip('rows', d.key);
+    rowEl.appendChild(rChip);
+
+    const cIdx = pivotCols.indexOf(d.key);
+    const cChip = document.createElement('button');
+    cChip.className = 'pivot-chip' + (cIdx >= 0 ? ' active' : '');
+    cChip.innerHTML = escapeHtml(d.label);
+    cChip.onclick = () => togglePivotChip('cols', d.key);
+    colEl.appendChild(cChip);
+  });
+  const sel = document.getElementById('pivotValueSel');
+  if (sel && !sel.options.length) {
+    PIVOT_AGGS.forEach(a => {
+      const o = document.createElement('option');
+      o.value = a.key; o.textContent = a.label;
+      sel.appendChild(o);
+    });
+  }
+  if (sel) sel.value = pivotValue;
+}
+
+function togglePivotChip(area, key) {
+  const arr = area === 'rows' ? pivotRows : pivotCols;
+  const i = arr.indexOf(key);
+  if (i >= 0) arr.splice(i, 1);
+  else {
+    if (area === 'cols') arr.length = 0; // single col only
+    arr.push(key);
+  }
+  buildPivotChips();
+  render();
+}
+
+function setPivotValue(v) { pivotValue = v; render(); }
+
+function resetPivot() {
+  pivotRows = ['sku'];
+  pivotCols = ['week'];
+  pivotValue = 'qty_sum';
+  buildPivotChips();
+  render();
+}
+
+function savePivotPreset() {
+  const cfg = { rows: pivotRows.slice(), cols: pivotCols.slice(), value: pivotValue };
+  const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'po_tracker_pivot_preset_' + _todayStr() + '.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function loadPivotPreset(input) {
+  const f = input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const cfg = JSON.parse(r.result);
+      if (Array.isArray(cfg.rows)) pivotRows = cfg.rows.filter(k => _dim(k));
+      if (Array.isArray(cfg.cols)) pivotCols = cfg.cols.filter(k => _dim(k)).slice(0, 1);
+      if (typeof cfg.value === 'string' && _agg(cfg.value)) pivotValue = cfg.value;
+      buildPivotChips();
+      render();
+    } catch (e) { alert('Could not load preset: ' + (e.message || e)); }
+    input.value = '';
+  };
+  r.readAsText(f);
+}
+
+function _pivotMatrix(fil) {
+  const rowDims = pivotRows.map(_dim).filter(Boolean);
+  const colDim = pivotCols[0] ? _dim(pivotCols[0]) : null;
+  const agg = _agg(pivotValue) || PIVOT_AGGS[0];
+  if (!rowDims.length) return null;
+
+  const rows = {};
+  const colSet = new Set();
+  fil.forEach(r => {
+    if (!r.date) return;
+    let rkParts;
+    try { rkParts = rowDims.map(d => d.extract(r)); } catch (e) { return; }
+    rkParts = rkParts.map(v => (v == null || v === '') ? '#N/A' : v);
+    let ck = '__total__';
+    if (colDim) {
+      try { ck = colDim.extract(r); } catch (e) { return; }
+      if (ck == null || ck === '') ck = '#N/A';
+    }
+    const rk = rkParts.join('||');
+    if (!rows[rk]) rows[rk] = { keys: rkParts, cells: {}, total: agg.init() };
+    if (!(ck in rows[rk].cells)) rows[rk].cells[ck] = agg.init();
+    rows[rk].cells[ck] = agg.add(rows[rk].cells[ck], r);
+    rows[rk].total = agg.add(rows[rk].total, r);
+    colSet.add(ck);
+  });
+  const colKeys = [...colSet].sort(cmpKey);
+  const rowKeys = Object.keys(rows).sort((a, b) => {
+    const ap = rows[a].keys, bp = rows[b].keys;
+    for (let i = 0; i < ap.length; i++) {
+      const c = cmpKey(ap[i], bp[i]);
+      if (c !== 0) return c;
+    }
+    return 0;
+  });
+  return { rowDims, colDim, agg, rows, rowKeys, colKeys };
+}
+
+function renderPivot(fil) {
+  const m = _pivotMatrix(fil);
+  if (!m) {
+    return '<thead><tr><th style="text-align:left;padding:14px 16px">Pick at least one ROW field above to build a pivot.</th></tr></thead><tbody></tbody>';
+  }
+  const { rowDims, colDim, agg, rows, rowKeys, colKeys } = m;
+  let h = '<thead><tr>';
+  rowDims.forEach(d => { h += '<th>' + escapeHtml(d.label) + '</th>'; });
+  if (colDim) {
+    colKeys.forEach(c => { h += '<th>' + (colDim.fmt ? colDim.fmt(c) : escapeHtml(String(c))) + '</th>'; });
+  }
+  h += '<th>Total</th></tr></thead><tbody>';
+  rowKeys.forEach(rk => {
+    const row = rows[rk];
+    h += '<tr>';
+    rowDims.forEach((d, i) => {
+      const v = row.keys[i];
+      const cell = d.fmt ? d.fmt(v) : escapeHtml(String(v == null ? '#N/A' : v));
+      h += '<td>' + cell + '</td>';
+    });
+    if (colDim) {
+      colKeys.forEach(c => {
+        const cellVal = row.cells[c];
+        const out = (cellVal === undefined) ? '-' : agg.fmt(cellVal);
+        h += '<td class="' + (out === '-' ? 'zero' : 'has-value') + '">' + out + '</td>';
+      });
+    }
+    h += '<td class="has-value" style="font-weight:700;background:#D3FBEC">' + agg.fmt(row.total) + '</td></tr>';
+  });
+  // Recompute column + grand totals across filtered rows so distinct counts work
+  const colT = {};
+  let gT = agg.init();
+  fil.forEach(r => {
+    if (!r.date) return;
+    let ck = '__total__';
+    if (colDim) {
+      try { ck = colDim.extract(r); } catch (e) { return; }
+      if (ck == null || ck === '') ck = '#N/A';
+    }
+    if (!(ck in colT)) colT[ck] = agg.init();
+    colT[ck] = agg.add(colT[ck], r);
+    gT = agg.add(gT, r);
+  });
+  h += '<tr class="total-row">';
+  rowDims.forEach((_, i) => { h += '<td>' + (i === 0 ? 'TOTAL' : '') + '</td>'; });
+  if (colDim) colKeys.forEach(c => { h += '<td>' + agg.fmt(colT[c]) + '</td>'; });
+  h += '<td>' + agg.fmt(gT) + '</td></tr></tbody>';
+  return h;
+}
+
+function _pivotCustomAOA(fil) {
+  const m = _pivotMatrix(fil);
+  if (!m) return [['Pick at least one row field']];
+  const { rowDims, colDim, agg, rows, rowKeys, colKeys } = m;
+  const header = [];
+  rowDims.forEach(d => header.push(d.label));
+  if (colDim) colKeys.forEach(c => header.push(colDim.fmt && colDim.key !== 'sku' ? _stripHtml(colDim.fmt(c)) : String(c)));
+  header.push('Total');
+  const out = [header];
+  rowKeys.forEach(rk => {
+    const row = rows[rk];
+    const r = [];
+    rowDims.forEach((d, i) => r.push(row.keys[i]));
+    if (colDim) colKeys.forEach(c => r.push(c in row.cells ? agg.read(row.cells[c]) : 0));
+    r.push(agg.read(row.total));
+    out.push(r);
+  });
+  // Column + grand totals
+  const colT = {}; let gT = agg.init();
+  fil.forEach(r => {
+    if (!r.date) return;
+    let ck = '__total__';
+    if (colDim) {
+      try { ck = colDim.extract(r); } catch (e) { return; }
+      if (ck == null || ck === '') ck = '#N/A';
+    }
+    if (!(ck in colT)) colT[ck] = agg.init();
+    colT[ck] = agg.add(colT[ck], r);
+    gT = agg.add(gT, r);
+  });
+  const totalRow = [];
+  rowDims.forEach((_, i) => totalRow.push(i === 0 ? 'TOTAL' : ''));
+  if (colDim) colKeys.forEach(c => totalRow.push(c in colT ? agg.read(colT[c]) : 0));
+  totalRow.push(agg.read(gT));
+  out.push(totalRow);
+  return out;
+}
+
+function _stripHtml(s) { return String(s).replace(/<[^>]*>/g, ''); }
+
+// ══════════════════════════════════════════════════════════════════════
+// EXPORT — Excel workbook + CSV of current view
+// ══════════════════════════════════════════════════════════════════════
+
+function _todayStr() {
+  const d = new Date();
+  return d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
+}
+
+function _pivotAOA(fil, groupFn, headerLbl, bucketMode, includeDesc) {
+  const piv = {}, ds = new Set();
+  fil.forEach(r => {
+    const g0 = getRowDate(r); if (!g0.date) return;
+    const k = bucketMode === 'weeks' ? getSundayStr(g0.date) : g0.date;
+    const g = groupFn(r);
+    if (!piv[g]) piv[g] = {};
+    piv[g][k] = (piv[g][k] || 0) + r.qty;
+    ds.add(k);
+  });
+  const dates = [...ds].sort();
+  const keys = Object.keys(piv).sort(cmpKey);
+  const header = [headerLbl];
+  if (includeDesc) header.push('Description');
+  dates.forEach(d => header.push(bucketMode === 'weeks' ? fmtWeek(d) : fmtDate(d)));
+  header.push('Total');
+  const rows = [header];
+  const colTot = new Array(dates.length).fill(0);
+  let grand = 0;
+  keys.forEach(k => {
+    const row = [k];
+    if (includeDesc) row.push((skuRef[k] && skuRef[k].name) || '');
+    let rt = 0;
+    dates.forEach((d, i) => { const v = piv[k][d] || 0; rt += v; colTot[i] += v; row.push(v || 0); });
+    row.push(rt); grand += rt;
+    rows.push(row);
+  });
+  const totalRow = ['TOTAL'];
+  if (includeDesc) totalRow.push('');
+  colTot.forEach(v => totalRow.push(v));
+  totalRow.push(grand);
+  rows.push(totalRow);
+  return rows;
+}
+
+function _hierAOA(fil, bucketMode) {
+  const tree = {}, ds = new Set();
+  fil.forEach(r => {
+    const g0 = getRowDate(r); if (!g0.date) return;
+    const k = bucketMode === 'weeks' ? getSundayStr(g0.date) : g0.date;
+    const p = r.parent_po, dc = r.tp || '#N/A', s = r.sku;
+    if (!tree[p]) tree[p] = { _tot: {}, dcs: {} };
+    if (!tree[p].dcs[dc]) tree[p].dcs[dc] = { _tot: {}, skus: {} };
+    if (!tree[p].dcs[dc].skus[s]) tree[p].dcs[dc].skus[s] = { _tot: 0, dates: {} };
+    tree[p]._tot[k] = (tree[p]._tot[k] || 0) + r.qty;
+    tree[p].dcs[dc]._tot[k] = (tree[p].dcs[dc]._tot[k] || 0) + r.qty;
+    tree[p].dcs[dc].skus[s].dates[k] = (tree[p].dcs[dc].skus[s].dates[k] || 0) + r.qty;
+    tree[p].dcs[dc].skus[s]._tot += r.qty;
+    ds.add(k);
+  });
+  const dates = [...ds].sort();
+  const header = ['Level', 'Parent PO', 'DC', 'SKU', 'Description'];
+  dates.forEach(d => header.push(bucketMode === 'weeks' ? fmtWeek(d) : fmtDate(d)));
+  header.push('Total');
+  const rows = [header];
+  Object.keys(tree).sort(cmpKey).forEach(p => {
+    const pRow = ['Parent', p, '', '', ''];
+    let pt = 0;
+    dates.forEach(d => { const v = tree[p]._tot[d] || 0; pt += v; pRow.push(v || 0); });
+    pRow.push(pt);
+    rows.push(pRow);
+    Object.keys(tree[p].dcs).sort().forEach(dc => {
+      const d2 = tree[p].dcs[dc];
+      const dcRow = ['DC', p, dc, '', ''];
+      let dct = 0;
+      dates.forEach(d => { const v = d2._tot[d] || 0; dct += v; dcRow.push(v || 0); });
+      dcRow.push(dct);
+      rows.push(dcRow);
+      Object.keys(d2.skus).sort().forEach(s => {
+        const sd = d2.skus[s];
+        const desc = (skuRef[s] && skuRef[s].name) || '';
+        const sRow = ['SKU', p, dc, s, desc];
+        let st = 0;
+        dates.forEach(d => { const v = sd.dates[d] || 0; st += v; sRow.push(v || 0); });
+        sRow.push(st);
+        rows.push(sRow);
+      });
+    });
+  });
+  return rows;
+}
+
+function _layerAOA(fil) {
+  const roll = dcRollup(fil).sort((a, b) => {
+    if (a.status !== b.status) { if (a.status === 'partial') return -1; if (b.status === 'partial') return 1; }
+    return (a.parent + a.dc + a.sku).localeCompare(b.parent + b.dc + b.sku);
+  });
+  const header = ['SKU','Description','Parent PO','DC','Cases','Cases/Layer','Layers','Remainder','$/Case','$ Value','Status'];
+  const rows = [header];
+  roll.forEach(x => {
+    const cc = costCase(x.sku);
+    rows.push([
+      x.sku,
+      x.desc || '',
+      x.parent,
+      x.dc,
+      x.qty,
+      x.cpl != null ? x.cpl : '',
+      x.layers != null ? +x.layers.toFixed(4) : '',
+      x.rem != null ? x.rem : '',
+      cc != null ? cc : '',
+      x.value != null ? +x.value.toFixed(2) : '',
+      x.status === 'partial' ? 'PARTIAL' : (x.status === 'clean' ? 'CLEAN' : 'no ref'),
+    ]);
+  });
+  return rows;
+}
+
+function _detailAOA(fil) {
+  const header = ['SKU','Description','Delivery Date','Planned Ship','Actual Ship','Week (Sun)','Status','PO #','Parent PO','Trading Partner','Qty (cases)','$/Case','$ Value'];
+  const rows = [header];
+  fil.slice().sort((a,b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0)).forEach(r => {
+    const cc = costCase(r.sku);
+    rows.push([
+      r.sku,
+      (skuRef[r.sku] && skuRef[r.sku].name) || '',
+      r.date,
+      r.ship_planned || '',
+      r.ship_actual || '',
+      getSundayStr(r.date),
+      r.status,
+      r.po,
+      r.parent_po,
+      r.tp,
+      r.qty,
+      cc != null ? cc : '',
+      cc != null ? +(r.qty * cc).toFixed(2) : '',
+    ]);
+  });
+  return rows;
+}
+
+function _isoWeek(d) {
+  const t = new Date(d.getTime());
+  t.setHours(0, 0, 0, 0);
+  t.setDate(t.getDate() + 3 - ((t.getDay() + 6) % 7));
+  const week1 = new Date(t.getFullYear(), 0, 4);
+  return 1 + Math.round(((t - week1) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
+}
+
+function _rawAOA() {
+  // Full, unfiltered shipment-line data with pivot-friendly date breakdowns.
+  // One row per row in allData. Built so Excel pivots auto-detect the range.
+  const header = [
+    'SKU','Description',
+    'Delivery Date','Year','Quarter','Month (YYYY-MM)','Month Name','ISO Week','Week Start (Sun)','Day of Week',
+    'Planned Ship','Actual Ship',
+    'Status','PO #','Parent PO','DC (Trading Partner)',
+    'Qty (Cases)','Cases/Layer','Layers','Remainder','Layer Status',
+    '$/Case','$ Value',
+  ];
+  const rows = [header];
+  if (!allData) return rows;
+  const sorted = allData.slice().sort((a, b) => {
+    if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+    return (a.sku + a.po).localeCompare(b.sku + b.po);
+  });
+  sorted.forEach(r => {
+    const desc = (skuRef[r.sku] && skuRef[r.sku].name) || '';
+    const cc = costCase(r.sku);
+    const cpl = cpLayer(r.sku);
+    const layers = cpl ? r.qty / cpl : null;
+    const rem = cpl ? r.qty % cpl : null;
+    const layerStatus = cpl == null ? 'no ref' : (rem === 0 ? 'CLEAN' : 'PARTIAL');
+    const d = r.date ? new Date(r.date + 'T00:00:00') : null;
+    const yr = d ? d.getFullYear() : '';
+    const q = d ? 'Q' + (Math.floor(d.getMonth() / 3) + 1) : '';
+    const mo = d ? String(d.getMonth() + 1).padStart(2, '0') : '';
+    const moName = d ? _MO_NAMES[d.getMonth()] : '';
+    const wk = d ? _isoWeek(d) : '';
+    const wkStart = r.date ? getSundayStr(r.date) : '';
+    const dow = d ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()] : '';
+    rows.push([
+      r.sku, desc,
+      r.date || '', yr, q, yr && mo ? yr + '-' + mo : '', moName, wk, wkStart, dow,
+      r.ship_planned || '', r.ship_actual || '',
+      r.status, r.po, r.parent_po, r.tp,
+      r.qty,
+      cpl != null ? cpl : '',
+      layers != null ? +layers.toFixed(4) : '',
+      rem != null ? rem : '',
+      layerStatus,
+      cc != null ? cc : '',
+      cc != null ? +(r.qty * cc).toFixed(2) : '',
+    ]);
+  });
+  return rows;
+}
+
+function _skuRefAOA() {
+  const header = ['SKU','Description','Cost/Each','Cost/Case','Units/Case','Cases/Layer'];
+  const rows = [header];
+  Object.keys(skuRef).sort().forEach(s => {
+    const r = skuRef[s];
+    rows.push([s, r.name || '', r.cost_each, r.cost_case, r.units_case, r.cs_per_layer]);
+  });
+  return rows;
+}
+
+function exportExcel() {
+  if (!allData) return;
+  const fil = filteredRows();
+  const wb = XLSX.utils.book_new();
+  const add = (name, aoa) => {
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    XLSX.utils.book_append_sheet(wb, ws, name.slice(0, 31));
+    return ws;
+  };
+  add('Daily — By SKU',  _pivotAOA(fil, r => r.sku, 'SKU',  'days',  true));
+  add('Weekly — By SKU', _pivotAOA(fil, r => r.sku, 'SKU',  'weeks', true));
+  add('Daily — By PO',   _pivotAOA(fil, r => r.po,  'PO #', 'days',  false));
+  add('Weekly — By PO',  _pivotAOA(fil, r => r.po,  'PO #', 'weeks', false));
+  add('Hierarchy (Daily)',  _hierAOA(fil, 'days'));
+  add('Hierarchy (Weekly)', _hierAOA(fil, 'weeks'));
+  add('Layer Check',  _layerAOA(fil));
+  add('Detail Data',  _detailAOA(fil));
+
+  // Raw Data — always full (unfiltered) + autofilter + frozen header so
+  // Excel auto-detects the range when you Insert → PivotTable.
+  const rawAOA = _rawAOA();
+  const rawWs = add('Raw Data (Pivot Source)', rawAOA);
+  if (rawAOA.length > 1) {
+    const lastCol = XLSX.utils.encode_col(rawAOA[0].length - 1);
+    rawWs['!autofilter'] = { ref: 'A1:' + lastCol + rawAOA.length };
+    rawWs['!views'] = [{ state: 'frozen', ySplit: 1 }];
+    rawWs['!cols'] = rawAOA[0].map(h => ({ wch: Math.max(10, Math.min(28, String(h).length + 4)) }));
+  }
+
+  add('SKU Reference', _skuRefAOA());
+  XLSX.writeFile(wb, 'PO_Tracker_' + _todayStr() + '.xlsx');
+}
+
+function _aoaToCsv(aoa) {
+  return aoa.map(row => row.map(cell => {
+    if (cell == null) return '';
+    const s = String(cell);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }).join(',')).join('\r\n');
+}
+
+function _downloadText(filename, text, mime) {
+  const blob = new Blob([text], { type: mime || 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function exportCurrentCsv() {
+  if (!allData) return;
+  const fil = filteredRows();
+  let aoa, stem;
+  if (currentGroup === 'sku')        { aoa = _pivotAOA(fil, r => r.sku, 'SKU',  currentView, true);  stem = 'by_sku'; }
+  else if (currentGroup === 'po')    { aoa = _pivotAOA(fil, r => r.po,  'PO #', currentView, false); stem = 'by_po'; }
+  else if (currentGroup === 'hier')  { aoa = _hierAOA(fil, currentView);                              stem = 'hierarchy'; }
+  else if (currentGroup === 'pivot') { aoa = _pivotCustomAOA(fil);                                    stem = 'custom_pivot'; }
+  else                                { aoa = _layerAOA(fil);                                         stem = 'layer_check'; }
+  _downloadText('PO_Tracker_' + stem + '_' + currentView + '_' + _todayStr() + '.csv', _aoaToCsv(aoa));
+}
+</script>
+</body>
+</html>
