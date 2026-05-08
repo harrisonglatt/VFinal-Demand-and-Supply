@@ -1,0 +1,3579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Little Spoon · Retail Performance Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --ls-blue: #00E3CD;
+    --ls-blue-dark: #00B5A2;
+    --ls-blue-soft: #E5FBF8;
+    --black: #141414;
+    --almond: #FFFEF8;
+    --oatmeal: #FBF7E8;
+    --mango: #FFC711;
+    --guava: #FF8766;
+    --pitaya: #FF8FF5;
+    --prune: #DC7BFF;
+    --blueberry: #18A7FF;
+    --spinach: #00CF92;
+    --mint: #00F9B8;
+    --lime: #C2FF7F;
+    --gray-50: #F8F9FB;
+    --gray-100: #F1F3F6;
+    --gray-200: #E5E8ED;
+    --gray-300: #D5D9E0;
+    --gray-400: #9AA0A8;
+    --gray-500: #6E7480;
+    --gray-600: #4A5060;
+    --gray-700: #2E323D;
+    --shadow-sm: 0 1px 2px rgba(20,20,20,0.04);
+    --shadow-md: 0 4px 12px rgba(20,20,20,0.06);
+    --shadow-lg: 0 8px 24px rgba(20,20,20,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Mulish', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--almond);
+    color: var(--black);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gray-300); }
+
+  /* ------------- Layout ------------- */
+  .app {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+  }
+  .sidebar {
+    background: white;
+    border-right: 1px solid var(--gray-200);
+    padding: 24px 16px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px 24px;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 16px;
+  }
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--ls-blue) 0%, var(--mint) 100%);
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    color: var(--black);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .brand-name {
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+  .brand-sub {
+    font-size: 11px;
+    color: var(--gray-500);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--gray-600);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-bottom: 2px;
+    font-size: 13.5px;
+  }
+  .nav-item:hover {
+    background: var(--gray-50);
+    color: var(--black);
+  }
+  .nav-item.active {
+    background: var(--ls-blue-soft);
+    color: var(--black);
+    font-weight: 700;
+  }
+  .nav-item .icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .nav-item.active .icon { opacity: 1; }
+  .nav-section {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    padding: 16px 12px 8px;
+  }
+
+  /* ------------- Main Content ------------- */
+  .main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .topbar {
+    background: white;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar-title h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .topbar-title p {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--gray-500);
+  }
+  .topbar-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .btn {
+    border: 1px solid var(--gray-200);
+    background: white;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--gray-700);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--gray-50); border-color: var(--gray-300); }
+  .btn-primary {
+    background: var(--black);
+    color: white;
+    border-color: var(--black);
+  }
+  .btn-primary:hover { background: var(--gray-700); }
+  .btn-ghost {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  /* ------------- Filter bar ------------- */
+  .filterbar {
+    background: white;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 14px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 73px;
+    z-index: 9;
+  }
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .filter-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    letter-spacing: 0.05em;
+    font-weight: 700;
+  }
+  select, input[type="text"], input[type="search"] {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 10px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: white;
+    color: var(--black);
+    outline: none;
+    transition: all 0.15s;
+  }
+  select:focus, input:focus { border-color: var(--ls-blue); box-shadow: 0 0 0 3px var(--ls-blue-soft); }
+  .pill-group {
+    display: flex;
+    gap: 4px;
+    background: var(--gray-50);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+  }
+  .pill {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+  }
+  .pill:hover { color: var(--black); }
+  .pill.active {
+    background: white;
+    color: var(--black);
+    box-shadow: var(--shadow-sm);
+  }
+  .filter-spacer { flex: 1; }
+
+  /* ------------- Content ------------- */
+  .content {
+    padding: 24px 28px 64px;
+    flex: 1;
+  }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* Cards */
+  .card {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .card-sub {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin: 0 0 16px;
+  }
+  .card-h {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .grid { display: grid; gap: 16px; }
+  .grid-6 { grid-template-columns: repeat(6, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .span-2 { grid-column: span 2; }
+  .span-3 { grid-column: span 3; }
+  .span-4 { grid-column: span 4; }
+  .span-6 { grid-column: span 6; }
+
+  /* KPI cards */
+  .kpi {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .kpi-delta {
+    margin-top: 6px;
+    font-size: 12px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .delta-up { color: var(--spinach); font-weight: 700; }
+  .delta-down { color: var(--guava); font-weight: 700; }
+  .delta-neutral { color: var(--gray-400); }
+  .kpi-bar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--ls-blue);
+  }
+  .kpi.accent-mango .kpi-bar { background: var(--mango); }
+  .kpi.accent-spinach .kpi-bar { background: var(--spinach); }
+  .kpi.accent-guava .kpi-bar { background: var(--guava); }
+  .kpi.accent-blueberry .kpi-bar { background: var(--blueberry); }
+  .kpi.accent-prune .kpi-bar { background: var(--prune); }
+
+  /* Tables */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .table th {
+    text-align: left;
+    padding: 10px 12px;
+    font-weight: 700;
+    color: var(--gray-500);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--gray-200);
+    background: var(--gray-50);
+    position: sticky;
+    top: 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .table th:hover { background: var(--gray-100); color: var(--black); }
+  .table th.sort-asc::after { content: ' ↑'; color: var(--ls-blue-dark); }
+  .table th.sort-desc::after { content: ' ↓'; color: var(--ls-blue-dark); }
+  .table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .table tr:hover td { background: var(--gray-50); }
+  .table-num { text-align: right; font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
+  .table-mono { font-variant-numeric: tabular-nums; }
+  .scroll {
+    max-height: 600px;
+    overflow-y: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-200);
+  }
+
+  /* Category color chip */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--gray-100);
+    color: var(--gray-700);
+  }
+  .chip::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-400);
+  }
+  .chip.YOGOS { background: #FFF0FB; color: #B83AAB; }
+  .chip.YOGOS::before { background: var(--pitaya); }
+  .chip.PuffsCereals { background: #FFF7DD; color: #946C00; }
+  .chip.PuffsCereals::before { background: var(--mango); }
+  .chip.Smoothies { background: #E0F2FF; color: #0277BD; }
+  .chip.Smoothies::before { background: var(--blueberry); }
+  .chip.FrozenMeals { background: #DAF7EE; color: #00735A; }
+  .chip.FrozenMeals::before { background: var(--spinach); }
+  .chip.BakedBars { background: #FFE6DC; color: #C44A23; }
+  .chip.BakedBars::before { background: var(--guava); }
+  .chip.FruitVeggieMinis { background: #EFFCDA; color: #5C7E1D; }
+  .chip.FruitVeggieMinis::before { background: var(--lime); }
+
+  /* Insight callouts */
+  .insight {
+    background: linear-gradient(135deg, var(--ls-blue-soft) 0%, white 100%);
+    border-left: 3px solid var(--ls-blue);
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+  }
+  .insight-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: var(--ls-blue-dark);
+    margin-bottom: 4px;
+  }
+  .insight-body {
+    font-size: 13px;
+    color: var(--gray-700);
+    line-height: 1.5;
+  }
+  .insight strong { color: var(--black); font-weight: 800; }
+
+  /* Chart container */
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .chart-wrap canvas { max-width: 100%; }
+  .chart-controls {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  /* Toggle button group */
+  .seg {
+    display: inline-flex;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .seg button {
+    background: white;
+    border: 0;
+    padding: 6px 12px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    cursor: pointer;
+    border-right: 1px solid var(--gray-200);
+  }
+  .seg button:last-child { border-right: 0; }
+  .seg button:hover { background: var(--gray-50); color: var(--black); }
+  .seg button.active { background: var(--black); color: white; }
+
+  /* Multi-select chips */
+  .chip-multi {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--gray-50);
+    color: var(--gray-600);
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+  .chip-multi:hover { background: var(--gray-100); color: var(--black); }
+  .chip-multi.active { background: var(--black); color: white; }
+  .chip-multi.active::before { background: white; }
+  .chip-multi::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  .pill-cat-group { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill-cat {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid var(--gray-200);
+    background: white;
+    color: var(--gray-600);
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pill-cat::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-400);
+  }
+  .pill-cat:hover { border-color: var(--gray-300); background: var(--gray-50); }
+  .pill-cat.active { background: var(--black); color: white; border-color: var(--black); }
+  .pill-cat[data-cat="YOGOS"]::before { background: var(--pitaya); }
+  .pill-cat[data-cat="Puffs + Cereals"]::before { background: var(--mango); }
+  .pill-cat[data-cat="Smoothies"]::before { background: var(--blueberry); }
+  .pill-cat[data-cat="Frozen/Meals"]::before { background: var(--spinach); }
+  .pill-cat[data-cat="Baked Bars"]::before { background: var(--guava); }
+  .pill-cat[data-cat="Fruit+Veggie Minis"]::before { background: var(--lime); }
+
+  /* Detail panel */
+  .detail-panel {
+    background: linear-gradient(135deg, var(--oatmeal) 0%, var(--almond) 100%);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .detail-title {
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    margin: 0 0 4px;
+  }
+  .detail-sub {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin: 0 0 16px;
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--ls-blue);
+    color: var(--black);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 7px;
+    border-radius: 4px;
+  }
+
+  /* Top row of overview cards (KPIs) */
+  .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 16px; }
+
+  /* Modal-like SKU detail */
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(560px, 100vw);
+    background: white;
+    box-shadow: -8px 0 24px rgba(20,20,20,0.12);
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-h {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+  }
+  .scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,20,20,0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 49;
+  }
+  .scrim.open { opacity: 1; pointer-events: auto; }
+
+  /* Pin button on SKU table */
+  .pin-btn {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1px solid var(--gray-200);
+    background: white;
+    color: var(--gray-500);
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-grid;
+    place-items: center;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .pin-btn:hover { border-color: var(--ls-blue-dark); color: var(--ls-blue-dark); }
+  .pin-btn.pinned {
+    background: var(--ls-blue);
+    color: var(--black);
+    border-color: var(--ls-blue);
+  }
+  tr.sku-pinned td { background: var(--ls-blue-soft); }
+  tr.sku-pinned:hover td { background: var(--ls-blue-soft); }
+
+  /* Status indicators */
+  .status-good { color: var(--spinach); font-weight: 700; }
+  .status-bad { color: var(--guava); font-weight: 700; }
+  .status-warn { color: var(--mango); font-weight: 700; }
+
+  /* Helpers */
+  .muted { color: var(--gray-500); }
+  .caps { text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; font-weight: 700; }
+  .num { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
+  .text-right { text-align: right; }
+  .gap-8 { gap: 8px; }
+  .flex { display: flex; }
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-12 { margin-bottom: 12px; }
+  .mb-16 { margin-bottom: 16px; }
+  .mb-24 { margin-bottom: 24px; }
+
+  /* Tooltips for chart series */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--gray-600);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  /* File upload modal */
+  .upload-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,20,20,0.6);
+    display: none;
+    place-items: center;
+    z-index: 100;
+    padding: 24px;
+  }
+  .upload-modal.open { display: grid; }
+  .upload-modal-body {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .drop-zone {
+    border: 2px dashed var(--gray-300);
+    border-radius: var(--radius-md);
+    padding: 32px;
+    text-align: center;
+    color: var(--gray-500);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--ls-blue);
+    background: var(--ls-blue-soft);
+    color: var(--black);
+  }
+
+  /* ============ S&OP PAGE LAYOUT ============ */
+  .sop-section {
+    margin-bottom: 36px;
+  }
+  .sop-section-h {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .sop-section-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--black);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .sop-section-title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .sop-section-sub {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+  /* Momentum chip in velocity table */
+  .momentum-chip {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .momentum-up { background: #DAF7EE; color: #00735A; }
+  .momentum-down { background: #FFE6DC; color: #C44A23; }
+  .momentum-flat { background: var(--gray-100); color: var(--gray-500); }
+  /* Highlight rows in velocity table */
+  tr.row-top td { background: linear-gradient(90deg, rgba(0,207,146,0.08) 0%, transparent 30%); }
+  tr.row-bottom td { background: linear-gradient(90deg, rgba(255,135,102,0.10) 0%, transparent 30%); }
+
+  /* SOP velocity table — 2-row sticky header + clearer column groups */
+  #sop-velocity-table { table-layout: auto; }
+  #sop-velocity-table thead th { background: var(--gray-50); z-index: 3; }
+  #sop-velocity-table thead tr:first-child th { position: sticky; top: 0; z-index: 4; box-shadow: inset 0 -1px 0 var(--gray-200); }
+  #sop-velocity-table thead tr:nth-child(2) th { position: sticky; top: 38px; z-index: 3; box-shadow: inset 0 -1px 0 var(--gray-200); }
+  /* Column-group dividers — stronger left border on the first cell of each period block */
+  #sop-velocity-table th.col-group-start,
+  #sop-velocity-table td.col-group-start { border-left: 2px solid var(--gray-200); }
+  /* Period-block backgrounds via classes (replace inline styles for hover-friendliness) */
+  #sop-velocity-table td.avg-cell { background: var(--gray-50); }
+  /* LW Sales is the headline number — give it a subtle blue tint */
+  #sop-velocity-table td.lw-cell-sales { background: var(--ls-blue-soft); font-weight: 700; }
+  /* Hover: works on every column regardless of base shading */
+  #sop-velocity-table tbody tr:hover td { background: #F4F8FB !important; }
+  #sop-velocity-table tbody tr:hover td.lw-cell-sales { background: #DCEAF3 !important; }
+  /* Tighter row rhythm */
+  #sop-velocity-table td { padding: 8px 12px; }
+  #sop-velocity-table tbody tr td:first-child { font-size: 12.5px; }
+
+  /* ============ PRESENTATION MODE ============ */
+  body.presentation-mode .sidebar { display: none; }
+  body.presentation-mode .app { grid-template-columns: 1fr; }
+  body.presentation-mode .topbar {
+    padding: 10px 32px;
+    background: rgba(255,255,254,0.95);
+    backdrop-filter: blur(10px);
+  }
+  body.presentation-mode .topbar-title h1 { font-size: 24px; }
+  body.presentation-mode .filterbar {
+    padding: 10px 32px;
+    background: rgba(255,255,254,0.97);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gray-100);
+  }
+  body.presentation-mode .content { padding: 32px 40px 80px; max-width: 1600px; margin: 0 auto; }
+  body.presentation-mode .sop-section { margin-bottom: 56px; }
+  body.presentation-mode .sop-section-title { font-size: 26px; }
+  body.presentation-mode .sop-section-sub { font-size: 14px; }
+  body.presentation-mode .sop-section-num { width: 36px; height: 36px; font-size: 16px; }
+  body.presentation-mode .kpi-value { font-size: 36px; }
+  body.presentation-mode .kpi-label { font-size: 12px; }
+  body.presentation-mode .kpi-delta { font-size: 14px; }
+  body.presentation-mode .kpi { padding: 22px 24px; }
+  body.presentation-mode .card { padding: 24px 28px; border-radius: 20px; }
+  body.presentation-mode .card-title { font-size: 18px; }
+  body.presentation-mode .card-sub { font-size: 13px; }
+  body.presentation-mode .table th { font-size: 12px; }
+  body.presentation-mode .table td { font-size: 14px; padding: 12px; }
+  body.presentation-mode .chart-wrap { height: 380px !important; }
+  body.presentation-mode #sop-chart-categories.chart-wrap canvas { max-height: 460px; }
+
+  /* Floating exit button when in presentation mode */
+  body.presentation-mode #presentation-exit-fab {
+    display: flex;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    background: var(--black);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13px;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    font-family: inherit;
+  }
+  body.presentation-mode #presentation-exit-fab:hover { background: var(--gray-700); }
+  #presentation-exit-fab { display: none; }
+
+  /* Compact view */
+  @media (max-width: 1280px) {
+    .kpi-row { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-6 { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { position: relative; height: auto; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* ------------- Password Gate ------------- */
+  body.locked .app { display: none !important; }
+  body:not(.locked) .password-gate { display: none !important; }
+  .password-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: linear-gradient(135deg, var(--almond) 0%, var(--ls-blue-soft) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .password-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-200);
+  }
+  .password-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .password-brand .brand-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--ls-blue) 0%, var(--mint) 100%);
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    color: var(--black);
+    font-size: 20px;
+  }
+  .password-brand .brand-name {
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+  }
+  .password-brand .brand-sub {
+    font-size: 11px;
+    color: var(--gray-500);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .password-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+  }
+  .password-subtitle {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin: 0 0 24px;
+  }
+  .password-form { display: flex; flex-direction: column; gap: 12px; }
+  .password-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--gray-50);
+    transition: all 0.15s;
+  }
+  .password-input:focus {
+    outline: none;
+    border-color: var(--ls-blue-dark);
+    background: white;
+    box-shadow: 0 0 0 3px var(--ls-blue-soft);
+  }
+  .password-submit {
+    background: var(--black);
+    color: white;
+    border: 1px solid var(--black);
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .password-submit:hover { background: var(--gray-700); }
+  .password-error {
+    color: #C73A3A;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-top: 4px;
+    min-height: 16px;
+  }
+
+  /* ============ ROUNDEL INTELLIGENCE ============ */
+  .rd-hero {
+    background: linear-gradient(135deg, #141414 0%, #2E323D 60%, #4A5060 100%);
+    color: white;
+    border-radius: var(--radius-xl);
+    padding: 22px 26px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow-md);
+  }
+  .rd-hero-title {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 4px;
+  }
+  .rd-hero-sub {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.72);
+    margin: 0;
+    max-width: 720px;
+    line-height: 1.5;
+  }
+  .rd-hero-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+  }
+  .rd-hero-meta b {
+    color: white;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    font-weight: 800;
+  }
+  .rd-hero-pulse {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--ls-blue);
+    color: var(--black);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .rd-hero-pulse::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--black);
+    animation: rd-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes rd-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .rd-subnav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: white;
+    padding: 8px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 132px;
+    z-index: 8;
+  }
+  .rd-tab {
+    background: transparent;
+    border: 0;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--gray-600);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .rd-tab:hover { background: var(--gray-50); color: var(--black); }
+  .rd-tab.active {
+    background: var(--black);
+    color: white;
+    box-shadow: 0 2px 6px rgba(20,20,20,0.18);
+  }
+  .rd-tab .rd-tab-num {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    color: var(--gray-500);
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .rd-tab.active .rd-tab-num {
+    background: var(--ls-blue);
+    color: var(--black);
+  }
+
+  .rd-panel { display: none; }
+  .rd-panel.active { display: block; animation: rd-fade 0.2s ease-out; }
+  @keyframes rd-fade {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Methodology bar */
+  .rd-method {
+    background: linear-gradient(135deg, #FFF7DD 0%, #FFFEF8 100%);
+    border: 1px solid #F0E0A6;
+    border-left: 4px solid var(--mango);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .rd-method-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: #946C00;
+    margin-right: 6px;
+  }
+  .rd-method-current {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--black);
+  }
+  .rd-method-current small {
+    font-weight: 500;
+    color: var(--gray-500);
+    margin-left: 8px;
+  }
+  .rd-method-options {
+    display: flex;
+    gap: 4px;
+    background: white;
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+  }
+  .rd-method-options button {
+    background: transparent;
+    border: 0;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--gray-600);
+    cursor: pointer;
+  }
+  .rd-method-options button:hover { color: var(--black); }
+  .rd-method-options button.active {
+    background: var(--black);
+    color: white;
+  }
+
+  /* Action verdict chips */
+  .rd-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .rd-action-scale { background: #DAF7EE; color: #00735A; }
+  .rd-action-maintain { background: #E0F2FF; color: #0277BD; }
+  .rd-action-fix { background: #FFF7DD; color: #946C00; }
+  .rd-action-pause { background: #FFE6DC; color: #C44A23; }
+  .rd-action-test { background: #FFF0FB; color: #B83AAB; }
+
+  /* Confidence pills */
+  .rd-conf {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 700;
+  }
+  .rd-conf-high { background: #DAF7EE; color: #00735A; }
+  .rd-conf-med { background: #FFF7DD; color: #946C00; }
+  .rd-conf-low { background: #FFE6DC; color: #C44A23; }
+  .rd-conf::before { content: '●'; font-size: 8px; }
+
+  /* Big-stat callout */
+  .rd-bigstat {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .rd-bigstat-item {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    position: relative;
+  }
+  .rd-bigstat-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 800;
+    color: var(--gray-500);
+    margin-bottom: 6px;
+  }
+  .rd-bigstat-value {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .rd-bigstat-meta {
+    margin-top: 4px;
+    font-size: 11.5px;
+    color: var(--gray-500);
+  }
+
+  /* Recommendation card */
+  .rd-reco {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+  }
+  .rd-reco-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .rd-reco-icon.win { background: #DAF7EE; color: #00735A; }
+  .rd-reco-icon.risk { background: #FFE6DC; color: #C44A23; }
+  .rd-reco-icon.action { background: var(--ls-blue-soft); color: var(--ls-blue-dark); }
+  .rd-reco-title {
+    font-size: 13.5px;
+    font-weight: 800;
+    margin: 0 0 2px;
+    letter-spacing: -0.01em;
+  }
+  .rd-reco-body {
+    font-size: 12.5px;
+    color: var(--gray-600);
+    line-height: 1.45;
+  }
+  .rd-reco-cta {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ls-blue-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* Lift sparkbar */
+  .rd-bar {
+    position: relative;
+    height: 6px;
+    background: var(--gray-100);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .rd-bar-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--ls-blue);
+    border-radius: 999px;
+    transition: width 0.3s;
+  }
+  .rd-bar-fill.pos { background: var(--spinach); }
+  .rd-bar-fill.neg { background: var(--guava); }
+
+  /* Budget simulator */
+  .rd-sim-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 1100px) { .rd-sim-grid { grid-template-columns: 1fr; } }
+  .rd-sim-input {
+    display: grid;
+    grid-template-columns: 110px 1fr 90px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .rd-sim-input label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray-700);
+  }
+  .rd-sim-input input[type="range"] {
+    width: 100%;
+    accent-color: var(--ls-blue-dark);
+  }
+  .rd-sim-input .rd-sim-val {
+    text-align: right;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+  }
+  .rd-sim-budget {
+    background: linear-gradient(135deg, var(--ls-blue-soft) 0%, white 100%);
+    border: 1px solid var(--ls-blue);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .rd-sim-budget input {
+    font-size: 22px;
+    font-weight: 900;
+    border: 0;
+    background: transparent;
+    width: 180px;
+    padding: 4px 0;
+    color: var(--black);
+    border-bottom: 2px solid var(--ls-blue-dark);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .rd-sim-budget input:focus { outline: none; border-color: var(--black); }
+  .rd-sim-scenarios {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .rd-sim-scenario {
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .rd-sim-scenario:hover { border-color: var(--gray-400); }
+  .rd-sim-scenario.active {
+    border-color: var(--ls-blue);
+    background: var(--ls-blue-soft);
+    box-shadow: 0 0 0 2px var(--ls-blue) inset;
+  }
+  .rd-sim-scenario-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray-500);
+    margin-bottom: 4px;
+  }
+  .rd-sim-scenario.active .rd-sim-scenario-title { color: var(--ls-blue-dark); }
+  .rd-sim-scenario-roas {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .rd-sim-scenario-meta {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+
+  /* Buyer readout */
+  .rd-readout {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    max-width: 880px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-sm);
+    font-family: 'Mulish', sans-serif;
+    line-height: 1.55;
+  }
+  .rd-readout-h {
+    border-bottom: 2px solid var(--gray-100);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  .rd-readout-h h2 {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: 0 0 4px;
+  }
+  .rd-readout-h .meta {
+    font-size: 11.5px;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+  }
+  .rd-readout h3 {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ls-blue-dark);
+    margin: 22px 0 10px;
+  }
+  .rd-readout p, .rd-readout li {
+    font-size: 13.5px;
+    color: var(--gray-700);
+    margin: 0 0 8px;
+  }
+  .rd-readout ul { padding-left: 18px; margin: 4px 0 12px; }
+  .rd-readout strong { color: var(--black); font-weight: 800; }
+  .rd-readout-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    max-width: 880px;
+    margin: 0 auto 12px;
+  }
+
+  /* Print styles for buyer readout PDF */
+  @media print {
+    body * { visibility: hidden; }
+    #rd-readout-print, #rd-readout-print * { visibility: visible; }
+    #rd-readout-print { position: absolute; left: 0; top: 0; width: 100%; padding: 0; box-shadow: none; border: 0; }
+    .rd-readout-toolbar, .rd-subnav, .sidebar, .topbar, .filterbar, .rd-method { display: none !important; }
+  }
+
+  /* Warning callout */
+  .rd-warn {
+    background: linear-gradient(135deg, #FFF1F1 0%, #FFFEF8 100%);
+    border-left: 3px solid var(--guava);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 12.5px;
+    color: var(--gray-700);
+    margin-bottom: 12px;
+  }
+  .rd-warn b { color: #C44A23; }
+
+  /* Tighter table for SKU performance */
+  .rd-skutbl td { padding: 8px 10px; font-size: 12.5px; }
+  .rd-skutbl th { padding: 9px 10px; font-size: 10.5px; }
+  .rd-skutbl .desc {
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Status-good/bad cell tints */
+  .status-good { color: #00735A; font-weight: 700; }
+  .status-bad { color: #C44A23; font-weight: 700; }
+
+  /* Download chip */
+  .rd-download {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    color: var(--gray-600);
+    font-size: 11px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .rd-download:hover { background: var(--gray-100); color: var(--black); }
+
+  /* ============= GRAPH BUILDER ============= */
+  .gb-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .gb-rail {
+    position: sticky;
+    top: 76px;
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 14px 14px 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .gb-rail::-webkit-scrollbar { width: 6px; }
+  .gb-section { padding: 10px 0 12px; border-bottom: 1px solid var(--gray-100); }
+  .gb-section:last-child { border-bottom: 0; }
+  .gb-h {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    margin-bottom: 8px;
+  }
+  .gb-h-sub { font-size: 10.5px; color: var(--gray-400); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .gb-h-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .gb-h-actions { display: inline-flex; gap: 4px; }
+  .gb-mini {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    color: var(--gray-600);
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .gb-mini:hover { background: var(--ls-blue-soft); border-color: var(--ls-blue); color: var(--black); }
+  .gb-help {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .gb-search {
+    width: 100%;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    font-size: 12.5px;
+    font-family: inherit;
+    margin-bottom: 6px;
+    background: white;
+  }
+  .gb-search:focus { outline: 2px solid var(--ls-blue); border-color: var(--ls-blue); }
+  .gb-picker {
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+    background: var(--gray-50);
+  }
+  .gb-pick {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    color: var(--gray-700);
+    transition: background 0.1s;
+  }
+  .gb-pick:hover { background: white; }
+  .gb-pick input[type=checkbox] { accent-color: var(--ls-blue); cursor: pointer; }
+  .gb-pick-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .gb-pick-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gb-pick-tag {
+    font-size: 10px;
+    color: var(--gray-400);
+    background: white;
+    padding: 1px 6px;
+    border-radius: 999px;
+    border: 1px solid var(--gray-200);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .seg-wrap { flex-wrap: wrap; }
+  .seg-wrap button { font-size: 11.5px !important; padding: 6px 10px !important; }
+  .seg-mini button { font-size: 10.5px !important; padding: 4px 9px !important; }
+  .gb-chart-types {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+  }
+  .gb-type-btn {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    cursor: pointer;
+    color: var(--gray-500);
+    transition: all 0.12s ease;
+    font-family: inherit;
+    height: 40px;
+    display: grid;
+    place-items: center;
+  }
+  .gb-type-btn svg { width: 22px; height: 22px; }
+  .gb-type-btn:hover { background: var(--gray-50); color: var(--black); }
+  .gb-type-btn.active {
+    background: var(--ls-blue-soft);
+    border-color: var(--ls-blue);
+    color: var(--black);
+    box-shadow: inset 0 0 0 1px var(--ls-blue);
+  }
+  .gb-field {
+    display: block;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--gray-500);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .gb-field span { display: block; margin-bottom: 4px; }
+  .gb-field input, .gb-select {
+    width: 100%;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 7px 10px;
+    font-size: 12.5px;
+    font-family: inherit;
+    background: white;
+    color: var(--black);
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .gb-field input:focus, .gb-select:focus { outline: 2px solid var(--ls-blue); border-color: var(--ls-blue); }
+  .gb-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--gray-700);
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .gb-toggle input { accent-color: var(--ls-blue); cursor: pointer; }
+  .gb-combo-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .gb-combo-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 6px;
+    align-items: center;
+    padding: 6px 8px;
+    background: var(--gray-50);
+    border-radius: var(--radius-sm);
+  }
+  .gb-combo-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--black);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .gb-combo-row .seg button { padding: 4px 7px !important; font-size: 10.5px !important; }
+  .gb-combo-empty {
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray-500);
+  }
+
+  /* ----- Stage / preview ----- */
+  .gb-stage { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .gb-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .gb-toolbar-title { font-size: 14px; font-weight: 800; letter-spacing: -0.01em; }
+  .gb-toolbar-sub { font-size: 11.5px; color: var(--gray-500); margin-top: 2px; }
+  .gb-toolbar-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+  .gb-canvas-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+  .gb-stage-bg {
+    padding: 24px;
+    background: white;
+    transition: background 0.2s;
+  }
+  .gb-stage-bg.bg-cream { background: var(--almond); }
+  .gb-stage-bg.bg-dark { background: #141414; }
+  .gb-stage-bg.bg-checker {
+    background-color: #f8f9fb;
+    background-image:
+      linear-gradient(45deg, #e5e8ed 25%, transparent 25%),
+      linear-gradient(-45deg, #e5e8ed 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #e5e8ed 75%),
+      linear-gradient(-45deg, transparent 75%, #e5e8ed 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+  }
+  .gb-export-frame {
+    background: transparent;
+    padding: 22px 28px 22px;
+    border-radius: 14px;
+    aspect-ratio: 16 / 9;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 14px;
+    transition: aspect-ratio 0.2s;
+  }
+  .gb-export-frame.ratio-4x3 { aspect-ratio: 4 / 3; }
+  .gb-export-frame.ratio-1x1 { aspect-ratio: 1 / 1; }
+  .gb-export-frame.ratio-wide { aspect-ratio: 21 / 9; }
+  .gb-export-frame.theme-dark .gb-frame-title { color: white; }
+  .gb-export-frame.theme-dark .gb-frame-subtitle,
+  .gb-export-frame.theme-dark .gb-frame-source,
+  .gb-export-frame.theme-dark .gb-frame-window,
+  .gb-export-frame.theme-dark .gb-frame-stamp { color: rgba(255,255,255,0.62); }
+  .gb-frame-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .gb-frame-title-row { display: flex; align-items: center; gap: 12px; }
+  .gb-brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--ls-blue) 0%, var(--mint) 100%);
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    color: var(--black);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .gb-frame-title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    line-height: 1.2;
+  }
+  .gb-frame-subtitle {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .gb-frame-stamp {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 800;
+    color: var(--gray-400);
+    align-self: center;
+  }
+  .gb-chart-host {
+    position: relative;
+    min-height: 0;
+  }
+  .gb-chart-host canvas { width: 100% !important; height: 100% !important; }
+  .gb-frame-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 10.5px;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    padding-top: 6px;
+    border-top: 1px solid rgba(20,20,20,0.06);
+  }
+  .gb-export-frame.theme-dark .gb-frame-footer { border-top-color: rgba(255,255,255,0.1); }
+
+  .gb-export-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    flex-wrap: wrap;
+  }
+  .gb-export-meta { font-size: 11.5px; color: var(--gray-500); }
+  .gb-export-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  @media (max-width: 1100px) {
+    .gb-layout { grid-template-columns: 1fr; }
+    .gb-rail { position: static; max-height: none; }
+  }
+</style>
+</head>
+<body class="locked">
+<div class="password-gate" id="password-gate">
+  <div class="password-card">
+    <div class="password-brand">
+      <div class="brand-mark">LS</div>
+      <div>
+        <div class="brand-name">Little Spoon</div>
+        <div class="brand-sub">Retail OS</div>
+      </div>
+    </div>
+    <h1 class="password-title">Protected Dashboard</h1>
+    <p class="password-subtitle">Enter the password to continue.</p>
+    <form class="password-form" id="password-form" autocomplete="off">
+      <input type="password" class="password-input" id="password-input" placeholder="Password" autofocus required />
+      <button type="submit" class="password-submit">Unlock</button>
+      <div class="password-error" id="password-error"></div>
+    </form>
+  </div>
+</div>
+<div class="app">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">LS</div>
+      <div>
+        <div class="brand-name">Little Spoon</div>
+        <div class="brand-sub">Retail OS</div>
+      </div>
+    </div>
+
+    <div class="nav-section">Meeting</div>
+    <div class="nav-item active" data-page="sop">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span>S&amp;OP Meeting</span>
+    </div>
+
+    <div class="nav-section">Performance</div>
+    <div class="nav-item" data-page="overview">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Executive Overview</span>
+    </div>
+    <div class="nav-item" data-page="sku">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span>SKU Performance</span>
+    </div>
+    <div class="nav-item" data-page="category">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+      <span>Category Performance</span>
+    </div>
+
+    <div class="nav-section">Drivers</div>
+    <div class="nav-item" data-page="promo">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span>Promo Analysis</span>
+    </div>
+    <div class="nav-item" data-page="digital">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Digital Penetration</span>
+    </div>
+    <div class="nav-item" data-page="roundel">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+      <span>Roundel Intelligence</span>
+    </div>
+
+    <div class="nav-section">Tools</div>
+    <div class="nav-item" data-page="graph">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/><circle cx="7" cy="14" r="1.5" fill="currentColor"/><circle cx="11" cy="10" r="1.5" fill="currentColor"/><circle cx="15" cy="14" r="1.5" fill="currentColor"/><circle cx="20" cy="8" r="1.5" fill="currentColor"/></svg>
+      <span>Graph Builder</span>
+    </div>
+    <div class="nav-item" data-page="compare">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Compare</span>
+    </div>
+    <div class="nav-item" data-page="mappings">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>SKU Mappings</span>
+    </div>
+    <div class="nav-item" data-page="sources">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <span>Data Sources</span>
+    </div>
+    <div class="nav-item" data-page="weekly">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+      <span>Weekly Snapshot</span>
+    </div>
+    <div class="nav-item" data-page="explorer">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Data Explorer</span>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-title">
+        <h1 id="page-title">Executive Overview</h1>
+        <p id="page-sub">Retail performance · Roundel media · Digital penetration</p>
+      </div>
+      <div class="topbar-actions">
+        <span class="badge" id="data-badge">Last week: —</span>
+        <button class="btn" id="presentation-toggle" title="Toggle presentation mode (P)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Present
+        </button>
+        <button class="btn" onclick="document.getElementById('upload-modal').classList.add('open')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload data
+        </button>
+        <button class="btn" onclick="exportCSV()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+    </div>
+
+    <div class="filterbar">
+      <div class="filter-group">
+        <span class="filter-label">Window</span>
+        <div class="pill-group" id="window-toggle">
+          <span class="pill" data-window="1">LW</span>
+          <span class="pill" data-window="4">L4W</span>
+          <span class="pill active" data-window="13">L13W</span>
+          <span class="pill" data-window="26">L26W</span>
+          <span class="pill" data-window="52">L52W</span>
+          <span class="pill" data-window="custom">Custom</span>
+        </div>
+        <div id="custom-range" style="display: none; align-items: center; gap: 6px;">
+          <select id="custom-start" style="font-size: 12px;"></select>
+          <span class="muted" style="font-size: 12px;">→</span>
+          <select id="custom-end" style="font-size: 12px;"></select>
+          <span class="muted" style="font-size: 11px;" id="custom-range-count"></span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Categories</span>
+        <div class="pill-cat-group" id="category-filter"></div>
+      </div>
+
+      <div class="filter-spacer"></div>
+
+      <div class="filter-group">
+        <span class="filter-label">Channel</span>
+        <div class="pill-group" id="channel-toggle">
+          <span class="pill active" data-channel="all">All</span>
+          <span class="pill" data-channel="online">Online</span>
+          <span class="pill" data-channel="store">Store</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- ===== S&OP Meeting Page ===== -->
+      <div class="page active" id="page-sop">
+        <!-- 1. KPI HEADER -->
+        <div class="sop-section">
+          <div class="sop-section-h">
+            <div class="sop-section-num">1</div>
+            <div>
+              <div class="sop-section-title">Executive snapshot</div>
+              <div class="sop-section-sub" id="sop-snapshot-sub">vs prior period</div>
+            </div>
+          </div>
+          <div class="kpi-row" id="sop-kpis"></div>
+        </div>
+
+        <!-- 2. BRAND PERFORMANCE -->
+        <div class="sop-section">
+          <div class="sop-section-h">
+            <div class="sop-section-num">2</div>
+            <div>
+              <div class="sop-section-title">Brand performance</div>
+              <div class="sop-section-sub">Are we growing? Is the growth healthy?</div>
+            </div>
+          </div>
+          <div class="grid grid-3 mb-16" id="sop-brand-grid">
+            <div class="card">
+              <div class="card-title">Sales + Units</div>
+              <div class="card-sub">Are we growing volume + dollars together?</div>
+              <div class="chart-wrap" id="sop-chart-sales-units-wrap" style="height: 280px;"><canvas id="sop-chart-sales-units"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Sales + Promo dependency</div>
+              <div class="card-sub">Is growth coming from promo or base?</div>
+              <div class="chart-wrap" id="sop-chart-sales-promo-wrap" style="height: 280px;"><canvas id="sop-chart-sales-promo"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Sales + Digital mix</div>
+              <div class="card-sub">Is digital share rising with sales?</div>
+              <div class="chart-wrap" id="sop-chart-sales-digital-wrap" style="height: 280px;"><canvas id="sop-chart-sales-digital"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. CATEGORY PERFORMANCE -->
+        <div class="sop-section">
+          <div class="sop-section-h">
+            <div class="sop-section-num">3</div>
+            <div>
+              <div class="sop-section-title">Where the growth is coming from</div>
+              <div class="sop-section-sub">Sales by category, week by week</div>
+            </div>
+            <div class="seg" id="sop-cat-toggle" style="margin-left: auto;">
+              <button class="active" data-metric="sales">Sales $</button>
+              <button data-metric="units">Units</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="chart-wrap" style="height: 320px;"><canvas id="sop-chart-categories"></canvas></div>
+          </div>
+        </div>
+
+        <!-- 3b. BRIDGE / WATERFALL -->
+        <div class="sop-section">
+          <div class="sop-section-h">
+            <div class="sop-section-num" style="background: var(--ls-blue-dark); color: white;">↔</div>
+            <div>
+              <div class="sop-section-title">Bridge: how we got from A → B</div>
+              <div class="sop-section-sub" id="sop-bridge-sub">Pick two periods · see which categories drove the change</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h" style="margin-bottom: 16px;">
+              <div class="flex" style="gap: 12px; align-items: center; flex-wrap: wrap;">
+                <span class="filter-label">From</span>
+                <select id="bridge-from" style="font-size: 12.5px;"></select>
+                <span class="muted" style="font-size: 16px;">→</span>
+                <span class="filter-label">To</span>
+                <select id="bridge-to" style="font-size: 12.5px;"></select>
+                <span class="muted" style="font-size: 11px;" id="bridge-summary"></span>
+              </div>
+              <div class="seg" id="bridge-metric">
+                <button class="active" data-metric="sales">Sales $</button>
+                <button data-metric="online">Online $</button>
+                <button data-metric="units">Units</button>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 320px;"><canvas id="sop-chart-bridge"></canvas></div>
+          </div>
+        </div>
+
+        <!-- 4. SKU VELOCITY + MOMENTUM -->
+        <div class="sop-section">
+          <div class="sop-section-h">
+            <div class="sop-section-num">4</div>
+            <div>
+              <div class="sop-section-title">SKU velocity + momentum</div>
+              <div class="sop-section-sub">What's accelerating · what's slowing</div>
+            </div>
+            <div class="flex gap-8" style="margin-left: auto;">
+              <input type="search" id="sop-sku-search" placeholder="Search SKU..." style="width: 200px;" />
+            </div>
+          </div>
+          <div class="card mb-16">
+            <div class="scroll" style="max-height: 480px;">
+              <table class="table" id="sop-velocity-table">
+                <thead>
+                  <tr>
+                    <th rowspan="2" data-sort="description">SKU</th>
+                    <th rowspan="2" data-sort="category">Category</th>
+                    <th rowspan="2" data-sort="momentum" class="text-right col-group-start" style="background: var(--ls-blue-soft);">Momentum<br><span style="font-weight: 400; font-size: 9px;">LW sales vs L13W avg</span></th>
+                    <th colspan="3" class="text-right col-group-start" style="border-bottom: 2px solid var(--ls-blue);">Last Week</th>
+                    <th colspan="3" class="text-right col-group-start" style="border-bottom: 2px solid var(--gray-300);">2 wks ago</th>
+                    <th colspan="3" class="text-right col-group-start" style="border-bottom: 2px solid var(--gray-300); background: var(--gray-50);">L4W avg</th>
+                    <th colspan="3" class="text-right col-group-start" style="border-bottom: 2px solid var(--gray-300); background: var(--gray-50);">L13W avg</th>
+                  </tr>
+                  <tr>
+                    <th data-sort="lw_pspw" class="text-right col-group-start">$ PSPW</th>
+                    <th data-sort="lw_sales" class="text-right">Sales</th>
+                    <th data-sort="lw_units" class="text-right">Units</th>
+                    <th data-sort="lwp_pspw" class="text-right col-group-start">$ PSPW</th>
+                    <th data-sort="lwp_sales" class="text-right">Sales</th>
+                    <th data-sort="lwp_units" class="text-right">Units</th>
+                    <th data-sort="l4w_pspw" class="text-right col-group-start" style="background: var(--gray-50);">$ PSPW</th>
+                    <th data-sort="l4w_sales" class="text-right" style="background: var(--gray-50);">Sales</th>
+                    <th data-sort="l4w_units" class="text-right" style="background: var(--gray-50);">Units</th>
+                    <th data-sort="l13w_pspw" class="text-right col-group-start" style="background: var(--gray-50);">$ PSPW</th>
+                    <th data-sort="l13w_sales" class="text-right" style="background: var(--gray-50);">Sales</th>
+                    <th data-sort="l13w_units" class="text-right" style="background: var(--gray-50);">Units</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-h">
+              <div>
+                <div class="card-title">$ PSPW trend</div>
+                <div class="card-sub">Pick SKUs to compare velocity over time</div>
+              </div>
+              <div class="flex gap-8">
+                <button class="btn" id="sop-pspw-top5">Top 5 by sales</button>
+                <button class="btn" id="sop-pspw-clear">Clear</button>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 300px;"><canvas id="sop-chart-pspw"></canvas></div>
+          </div>
+        </div>
+
+        <!-- 5. DIGITAL + ROUNDEL -->
+        <div class="sop-section">
+          <div class="sop-section-h">
+            <div class="sop-section-num">5</div>
+            <div>
+              <div class="sop-section-title">Digital + Roundel</div>
+              <div class="sop-section-sub">Marketing effectiveness layer · ROAS = online sales ÷ spend</div>
+            </div>
+          </div>
+          <div class="card mb-16">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Digital $ + Roundel spend + Digital penetration</div>
+                <div class="card-sub" id="sop-digital-roundel-sub">Selected window · weekly</div>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 340px;"><canvas id="sop-chart-digital-roundel"></canvas></div>
+          </div>
+          <div class="card">
+            <table class="table" id="sop-roundel-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th class="text-right">Roundel Spend</th>
+                  <th class="text-right">Online Sales</th>
+                  <th class="text-right">Total Sales</th>
+                  <th class="text-right">Online %</th>
+                  <th class="text-right">ROAS</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div class="muted" style="font-size: 11px; margin-top: 8px;">
+              Impressions / Clicks / CTR / CPC / CPM not in the current Roundel feed — only weekly spend by category. Add when available.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Overview Page ===== -->
+      <div class="page" id="page-overview">
+        <div class="kpi-row" id="overview-kpis"></div>
+
+        <div class="grid grid-3 mb-16">
+          <div class="card span-2">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Sales trend</div>
+                <div class="card-sub" id="overview-trend-sub">Selected window · stacked by category + Roundel overlay</div>
+              </div>
+              <div class="seg" id="overview-trend-toggle">
+                <button class="active" data-metric="sales">Sales</button>
+                <button data-metric="units">Units</button>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 320px;"><canvas id="chart-overview-trend"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Category mix</div>
+            <div class="card-sub">Share of sales — selected window</div>
+            <div class="chart-wrap" style="height: 320px;"><canvas id="chart-overview-mix"></canvas></div>
+          </div>
+        </div>
+
+        <div class="grid grid-3 mb-16">
+          <div class="card span-2">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Top 10 SKUs</div>
+                <div class="card-sub">By sales $ — selected window</div>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 360px;"><canvas id="chart-overview-top"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Roundel snapshot</div>
+            <div class="card-sub">Spend efficiency per category</div>
+            <div id="roundel-snapshot"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Key callouts</div>
+          <div class="card-sub">Auto-generated from current window</div>
+          <div id="overview-insights"></div>
+        </div>
+      </div>
+
+      <!-- ===== SKU Page ===== -->
+      <div class="page" id="page-sku">
+        <div class="kpi-row" id="sku-kpis"></div>
+
+        <div class="card mb-16">
+          <div class="card-h">
+            <div>
+              <div class="card-title">SKU period comparison</div>
+              <div class="card-sub" id="sku-period-sub">Sales · $PSPW · Units across LW, Prior LW, L4W avg, L13W avg — anchored to last week 4/25/2026</div>
+            </div>
+            <div class="flex gap-8">
+              <input type="search" id="sku-period-search" placeholder="Search SKU..." style="width: 200px;" />
+              <button class="btn btn-primary" onclick="exportPeriod()">Export</button>
+            </div>
+          </div>
+          <div class="scroll" style="max-height: 600px;">
+            <table class="table" id="sku-period-table">
+              <thead>
+                <tr>
+                  <th rowspan="2" data-sort="description">SKU</th>
+                  <th rowspan="2" data-sort="category">Category</th>
+                  <th colspan="3" class="text-right" style="border-bottom: 2px solid var(--ls-blue);">Last Week</th>
+                  <th colspan="3" class="text-right" style="border-bottom: 2px solid var(--gray-300);">Prior LW</th>
+                  <th colspan="3" class="text-right" style="border-bottom: 2px solid var(--gray-300); background: var(--gray-50);">L4W avg</th>
+                  <th colspan="3" class="text-right" style="border-bottom: 2px solid var(--gray-300); background: var(--gray-50);">L13W avg</th>
+                </tr>
+                <tr>
+                  <th data-sort="lw_sales" class="text-right">Sales $</th>
+                  <th data-sort="lw_pspw" class="text-right">$ PSPW</th>
+                  <th data-sort="lw_units" class="text-right">Units</th>
+                  <th data-sort="lwp_sales" class="text-right">Sales $</th>
+                  <th data-sort="lwp_pspw" class="text-right">$ PSPW</th>
+                  <th data-sort="lwp_units" class="text-right">Units</th>
+                  <th data-sort="l4w_sales" class="text-right" style="background: var(--gray-50);">Sales $</th>
+                  <th data-sort="l4w_pspw" class="text-right" style="background: var(--gray-50);">$ PSPW</th>
+                  <th data-sort="l4w_units" class="text-right" style="background: var(--gray-50);">Units</th>
+                  <th data-sort="l13w_sales" class="text-right" style="background: var(--gray-50);">Sales $</th>
+                  <th data-sort="l13w_pspw" class="text-right" style="background: var(--gray-50);">$ PSPW</th>
+                  <th data-sort="l13w_units" class="text-right" style="background: var(--gray-50);">Units</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card mb-16">
+          <div class="card-h">
+            <div>
+              <div class="card-title">SKU trend over time</div>
+              <div class="card-sub">Pick a metric, pick SKUs · Top 8 in window shown by default</div>
+            </div>
+            <div class="flex gap-8">
+              <select id="sku-trend-metric">
+                <option value="sales">Sales $</option>
+                <option value="velocity" selected>$ PSPW (velocity)</option>
+                <option value="units">Units</option>
+                <option value="upspw">UPSPW</option>
+                <option value="promoPct">Promo % of sales</option>
+                <option value="onlinePen">Online %</option>
+                <option value="oos">OOS %</option>
+                <option value="price">Price</option>
+              </select>
+              <div class="seg" id="sku-trend-grouping">
+                <button class="active" data-group="sku">By SKU</button>
+                <button data-group="category">By Category</button>
+              </div>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height: 360px;"><canvas id="chart-sku-trend"></canvas></div>
+          <div class="muted" style="font-size: 11px; margin-top: 8px;" id="sku-trend-hint">Tip: click a SKU row below to add it to this chart.</div>
+        </div>
+
+        <div class="grid grid-3 mb-16">
+          <div class="card span-2">
+            <div class="card-h">
+              <div>
+                <div class="card-title">SKU performance</div>
+                <div class="card-sub">Click any row for full breakdown · Sortable</div>
+              </div>
+              <div class="flex gap-8">
+                <input type="search" id="sku-search" placeholder="Search SKUs..." style="width: 220px;" />
+              </div>
+            </div>
+            <div class="scroll" style="max-height: 600px;">
+              <table class="table" id="sku-table">
+                <thead>
+                  <tr>
+                    <th data-sort="description">SKU</th>
+                    <th data-sort="category">Category</th>
+                    <th data-sort="sales" class="text-right">Sales $</th>
+                    <th data-sort="units" class="text-right">Units</th>
+                    <th data-sort="velocity" class="text-right">$ PSPW</th>
+                    <th data-sort="promoPct" class="text-right">Promo %</th>
+                    <th data-sort="onlinePen" class="text-right">Online %</th>
+                    <th data-sort="oos" class="text-right">OOS %</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">SKU contribution</div>
+            <div class="card-sub">Top 15 share of selected window</div>
+            <div class="chart-wrap" style="height: 600px;"><canvas id="chart-sku-contrib"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Category Page ===== -->
+      <div class="page" id="page-category">
+        <div class="kpi-row" id="category-kpis"></div>
+        <div class="grid grid-3 mb-16">
+          <div class="card span-2">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Sales trend by category</div>
+                <div class="card-sub" id="cat-trend-sub">Selected window · click categories above to filter</div>
+              </div>
+              <div class="seg" id="category-trend-toggle">
+                <button class="active" data-metric="sales">Sales</button>
+                <button data-metric="units">Units</button>
+                <button data-metric="velocity">$ PSPW</button>
+              </div>
+              <div class="seg" id="category-trend-shape" style="margin-left: 8px;">
+                <button class="active" data-shape="line">Lines</button>
+                <button data-shape="bar">Stacked</button>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 360px;"><canvas id="chart-cat-trend"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Sales vs Roundel spend</div>
+            <div class="card-sub">By category · selected window</div>
+            <div class="chart-wrap" style="height: 360px;"><canvas id="chart-cat-spend"></canvas></div>
+          </div>
+        </div>
+
+        <div class="card mb-16">
+          <div class="card-h">
+            <div>
+              <div class="card-title">Each category, week-by-week</div>
+              <div class="card-sub">Same scale across all panels · click a category card below to focus</div>
+            </div>
+            <div class="seg" id="category-multi-toggle">
+              <button class="active" data-metric="sales">Sales $</button>
+              <button data-metric="units">Units</button>
+              <button data-metric="velocity">$ PSPW</button>
+              <button data-metric="spend">Roundel $</button>
+            </div>
+          </div>
+          <div id="category-multi-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;"></div>
+        </div>
+
+        <div class="card mb-16">
+          <div class="card-title">Category scorecard</div>
+          <div class="card-sub">Sales, growth, promo + digital health · selected window</div>
+          <table class="table" id="category-scorecard">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th class="text-right">Sales $</th>
+                <th class="text-right">vs Prior</th>
+                <th class="text-right">Units</th>
+                <th class="text-right">$ PSPW</th>
+                <th class="text-right">Promo %</th>
+                <th class="text-right">Online %</th>
+                <th class="text-right">Online $</th>
+                <th class="text-right">Roundel $</th>
+                <th class="text-right">ROAS</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== Promo Page ===== -->
+      <div class="page" id="page-promo">
+        <div class="kpi-row" id="promo-kpis"></div>
+        <div class="grid grid-3 mb-16">
+          <div class="card span-2">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Base vs incremental sales</div>
+                <div class="card-sub">Promo lift over baseline · weekly</div>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 320px;"><canvas id="chart-promo-stack"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Promo lift %</div>
+            <div class="card-sub">Lift over 4-wk baseline by class</div>
+            <div class="chart-wrap" style="height: 320px;"><canvas id="chart-promo-lift"></canvas></div>
+          </div>
+        </div>
+
+        <div class="grid grid-3 mb-16">
+          <div class="card span-2">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Promo + Roundel interaction</div>
+                <div class="card-sub">Sales by promo / spend state · selected window</div>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 320px;"><canvas id="chart-promo-interaction"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Pre · During · Post</div>
+            <div class="card-sub">Avg sales around promo weeks (per class)</div>
+            <div class="chart-wrap" style="height: 320px;"><canvas id="chart-promo-pdp"></canvas></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Promo recap by class</div>
+          <div class="card-sub">Sums across selected window</div>
+          <table class="table" id="promo-table">
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th class="text-right">Total Sales</th>
+                <th class="text-right">Promo Sales</th>
+                <th class="text-right">Promo Sales %</th>
+                <th class="text-right">Base Sales (4W avg)</th>
+                <th class="text-right">Incremental Sales</th>
+                <th class="text-right">Promo Lift</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== Digital Page ===== -->
+      <div class="page" id="page-digital">
+        <div class="kpi-row" id="digital-kpis"></div>
+
+        <div class="grid grid-3 mb-16">
+          <div class="card span-2">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Digital penetration % by category</div>
+                <div class="card-sub" id="digital-pen-cat-sub">Online share of sales · per category over time</div>
+              </div>
+              <div class="seg" id="digital-pen-toggle">
+                <button class="active" data-view="cat">By Category</button>
+                <button data-view="enterprise">Enterprise (Target.com)</button>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 360px;"><canvas id="chart-digital-pen"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Digital % by category</div>
+            <div class="card-sub" id="digital-cat-snap-sub">Selected window · weighted average</div>
+            <div class="chart-wrap" style="height: 360px;"><canvas id="chart-digital-cat"></canvas></div>
+          </div>
+        </div>
+
+        <div class="grid grid-3 mb-16">
+          <div class="card span-2">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Roundel spend by category over time</div>
+                <div class="card-sub" id="digital-spend-cat-sub">Selected window · stacked weekly spend</div>
+              </div>
+              <div class="seg" id="digital-spend-toggle">
+                <button class="active" data-view="stacked">Stacked</button>
+                <button data-view="line">Lines</button>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 360px;"><canvas id="chart-digital-spend-cat"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Online $ vs Spend $</div>
+            <div class="card-sub">Total — selected window</div>
+            <div class="chart-wrap" style="height: 360px;"><canvas id="chart-digital-spend"></canvas></div>
+          </div>
+        </div>
+
+        <div class="grid grid-2 mb-16">
+          <div class="card">
+            <div class="card-title">Promo vs non-promo · digital share</div>
+            <div class="card-sub">Are promo weeks more digital?</div>
+            <div class="chart-wrap" style="height: 280px;"><canvas id="chart-digital-promo"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Online sales by category over time</div>
+            <div class="card-sub" id="digital-online-cat-sub">Selected window · weekly $ from item × pen</div>
+            <div class="chart-wrap" style="height: 280px;"><canvas id="chart-digital-online-cat"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Roundel Intelligence Page ===== -->
+      <div class="page" id="page-roundel">
+        <!-- Hero -->
+        <div class="rd-hero">
+          <div>
+            <h2 class="rd-hero-title">Roundel Performance Intelligence</h2>
+            <p class="rd-hero-sub">An operating system for deciding where Roundel dollars should go next — diagnose efficiency, isolate true lift, and simulate the next budget cycle before you spend a dollar.</p>
+          </div>
+          <div class="rd-hero-meta">
+            <span class="rd-hero-pulse">Live</span>
+            <span>Window · <b id="rd-hero-window">L13W</b></span>
+            <span>Last week · <b id="rd-hero-lw">—</b></span>
+          </div>
+        </div>
+
+        <!-- Sub-tab nav -->
+        <div class="rd-subnav" id="rd-subnav">
+          <button class="rd-tab active" data-rd="exec"><span class="rd-tab-num">1</span>Executive Overview</button>
+          <button class="rd-tab" data-rd="category"><span class="rd-tab-num">2</span>Category</button>
+          <button class="rd-tab" data-rd="sku"><span class="rd-tab-num">3</span>SKU</button>
+          <button class="rd-tab" data-rd="incr"><span class="rd-tab-num">4</span>Incrementality</button>
+          <button class="rd-tab" data-rd="promo"><span class="rd-tab-num">5</span>Promo × Media</button>
+          <button class="rd-tab" data-rd="digital"><span class="rd-tab-num">6</span>Digital Penetration</button>
+          <button class="rd-tab" data-rd="budget"><span class="rd-tab-num">7</span>Budget Simulator</button>
+          <button class="rd-tab" data-rd="readout"><span class="rd-tab-num">8</span>Buyer Readout</button>
+        </div>
+
+        <!-- ============ 1. EXECUTIVE OVERVIEW ============ -->
+        <div class="rd-panel active" data-rd-panel="exec">
+          <div class="kpi-row" id="rd-exec-kpis" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-bottom: 16px;"></div>
+
+          <div class="grid grid-3 mb-16">
+            <div class="card span-2">
+              <div class="card-h">
+                <div>
+                  <div class="card-title">Roundel spend × digital sales</div>
+                  <div class="card-sub" id="rd-spend-digital-sub">Weekly · spend bars (left) vs. attributed digital $ line (right)</div>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center; font-size: 11px; color: var(--gray-500);">
+                  <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #141414; border-radius: 2px; display: inline-block;"></span>Spend</span>
+                  <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 12px; height: 2px; background: #18A7FF; display: inline-block;"></span>Digital $</span>
+                </div>
+              </div>
+              <div class="chart-wrap" style="height: 320px;"><canvas id="rd-spend-digital"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Category mix of spend</div>
+              <div class="card-sub">Where the dollars went</div>
+              <div class="chart-wrap" style="height: 320px;"><canvas id="rd-exec-mix"></canvas></div>
+            </div>
+          </div>
+
+          <div class="card mb-16">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Customizable trend</div>
+                <div class="card-sub" id="rd-exec-trend-sub">Toggle metric to compare against spend overlay · weekly</div>
+              </div>
+              <div class="seg" id="rd-exec-trend-metric">
+                <button class="active" data-m="spend">Spend</button>
+                <button data-m="online">Attributed $</button>
+                <button data-m="total">Total $</button>
+                <button data-m="roas">ROAS</button>
+                <button data-m="pspw">$PSPW</button>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 280px;"><canvas id="rd-exec-trend"></canvas></div>
+          </div>
+
+          <div class="grid grid-3 mb-16">
+            <div class="card span-2">
+              <div class="card-h">
+                <div>
+                  <div class="card-title">Category performance summary</div>
+                  <div class="card-sub">Selected window · sorted by ROAS</div>
+                </div>
+                <button class="rd-download" onclick="rdDownloadTable('rd-exec-cat-table','category-performance.csv')">Export CSV</button>
+              </div>
+              <table class="table" id="rd-exec-cat-table">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th class="text-right">Spend</th>
+                    <th class="text-right">Attributed $</th>
+                    <th class="text-right">Total POS $</th>
+                    <th class="text-right">ROAS</th>
+                    <th class="text-right">Lift vs. baseline</th>
+                    <th class="text-right">$PSPW</th>
+                    <th>Verdict</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="card">
+              <div class="card-title">Wins · risks · actions</div>
+              <div class="card-sub">Auto-generated from current window</div>
+              <div id="rd-exec-recos"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-3 mb-16">
+            <div class="card span-2">
+              <div class="card-h">
+                <div>
+                  <div class="card-title">Spend × sales correlation</div>
+                  <div class="card-sub" id="rd-corr-sub">Each point = a category-week. Toggle lag to test for delayed media impact.</div>
+                </div>
+                <div class="seg" id="rd-corr-toggle">
+                  <button class="active" data-lag="0">No lag</button>
+                  <button data-lag="1">+1 wk</button>
+                  <button data-lag="2">+2 wk</button>
+                </div>
+              </div>
+              <div class="chart-wrap" style="height: 340px;"><canvas id="rd-corr-scatter"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Lag correlations</div>
+              <div class="card-sub">Pearson r — best lag per category</div>
+              <div id="rd-corr-table"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ 2. CATEGORY PERFORMANCE ============ -->
+        <div class="rd-panel" data-rd-panel="category">
+          <div class="rd-method">
+            <div>
+              <span class="rd-method-label">Baseline</span>
+              <span class="rd-method-current" id="rd-method-current-cat">Trailing 13-week average</span>
+            </div>
+            <div class="rd-method-options" id="rd-method-cat">
+              <button data-method="trailing4">Trailing 4w</button>
+              <button class="active" data-method="trailing13">Trailing 13w</button>
+              <button data-method="nonpromo">Non-promo</button>
+              <button data-method="comparable">Comparable cat</button>
+            </div>
+          </div>
+
+          <div class="rd-bigstat" id="rd-cat-bigstats"></div>
+
+          <div class="grid grid-2 mb-16">
+            <div class="card">
+              <div class="card-h">
+                <div>
+                  <div class="card-title">Roundel-supported vs. unsupported weeks</div>
+                  <div class="card-sub">Avg weekly sales per category — supported = ≥ $250 spend in week</div>
+                </div>
+              </div>
+              <div class="chart-wrap" style="height: 340px;"><canvas id="rd-cat-supported"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-h">
+                <div>
+                  <div class="card-title">ROAS × Lift × Spend</div>
+                  <div class="card-sub">Bubble = spend · Y = ROAS · X = lift vs baseline</div>
+                </div>
+              </div>
+              <div class="chart-wrap" style="height: 340px;"><canvas id="rd-cat-bubble"></canvas></div>
+            </div>
+          </div>
+
+          <div class="card mb-16">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Category scorecard</div>
+                <div class="card-sub">Spend, attributed sales, ROAS, POS $, units, $PSPW, lift, promo overlap, efficiency flag</div>
+              </div>
+              <button class="rd-download" onclick="rdDownloadTable('rd-cat-scorecard','category-scorecard.csv')">Export CSV</button>
+            </div>
+            <div class="scroll" style="max-height: 520px;">
+              <table class="table" id="rd-cat-scorecard">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th class="text-right">Spend</th>
+                    <th class="text-right">Attributed $</th>
+                    <th class="text-right">ROAS</th>
+                    <th class="text-right">POS $</th>
+                    <th class="text-right">Units</th>
+                    <th class="text-right">$PSPW</th>
+                    <th class="text-right">Baseline $</th>
+                    <th class="text-right">Lift %</th>
+                    <th class="text-right">Promo overlap</th>
+                    <th class="text-right">Spend ↔ Online r</th>
+                    <th>Flag</th>
+                    <th>Conf.</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Category-level reads</div>
+            <div class="card-sub">Where Roundel is bending the curve — and where it isn't</div>
+            <div id="rd-cat-insights"></div>
+          </div>
+        </div>
+
+        <!-- ============ 3. SKU PERFORMANCE ============ -->
+        <div class="rd-panel" data-rd-panel="sku">
+          <div class="rd-bigstat" id="rd-sku-bigstats"></div>
+
+          <div class="card mb-16">
+            <div class="card-h" style="flex-wrap: wrap; gap: 12px;">
+              <div>
+                <div class="card-title">SKU performance & playbook</div>
+                <div class="card-sub">Filter, search, classify · selected window</div>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <input type="search" id="rd-sku-search" placeholder="Search SKU or DPCI..." style="width: 220px;" />
+                <select id="rd-sku-action-filter" style="font-size: 12px;">
+                  <option value="all">All verdicts</option>
+                  <option value="Scale">Scale ▲</option>
+                  <option value="Maintain">Maintain</option>
+                  <option value="Fix">Fix</option>
+                  <option value="Pause">Pause ▼</option>
+                  <option value="Test">Test</option>
+                </select>
+                <button class="rd-download" onclick="rdDownloadTable('rd-sku-table','sku-performance.csv')">Export CSV</button>
+              </div>
+            </div>
+            <div class="scroll" style="max-height: 540px;">
+              <table class="table rd-skutbl" id="rd-sku-table">
+                <thead>
+                  <tr>
+                    <th data-sort="dpci">DPCI</th>
+                    <th data-sort="desc">SKU</th>
+                    <th data-sort="cat">Category</th>
+                    <th class="text-right" data-sort="spend">Spend</th>
+                    <th class="text-right" data-sort="attr">Attributed $</th>
+                    <th class="text-right" data-sort="roas">ROAS</th>
+                    <th class="text-right" data-sort="pos">POS $</th>
+                    <th class="text-right" data-sort="units">Units</th>
+                    <th class="text-right" data-sort="pspw">$PSPW</th>
+                    <th class="text-right" data-sort="baseline">Baseline vel.</th>
+                    <th class="text-right" data-sort="lift">Lift %</th>
+                    <th data-sort="action">Verdict</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="grid grid-2 mb-16">
+            <div class="card">
+              <div class="card-h">
+                <div>
+                  <div class="card-title">SKU trend</div>
+                  <div class="card-sub" id="rd-sku-trend-sub">Click a row above to plot</div>
+                </div>
+                <div class="seg" id="rd-sku-trend-toggle">
+                  <button class="active" data-m="sales">Sales $</button>
+                  <button data-m="units">Units</button>
+                  <button data-m="velocity">$PSPW</button>
+                </div>
+              </div>
+              <div class="chart-wrap" style="height: 280px;"><canvas id="rd-sku-trend"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Verdict mix</div>
+              <div class="card-sub">How spend and SKUs split across the playbook actions</div>
+              <div class="chart-wrap" style="height: 280px;"><canvas id="rd-sku-mix"></canvas></div>
+              <div id="rd-sku-mix-legend" style="margin-top: 10px; font-size: 12px; color: var(--gray-500);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ 4. INCREMENTALITY ANALYSIS ============ -->
+        <div class="rd-panel" data-rd-panel="incr">
+          <div class="rd-method">
+            <div>
+              <span class="rd-method-label">Baseline method</span>
+              <span class="rd-method-current" id="rd-method-current-incr">Trailing 13-week average <small>excludes target week</small></span>
+            </div>
+            <div class="rd-method-options" id="rd-method-incr">
+              <button data-method="trailing4">Trailing 4w</button>
+              <button class="active" data-method="trailing13">Trailing 13w</button>
+              <button data-method="nonpromo">Non-promo only</button>
+              <button data-method="comparable">Comparable cat</button>
+            </div>
+          </div>
+
+          <div id="rd-incr-warn"></div>
+
+          <div class="rd-bigstat" id="rd-incr-bigstats"></div>
+
+          <div class="grid grid-2 mb-16">
+            <div class="card">
+              <div class="card-title">Actual vs baseline · weekly</div>
+              <div class="card-sub">Shaded area = estimated incremental sales</div>
+              <div class="chart-wrap" style="height: 340px;"><canvas id="rd-incr-trend"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Incremental $ per category</div>
+              <div class="card-sub">Estimated incremental POS $ during supported weeks · selected window</div>
+              <div class="chart-wrap" style="height: 340px;"><canvas id="rd-incr-cat"></canvas></div>
+            </div>
+          </div>
+
+          <div class="card mb-16">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Attributed vs incremental</div>
+                <div class="card-sub">Attributed = online $ during supported weeks. Incremental = POS lift above baseline.</div>
+              </div>
+              <button class="rd-download" onclick="rdDownloadTable('rd-incr-table','incrementality.csv')">Export CSV</button>
+            </div>
+            <table class="table" id="rd-incr-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th class="text-right">Spend</th>
+                  <th class="text-right">Attributed $</th>
+                  <th class="text-right">POS $ (supported)</th>
+                  <th class="text-right">Baseline $</th>
+                  <th class="text-right">Incremental $</th>
+                  <th class="text-right">Incremental ROAS</th>
+                  <th class="text-right">Confidence</th>
+                  <th>Methodology</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Methodology notes</div>
+            <div class="card-sub">How each baseline is calculated — and when to trust it</div>
+            <div id="rd-incr-notes"></div>
+          </div>
+        </div>
+
+        <!-- ============ 5. PROMO + MEDIA ============ -->
+        <div class="rd-panel" data-rd-panel="promo">
+          <div class="rd-bigstat" id="rd-promo-bigstats"></div>
+
+          <div class="grid grid-2 mb-16">
+            <div class="card">
+              <div class="card-title">Roundel performance by promo state</div>
+              <div class="card-sub">Avg weekly attributed $ per $1 spend — broken out by tactic</div>
+              <div class="chart-wrap" style="height: 340px;"><canvas id="rd-promo-roas"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Lift: media-only vs media+promo</div>
+              <div class="card-sub">Sales lift vs. baseline — with and without promo overlay</div>
+              <div class="chart-wrap" style="height: 340px;"><canvas id="rd-promo-lift"></canvas></div>
+            </div>
+          </div>
+
+          <div class="card mb-16">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Promo × media interaction</div>
+                <div class="card-sub">By category · spend, ROAS, lift, and double-counting risk</div>
+              </div>
+              <button class="rd-download" onclick="rdDownloadTable('rd-promo-table','promo-interaction.csv')">Export CSV</button>
+            </div>
+            <table class="table" id="rd-promo-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th class="text-right">Spend (promo wks)</th>
+                  <th class="text-right">Spend (non-promo wks)</th>
+                  <th class="text-right">ROAS · promo</th>
+                  <th class="text-right">ROAS · non-promo</th>
+                  <th class="text-right">Lift · promo+media</th>
+                  <th class="text-right">Lift · media-only</th>
+                  <th>Read</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <div class="card-title">What this means</div>
+            <div class="card-sub">Tactic recommendations + double-counting flags</div>
+            <div id="rd-promo-insights"></div>
+          </div>
+        </div>
+
+        <!-- ============ 6. DIGITAL PENETRATION ============ -->
+        <div class="rd-panel" data-rd-panel="digital">
+          <div class="rd-bigstat" id="rd-digital-bigstats"></div>
+
+          <div class="grid grid-2 mb-16">
+            <div class="card">
+              <div class="card-title">Digital penetration · supported vs unsupported</div>
+              <div class="card-sub">Online share of total sales — by category</div>
+              <div class="chart-wrap" style="height: 340px;"><canvas id="rd-digital-comp"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Online share trend with Roundel spend</div>
+              <div class="card-sub">Selected window — does spend track to digital share gains?</div>
+              <div class="chart-wrap" style="height: 340px;"><canvas id="rd-digital-trend"></canvas></div>
+            </div>
+          </div>
+
+          <div class="card mb-16">
+            <div class="card-h">
+              <div>
+                <div class="card-title">Digital penetration scorecard</div>
+                <div class="card-sub">By category — does Roundel drive online discovery, in-store conversion, or both?</div>
+              </div>
+              <button class="rd-download" onclick="rdDownloadTable('rd-digital-table','digital-penetration.csv')">Export CSV</button>
+            </div>
+            <table class="table" id="rd-digital-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th class="text-right">Spend</th>
+                  <th class="text-right">Online $ (supported)</th>
+                  <th class="text-right">Store $ (supported)</th>
+                  <th class="text-right">Online % · supp.</th>
+                  <th class="text-right">Online % · unsupp.</th>
+                  <th class="text-right">Δ pp</th>
+                  <th>Read</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <div class="card-title">SKU-level digital reads</div>
+            <div class="card-sub">Top movers in online share during supported weeks</div>
+            <div id="rd-digital-skus"></div>
+          </div>
+        </div>
+
+        <!-- ============ 7. BUDGET SIMULATOR ============ -->
+        <div class="rd-panel" data-rd-panel="budget">
+          <div class="rd-sim-budget">
+            <div>
+              <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 800; color: var(--gray-500);">Period budget</div>
+              <div style="font-size: 11.5px; color: var(--gray-500); margin-top: 2px;">Total Roundel $ to allocate · 13-week period</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 18px; font-weight: 800;">$</span>
+              <input type="number" id="rd-sim-budget" value="500000" step="10000" />
+            </div>
+            <div class="rd-sim-scenarios" style="flex: 1; max-width: 480px;">
+              <button class="rd-sim-scenario" data-scenario="conservative">
+                <div class="rd-sim-scenario-title">Conservative</div>
+                <div class="rd-sim-scenario-roas" id="rd-sim-cons-roas">—</div>
+                <div class="rd-sim-scenario-meta">heavier on proven winners</div>
+              </button>
+              <button class="rd-sim-scenario active" data-scenario="base">
+                <div class="rd-sim-scenario-title">Base</div>
+                <div class="rd-sim-scenario-roas" id="rd-sim-base-roas">—</div>
+                <div class="rd-sim-scenario-meta">historical ROAS-weighted</div>
+              </button>
+              <button class="rd-sim-scenario" data-scenario="aggressive">
+                <div class="rd-sim-scenario-title">Aggressive</div>
+                <div class="rd-sim-scenario-roas" id="rd-sim-aggr-roas">—</div>
+                <div class="rd-sim-scenario-meta">heavier on growth + tests</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="rd-sim-grid">
+            <div class="card">
+              <div class="card-title">Allocation</div>
+              <div class="card-sub" id="rd-sim-alloc-sub">Drag sliders to override · totals auto-normalize</div>
+              <div id="rd-sim-sliders"></div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--gray-100);">
+                <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); font-weight: 800;">Allocated</span>
+                <span style="font-size: 14px; font-weight: 800;" id="rd-sim-alloc-total">$0 · 0%</span>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">Projected outcome</div>
+              <div class="card-sub">Expected attributed $, incremental POS, ROAS, total retail impact</div>
+              <div class="rd-bigstat" id="rd-sim-outcome" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;"></div>
+              <div class="chart-wrap" style="height: 220px;"><canvas id="rd-sim-chart"></canvas></div>
+              <div style="margin-top: 10px;" id="rd-sim-notes"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ 8. BUYER READOUT ============ -->
+        <div class="rd-panel" data-rd-panel="readout">
+          <div class="rd-readout-toolbar">
+            <button class="btn" onclick="window.print()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Export PDF
+            </button>
+            <button class="btn" onclick="rdRegenerateReadout()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Regenerate
+            </button>
+          </div>
+          <div class="rd-readout" id="rd-readout-print"></div>
+        </div>
+      </div>
+
+      <!-- ===== Compare Page ===== -->
+      <div class="page" id="page-compare">
+        <div class="card mb-16">
+          <div class="card-h">
+            <div>
+              <div class="card-title">Compare metrics + SKUs</div>
+              <div class="card-sub">Pick any number of SKUs (or categories or "Total") · pick any 1–4 metrics · they all overlay on one chart</div>
+            </div>
+          </div>
+
+          <div class="grid grid-2" style="gap: 16px; margin-bottom: 16px;">
+            <div>
+              <div class="caps muted mb-8">What to plot</div>
+              <div class="seg" id="compare-mode" style="margin-bottom: 8px;">
+                <button class="active" data-mode="sku">By SKU</button>
+                <button data-mode="category">By Category</button>
+                <button data-mode="total">Total (all selected)</button>
+              </div>
+              <input type="search" id="compare-search" placeholder="Search SKUs..." style="width: 100%; margin-bottom: 8px;" />
+              <div id="compare-picker" style="max-height: 260px; overflow-y: auto; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 6px;"></div>
+              <div class="flex" style="justify-content: space-between; margin-top: 6px;">
+                <button class="btn btn-ghost" id="compare-clear" style="font-size: 11px; padding: 4px 8px;">Clear all</button>
+                <button class="btn btn-ghost" id="compare-top5" style="font-size: 11px; padding: 4px 8px;">Top 5 by sales</button>
+              </div>
+            </div>
+            <div>
+              <div class="caps muted mb-8">Metrics (pick up to 4)</div>
+              <div id="compare-metrics" class="pill-cat-group" style="margin-bottom: 8px;"></div>
+              <div class="muted" style="font-size: 11px;">Sales $ + Online $ go on left axis · Units / store metrics on right axis · % metrics on far-right axis. Hover to read exact values.</div>
+            </div>
+          </div>
+
+          <div class="chart-wrap" style="height: 480px;"><canvas id="chart-compare"></canvas></div>
+          <div id="compare-summary" style="margin-top: 16px;"></div>
+        </div>
+      </div>
+
+      <!-- ===== Graph Builder Page ===== -->
+      <div class="page" id="page-graph">
+        <div class="gb-layout">
+          <!-- ============ CONTROLS RAIL ============ -->
+          <aside class="gb-rail">
+
+            <!-- Scope -->
+            <div class="gb-section">
+              <div class="gb-h">Scope</div>
+              <div class="seg" id="gb-scope">
+                <button class="active" data-scope="category">Categories</button>
+                <button data-scope="sku">SKUs</button>
+                <button data-scope="mixed">Mixed</button>
+              </div>
+              <div class="gb-help" id="gb-scope-help">Compare one or more categories. Each becomes its own series.</div>
+            </div>
+
+            <!-- Picker -->
+            <div class="gb-section">
+              <div class="gb-h-row">
+                <div class="gb-h" id="gb-picker-title">Categories</div>
+                <div class="gb-h-actions">
+                  <button class="gb-mini" id="gb-pick-all">All</button>
+                  <button class="gb-mini" id="gb-pick-none">None</button>
+                  <button class="gb-mini" id="gb-pick-top5" title="Top 5 by L13W sales">Top 5</button>
+                </div>
+              </div>
+              <input type="search" id="gb-search" placeholder="Search…" class="gb-search" style="display: none;" />
+              <div id="gb-picker" class="gb-picker"></div>
+              <div class="gb-help" id="gb-picker-count">0 selected</div>
+            </div>
+
+            <!-- View shape -->
+            <div class="gb-section">
+              <div class="gb-h">View shape</div>
+              <div class="seg" id="gb-shape">
+                <button class="active" data-shape="time">Time series</button>
+                <button data-shape="periods">Period compare</button>
+                <button data-shape="snapshot">Snapshot</button>
+              </div>
+              <div class="gb-help" id="gb-shape-help">Plot the metric over each week / month in the selected window.</div>
+            </div>
+
+            <!-- Chart type -->
+            <div class="gb-section">
+              <div class="gb-h">Chart type</div>
+              <div class="gb-chart-types" id="gb-chart-types">
+                <button data-type="line" class="gb-type-btn active" title="Line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 17 9 11 13 15 21 6"/></svg></button>
+                <button data-type="bar" class="gb-type-btn" title="Bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="3" height="9"/><rect x="10.5" y="6" width="3" height="14"/><rect x="17" y="14" width="3" height="6"/></svg></button>
+                <button data-type="stackedBar" class="gb-type-btn" title="Stacked bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="13" width="4" height="7"/><rect x="4" y="7" width="4" height="6"/><rect x="11" y="10" width="4" height="10"/><rect x="11" y="4" width="4" height="6"/><rect x="18" y="15" width="3" height="5"/></svg></button>
+                <button data-type="area" class="gb-type-btn" title="Area"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18 L8 11 L13 14 L21 6 L21 20 L3 20 Z" fill="currentColor" fill-opacity=".2"/></svg></button>
+                <button data-type="combo" class="gb-type-btn" title="Combo (bar + line)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="13" width="3" height="7"/><rect x="10.5" y="9" width="3" height="11"/><rect x="17" y="11" width="3" height="9"/><polyline points="3 7 9 10 14 6 21 9"/></svg></button>
+              </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="gb-section">
+              <div class="gb-h">Metrics <span class="gb-h-sub">(up to 4)</span></div>
+              <div id="gb-metrics" class="pill-cat-group"></div>
+            </div>
+
+            <!-- Combo styling (visible only when chart type = combo) -->
+            <div class="gb-section" id="gb-combo-section" style="display: none;">
+              <div class="gb-h">Series styling <span class="gb-h-sub">· combo</span></div>
+              <div id="gb-combo-panel" class="gb-combo-panel"></div>
+              <div class="gb-help">Pick whether each metric renders as a bar, stacked bar, or line. Lines stay on top and can plot on a secondary right-side axis.</div>
+            </div>
+
+            <!-- Date range -->
+            <div class="gb-section">
+              <div class="gb-h">Date range</div>
+              <div class="seg seg-wrap" id="gb-window">
+                <button data-w="lw">LW</button>
+                <button data-w="l4w">L4W</button>
+                <button class="active" data-w="l13w">L13W</button>
+                <button data-w="l26w">L26W</button>
+                <button data-w="l52w">L52W</button>
+                <button data-w="custom">Custom</button>
+              </div>
+              <div id="gb-custom-range" style="display: none; margin-top: 8px; display: none; gap: 6px; align-items: center;">
+                <select id="gb-custom-start" class="gb-select"></select>
+                <span class="muted" style="font-size: 11px;">→</span>
+                <select id="gb-custom-end" class="gb-select"></select>
+              </div>
+              <div class="gb-h-sub" style="margin-top: 10px;">Aggregate by</div>
+              <div class="seg seg-wrap" id="gb-agg" style="margin-top: 4px;">
+                <button class="active" data-agg="weekly">Weekly</button>
+                <button data-agg="monthly">Monthly</button>
+                <button data-agg="t4">Trailing 4w</button>
+                <button data-agg="t13">Trailing 13w</button>
+              </div>
+            </div>
+
+            <!-- Period compare options (only visible in periods mode) -->
+            <div class="gb-section" id="gb-periods-section" style="display: none;">
+              <div class="gb-h">Periods to compare</div>
+              <div class="pill-cat-group" id="gb-periods-pills"></div>
+            </div>
+
+            <!-- Customization -->
+            <div class="gb-section">
+              <div class="gb-h">Customize</div>
+              <label class="gb-field">
+                <span>Title</span>
+                <input type="text" id="gb-title" placeholder="Auto from selection" />
+              </label>
+              <label class="gb-field">
+                <span>Subtitle / source</span>
+                <input type="text" id="gb-subtitle" placeholder="e.g. Source: Target / Circana" />
+              </label>
+              <label class="gb-field">
+                <span>Y-axis label</span>
+                <input type="text" id="gb-ylabel" placeholder="Auto from metric" />
+              </label>
+              <div class="gb-h-row" style="margin-top: 10px;">
+                <span class="gb-h-sub">Legend</span>
+                <div class="seg seg-mini" id="gb-legend">
+                  <button class="active" data-legend="bottom">Bottom</button>
+                  <button data-legend="top">Top</button>
+                  <button data-legend="right">Right</button>
+                  <button data-legend="off">Hide</button>
+                </div>
+              </div>
+              <div class="gb-h-row" style="margin-top: 10px;">
+                <span class="gb-h-sub">Sort</span>
+                <select id="gb-sort" class="gb-select">
+                  <option value="value-desc">By value (high→low)</option>
+                  <option value="value-asc">By value (low→high)</option>
+                  <option value="name">Alphabetical</option>
+                  <option value="category">By category</option>
+                </select>
+              </div>
+              <label class="gb-toggle">
+                <input type="checkbox" id="gb-show-labels" /> Show data labels
+              </label>
+              <label class="gb-toggle">
+                <input type="checkbox" id="gb-smooth" checked /> Smooth lines
+              </label>
+              <label class="gb-toggle">
+                <input type="checkbox" id="gb-stack-pct" /> Stack as % of total <span class="gb-h-sub">(stacked bar/area only)</span>
+              </label>
+              <label class="gb-toggle">
+                <input type="checkbox" id="gb-baseline" /> Show baseline / target
+              </label>
+              <div id="gb-baseline-row" style="display: none; margin-top: 6px;">
+                <input type="number" id="gb-baseline-value" placeholder="Value" class="gb-select" style="width: 100%;" />
+              </div>
+            </div>
+
+            <!-- Mixed mode toggle (visible only in mixed scope) -->
+            <div class="gb-section" id="gb-mixed-section" style="display: none;">
+              <div class="gb-h">When showing categories + SKUs</div>
+              <div class="seg seg-wrap" id="gb-mixed">
+                <button class="active" data-mixed="both">Show both</button>
+                <button data-mixed="rollup">Category rollup only</button>
+                <button data-mixed="individual">Individual SKUs only</button>
+              </div>
+            </div>
+
+          </aside>
+
+          <!-- ============ PREVIEW ============ -->
+          <div class="gb-stage">
+            <div class="gb-toolbar">
+              <div>
+                <div class="gb-toolbar-title">Live preview</div>
+                <div class="gb-toolbar-sub" id="gb-toolbar-sub">Select scope, metric and chart type — your chart updates in real time.</div>
+              </div>
+              <div class="gb-toolbar-actions">
+                <div class="seg seg-mini" id="gb-bg-toggle" title="Preview background — does not affect transparent export">
+                  <button class="active" data-bg="white">White</button>
+                  <button data-bg="cream">Almond</button>
+                  <button data-bg="dark">Dark</button>
+                  <button data-bg="checker">Transparent</button>
+                </div>
+                <div class="seg seg-mini" id="gb-size-toggle" title="Aspect ratio">
+                  <button class="active" data-size="16x9">16:9</button>
+                  <button data-size="4x3">4:3</button>
+                  <button data-size="1x1">1:1</button>
+                  <button data-size="wide">Wide</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="gb-canvas-card" id="gb-canvas-card">
+              <div class="gb-stage-bg" id="gb-stage-bg">
+                <div class="gb-export-frame" id="gb-export-frame">
+                  <div class="gb-frame-header">
+                    <div class="gb-frame-title-row">
+                      <div class="gb-brand-mark">LS</div>
+                      <div>
+                        <div class="gb-frame-title" id="gb-frame-title">Title</div>
+                        <div class="gb-frame-subtitle" id="gb-frame-subtitle">Subtitle</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="gb-chart-host">
+                    <canvas id="gb-canvas"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="gb-export-bar">
+              <div class="gb-export-meta" id="gb-export-meta">Ready to export · 1920 × 1080 · transparent or white background</div>
+              <div class="gb-export-buttons">
+                <button class="btn" onclick="gbExport('png-transparent')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 14l5-5 4 4 4-4 5 5"/></svg>
+                  PNG · Transparent
+                </button>
+                <button class="btn" onclick="gbExport('png-white')">PNG · White BG</button>
+                <button class="btn" onclick="gbExport('png-dark')">PNG · Dark BG</button>
+                <button class="btn" onclick="gbExport('svg')">SVG</button>
+                <button class="btn btn-primary" onclick="gbExport('clipboard')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  Copy to clipboard
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SKU Mappings Page ===== -->
+      <div class="page" id="page-mappings">
+        <div class="card mb-16">
+          <div class="card-h">
+            <div>
+              <div class="card-title">SKU → Category mapping</div>
+              <div class="card-sub">Edit which Roundel category each SKU belongs to. Saved locally + flows through every metric immediately.</div>
+            </div>
+            <div class="flex gap-8">
+              <input type="search" id="mappings-search" placeholder="Search SKU..." style="width: 220px;" />
+              <button class="btn" id="mappings-reset">Reset all</button>
+            </div>
+          </div>
+          <div class="muted" style="font-size: 12px; margin-bottom: 12px;">
+            Changes here are saved to this browser. Use the dropdown next to each SKU to remap.
+            <span id="mappings-count" style="margin-left: 8px;"></span>
+          </div>
+          <div class="scroll" style="max-height: 720px;">
+            <table class="table" id="mappings-table">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>DPCI</th>
+                  <th>Default category</th>
+                  <th>Current category</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Data Sources Page ===== -->
+      <div class="page" id="page-sources">
+        <!-- Freshness card -->
+        <div class="card mb-16" style="background: linear-gradient(135deg, #141414 0%, #2E323D 100%); color: white; border: 0;">
+          <div style="display: flex; gap: 28px; flex-wrap: wrap; align-items: center;">
+            <div>
+              <div style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 800; color: rgba(255,255,255,0.6);">Data freshness</div>
+              <div style="font-size: 24px; font-weight: 900; letter-spacing: -0.02em;">Last week · <span id="sources-lw">—</span></div>
+            </div>
+            <div>
+              <div style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 800; color: rgba(255,255,255,0.6);">Window</div>
+              <div style="font-size: 14px; font-weight: 700;"><span id="sources-fw">—</span> → <span id="sources-lw-2">—</span></div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.6);"><span id="sources-wkcount">—</span> weeks</div>
+            </div>
+            <div>
+              <div style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 800; color: rgba(255,255,255,0.6);">Last refresh</div>
+              <div style="font-size: 14px; font-weight: 700;" id="sources-uploaded-at">bundled</div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.6);">Upload new data via the Upload button (top right)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-16">
+          <div class="card-title">Data sources + methodology</div>
+          <div class="card-sub">Where every number on this dashboard comes from. The Roundel Intelligence views layer derived metrics on top of the same primary sources.</div>
+
+          <h3 style="margin: 20px 0 8px; font-size: 14px;">Primary sources</h3>
+          <table class="table">
+            <thead>
+              <tr><th>Field on dashboard</th><th>Source</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Per-SKU weekly Sales $</td><td>Last 52wks Item Trends</td><td>52-week history per SKU</td></tr>
+              <tr><td>Per-SKU weekly Units</td><td>Last 52wks Item Trends</td><td></td></tr>
+              <tr><td>Per-SKU weekly Promo $</td><td>Last 52wks Item Trends</td><td></td></tr>
+              <tr><td>Per-SKU weekly Promo % of Sales</td><td>Last 52wks Item Trends</td><td>Used for sales-weighted aggregations</td></tr>
+              <tr><td>Per-SKU weekly $PSPW</td><td>Last 52wks Item Trends</td><td>Used directly; aggregated as sum-sales/sum-stores at category level</td></tr>
+              <tr><td>Per-SKU weekly UPSPW</td><td>Last 52wks Item Trends</td><td></td></tr>
+              <tr><td>Per-SKU weekly Online Orig Penetration</td><td>Last 52wks Item Trends</td><td></td></tr>
+              <tr><td>Per-SKU weekly OOS %</td><td>Last 52wks Item Trends</td><td></td></tr>
+              <tr><td>Per-SKU weekly Stores Tracked</td><td>Last 52wks Item Trends</td><td></td></tr>
+              <tr><td>Per-SKU weekly Price</td><td>Last 52wks Item Trends</td><td></td></tr>
+              <tr><td><strong>Online $ per SKU per week</strong></td><td><strong>DERIVED</strong></td><td><strong>= Sales $ × Online Orig Pen</strong> (both from Item Trends). Validates to channel sheet within $25 / 0.0007% on L13W $3.79M.</td></tr>
+              <tr><td>Roundel spend by category by week</td><td>Roundel Campaign Spend Tracker CSV</td><td>Aligned to Target's Saturday week-end (Friday-ending Roundel weeks → next-day Saturday sales week).</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin: 20px 0 8px; font-size: 14px;">Supporting sources</h3>
+          <table class="table">
+            <thead>
+              <tr><th>Field on dashboard</th><th>Source</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>YoY (this year vs last year)</td><td>Sales $ by Type</td><td>Used in SKU drawer YoY card</td></tr>
+              <tr><td>Promo recap (base, incremental, lift)</td><td>Last 52wks Promo Recap</td><td>Used on Promo Analysis page only</td></tr>
+              <tr><td>Inventory: WOS, EOH, On Order</td><td>Inventory Analysis</td><td>Used in SKU drawer</td></tr>
+              <tr><td>Enterprise weekly online %</td><td>Target.com by Week</td><td>Used on Digital Penetration page trend chart</td></tr>
+              <tr><td>Subclass-level weekly trends</td><td>Last 52wks Subclass Trend</td><td>Reference only — dashboard aggregates from Item Trends</td></tr>
+              <tr><td>Channel breakout L13W/L4W/LW snapshots</td><td>Sales $ Breakout by Channel</td><td>Reference only — dashboard now uses item × pen for consistency</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin: 20px 0 8px; font-size: 14px;">Roundel Intelligence — derived fields</h3>
+          <table class="table">
+            <thead>
+              <tr><th>Field</th><th>Definition</th><th>Where it appears</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Attributed sales</strong></td><td>Σ (Sales × Online Orig Pen) per SKU per week, summed across cats with active Roundel spend</td><td>Exec Overview, Category, SKU, Incrementality</td></tr>
+              <tr><td><strong>ROAS</strong></td><td>Attributed sales ÷ Roundel spend (online dollars only — Roundel doesn't credit in-store)</td><td>All views</td></tr>
+              <tr><td><strong>Spend % of sales</strong></td><td>Roundel spend ÷ Total Target sales (selected window, active cats)</td><td>Exec Overview KPI</td></tr>
+              <tr><td><strong>Supported week</strong></td><td>Category-week with Roundel spend ≥ $250 (state.rdSupportedThreshold)</td><td>Category, Promo×Media, Digital, Incrementality</td></tr>
+              <tr><td><strong>Promo week</strong></td><td>Category-week where promo $ &gt; 20% of total sales (Sales × Promo% per Item Trends)</td><td>Category, Promo×Media</td></tr>
+              <tr><td><strong>Baseline (4 methods)</strong></td><td>Trailing 4w · Trailing 13w · Non-promo & non-supported · Comparable cat (see Calculations below)</td><td>Category, Incrementality, Exec Overview, Buyer Readout</td></tr>
+              <tr><td><strong>Incremental sales</strong></td><td>Σ (actual − baseline) per supported cat-week, using selected baseline method</td><td>Incrementality, Exec Overview KPI</td></tr>
+              <tr><td><strong>Incremental ROAS</strong></td><td>Incremental sales ÷ Roundel spend (during supported weeks)</td><td>Incrementality, Buyer Readout</td></tr>
+              <tr><td><strong>Lift % vs baseline</strong></td><td>(actual − baseline) ÷ baseline · per cat-week, averaged across supported weeks</td><td>Category scorecard, SKU table, Exec Overview</td></tr>
+              <tr><td><strong>Promo overlap %</strong></td><td>Roundel $ spent during promo weeks ÷ total Roundel $ in window (per cat)</td><td>Category scorecard</td></tr>
+              <tr><td><strong>SKU verdict</strong></td><td>Auto-classification: Scale (ROAS≥2 + lift&gt;5%), Maintain (default), Fix (spend&gt;$2K + ROAS&lt;1.2), Pause (ROAS&lt;0.8 + lift&lt;−5%), Test (low/no spend with momentum)</td><td>SKU Performance, Exec Overview</td></tr>
+              <tr><td><strong>Confidence</strong></td><td>High = ≥8 supported wks &amp; ≥$50K · Medium = ≥4 wks &amp; ≥$15K · Low = below those thresholds</td><td>Incrementality, Category scorecard</td></tr>
+              <tr><td><strong>Supply-risk flag</strong></td><td>&gt;30% of supported SKU-weeks at OOS&gt;15% with ≥$5K spend in window</td><td>Category scorecard</td></tr>
+              <tr><td><strong>Promo×Media read</strong></td><td>"Media works alone" / "Promo amplifies" / "Double-counting risk" — based on lift comparison promo vs non-promo with spend ≥ threshold</td><td>Promo×Media table</td></tr>
+              <tr><td><strong>Digital read</strong></td><td>"Drives online discovery" (Δpp&gt;1.5) / "Drives in-store conversion" (Δpp&lt;−0.5) / "Both/mixed"</td><td>Digital Penetration</td></tr>
+              <tr><td><strong>Sustainable ROAS (sim)</strong></td><td>Capped at blended × 1.5 when historical spend &lt; $20K (prevents tiny-base outlier inflation)</td><td>Budget Simulator</td></tr>
+              <tr><td><strong>Marginal decay (sim)</strong></td><td>1 / (1 + (ratio − 1) × 0.45) where ratio = projected ÷ historical spend (per cat) · floors out at ratio = 1</td><td>Budget Simulator</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin: 20px 0 8px; font-size: 14px;">Calculations</h3>
+          <div class="muted" style="font-size: 13px; line-height: 1.7;">
+            <div><strong>Total Sales $</strong> · sum across selected SKUs and weeks</div>
+            <div><strong>Online Sales $</strong> · sum over (Sales $ × Online Orig Pen) per SKU per week</div>
+            <div><strong>Digital Penetration %</strong> · Online Sales $ ÷ Total Sales $</div>
+            <div><strong>$PSPW (category)</strong> · sum of Sales ÷ sum of Stores Tracked across SKUs in category</div>
+            <div><strong>Promo % (category)</strong> · sales-weighted average of per-SKU Promo % of Sales</div>
+            <div><strong>OOS % (category)</strong> · sales-weighted average of per-SKU OOS %</div>
+            <div><strong>Total ROAS</strong> · Total Sales ÷ Roundel Spend (correlation, not causal lift)</div>
+            <div><strong>Online ROAS</strong> · Online Sales ÷ Roundel Spend</div>
+            <div><strong>Cost / digital $</strong> · Roundel Spend ÷ Online Sales</div>
+            <div><strong>Promo Lift</strong> · (Total Sales − Base 4-wk Sales) ÷ Base 4-wk Sales</div>
+            <div><strong>SKU → Category mapping</strong> · default mapping derived from item description; users override on the SKU Mappings page (saved locally)</div>
+          </div>
+
+          <h3 style="margin: 20px 0 8px; font-size: 14px;">Roundel Intelligence — baseline methodologies</h3>
+          <div class="muted" style="font-size: 13px; line-height: 1.7;">
+            <div><strong>Trailing 4w baseline</strong> · avg sales of the 4 weeks immediately before each supported week. Most reactive; sensitive to recent shocks (promo, OOS, weather).</div>
+            <div><strong>Trailing 13w baseline</strong> · avg sales of the 13 weeks before each supported week. Smoothest; can over-credit Roundel during periods of overall growth.</div>
+            <div><strong>Non-promo, non-supported baseline</strong> · avg of recent weeks where the cat had no Roundel spend AND no promo (≥ 20% promo % threshold). Cleanest causal signal — but requires enough qualifying weeks (falls back to trailing 13w if &lt; 3).</div>
+            <div><strong>Comparable cat baseline</strong> · uses the current week's avg sales of unsupported cats, scaled by the historical (last 26w) ratio of this cat to others on unsupported weeks. Controls for seasonality.</div>
+            <div style="margin-top: 6px; padding: 8px 10px; background: #FFE6DC; border-radius: 6px; color: #C44A23;"><strong>Caveat</strong> · all four are quasi-experimental. Holdout testing is the only causal proof. These baselines are decision-grade evidence, not causal proof.</div>
+          </div>
+
+          <h3 style="margin: 20px 0 8px; font-size: 14px;">Update / refresh process</h3>
+          <ol style="font-size: 13px; line-height: 1.7; color: var(--gray-700); padding-left: 20px;">
+            <li>Click <strong>Upload data</strong> in the topbar.</li>
+            <li>Drop the latest Target Sales &amp; Inventory <code>.xlsx</code> + Roundel Spend <code>.csv</code>.</li>
+            <li>Click <strong>Apply &amp; rebuild</strong> — the dashboard re-extracts, re-computes, and re-renders. The <em>Last week</em> chip in the topbar updates automatically to the latest week in the upload.</li>
+            <li>Uploaded data persists in browser localStorage. Use <em>Reset to bundled data</em> to discard.</li>
+            <li>For programmatic refresh (replace upload step), see the <strong>Connector roadmap</strong> below.</li>
+          </ol>
+
+          <h3 style="margin: 20px 0 8px; font-size: 14px;">Connector roadmap (auto-load)</h3>
+          <div class="muted" style="font-size: 13px; line-height: 1.7;">
+            <div><strong>Target Partners Online (POL)</strong> · weekly POS, Item Trends, Inventory exports — pull via Vendorful / POL API. No public endpoint; requires Target IT-coordinated SFTP feed or POL extract automation.</div>
+            <div><strong>Circana / IRI</strong> · POS data feed. Direct API access available with subscription tier; recommend a nightly cron writing to S3 + a build step that re-extracts.</div>
+            <div><strong>Target Roundel</strong> · campaign spend tracker. No public API; the in-platform export remains CSV. Roundel reps can grant Excel-on-OneDrive access (auto-syncs).</div>
+            <div><strong>Run cadence</strong> · Target Circana refreshes weekly (Tuesday). Recommend a Wednesday-AM scheduled build that pulls fresh data, runs <code>extract.js → compute.js → build.js</code>, and redeploys.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Weekly Snapshot Page ===== -->
+      <div class="page" id="page-weekly">
+        <div class="card mb-16">
+          <div class="card-h">
+            <div>
+              <div class="card-title">Weekly Snapshot</div>
+              <div class="card-sub" id="weekly-sub">Every SKU across every time horizon · same data as the Excel "Weekly Sales" tab</div>
+            </div>
+            <div class="flex gap-8">
+              <select id="weekly-metric">
+                <option value="sales">Sales $</option>
+                <option value="units">Units</option>
+                <option value="velocity">$ PSPW</option>
+                <option value="upspw">UPSPW</option>
+                <option value="promoPct">Promo % of sales</option>
+                <option value="onlinePen">Online %</option>
+                <option value="oos">OOS %</option>
+              </select>
+              <input type="search" id="weekly-search" placeholder="Search SKU..." style="width: 200px;" />
+              <button class="btn btn-primary" onclick="exportWeekly()">Export</button>
+            </div>
+          </div>
+          <div class="muted" style="font-size: 11.5px; margin-bottom: 8px;">
+            <strong>Periods anchored to last week <span id="weekly-anchor-date">—</span>.</strong> Cells are sums for $/units, sales-weighted averages for %.
+            Click any SKU row to drill in.
+          </div>
+          <div class="scroll" style="max-height: 720px;">
+            <table class="table" id="weekly-table">
+              <thead>
+                <tr>
+                  <th data-sort="description">SKU</th>
+                  <th data-sort="category">Category</th>
+                  <th data-sort="lw" class="text-right">LW</th>
+                  <th data-sort="lw_prior" class="text-right">Prior LW</th>
+                  <th data-sort="lw_chg" class="text-right">WoW</th>
+                  <th data-sort="l4w" class="text-right">L4W</th>
+                  <th data-sort="l13w" class="text-right">L13W</th>
+                  <th data-sort="l26w" class="text-right">L26W</th>
+                  <th data-sort="l52w" class="text-right">L52W</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid grid-2 mb-16">
+          <div class="card">
+            <div class="card-title">Category roll-up</div>
+            <div class="card-sub">Same metric, aggregated to category</div>
+            <table class="table" id="weekly-cat-table">
+              <thead>
+                <tr><th>Category</th><th class="text-right">LW</th><th class="text-right">Prior LW</th><th class="text-right">WoW</th><th class="text-right">L4W</th><th class="text-right">L13W</th><th class="text-right">L26W</th><th class="text-right">L52W</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="card-title">Total roll-up</div>
+            <div class="card-sub">Active categories combined</div>
+            <table class="table" id="weekly-total-table">
+              <thead>
+                <tr><th>Period</th><th class="text-right">Value</th><th class="text-right">vs prior period</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Explorer Page ===== -->
+      <div class="page" id="page-explorer">
+        <div class="card mb-16">
+          <div class="card-h">
+            <div>
+              <div class="card-title">Data explorer</div>
+              <div class="card-sub">Filter, sort, group, export · the raw layer behind every other view</div>
+            </div>
+            <div class="flex gap-8">
+              <select id="explorer-grain">
+                <option value="sku">By SKU</option>
+                <option value="category">By Category</option>
+                <option value="week">By Week</option>
+              </select>
+              <input type="search" id="explorer-search" placeholder="Search..." style="width: 200px;" />
+              <button class="btn btn-primary" onclick="exportExplorer()">Export CSV</button>
+            </div>
+          </div>
+          <div class="scroll" style="max-height: 720px;">
+            <table class="table" id="explorer-table"><thead></thead><tbody></tbody></table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Presentation mode exit FAB -->
+<button id="presentation-exit-fab" onclick="window.togglePresentation && window.togglePresentation(false)">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  Exit presentation
+</button>
+
+<!-- ============ DRAWER (SKU Detail) ============ -->
+<div class="scrim" id="scrim" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-h">
+    <div>
+      <h3 id="drawer-title" style="margin: 0 0 4px; font-weight: 800;">SKU detail</h3>
+      <p id="drawer-sub" class="muted" style="margin: 0; font-size: 12px;"></p>
+    </div>
+    <button class="btn btn-ghost" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<!-- ============ Upload Modal ============ -->
+<div class="upload-modal" id="upload-modal">
+  <div class="upload-modal-body">
+    <h3 style="margin: 0 0 4px;">Upload new data</h3>
+    <p class="muted" style="margin: 0 0 20px;">Drop a Target weekly Sales + Inventory .xlsx and / or a Roundel spend .csv. The dashboard will rebuild.</p>
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <div style="font-size: 28px; margin-bottom: 8px;">📁</div>
+      <div style="font-weight: 700; color: var(--black);">Drag files here or click to browse</div>
+      <div style="font-size: 12px; margin-top: 4px;">.xlsx, .csv accepted · multiple files OK</div>
+    </div>
+    <input type="file" id="file-input" multiple accept=".xlsx,.csv" style="display: none" />
+    <div id="upload-status" style="margin-top: 12px; font-size: 12px;"></div>
+    <div class="flex" style="margin-top: 20px; justify-content: space-between; gap: 8px;">
+      <button class="btn" onclick="resetToBundledData()" title="Discard uploaded data and use the built-in dataset">Reset to bundled data</button>
+      <div class="flex" style="gap: 8px;">
+        <button class="btn" onclick="document.getElementById('upload-modal').classList.remove('open')">Cancel</button>
+        <button class="btn btn-primary" id="apply-upload" onclick="applyUploadedData()" disabled>Apply &amp; rebuild</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =================== Password Gate ===================
+(function() {
+  var PASSWORD = 'TargetDomination';
+  var STORAGE_KEY = 'ls-dashboard-unlocked';
+  var body = document.body;
+  var gate = document.getElementById('password-gate');
+  var form = document.getElementById('password-form');
+  var input = document.getElementById('password-input');
+  var error = document.getElementById('password-error');
+
+  if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+    body.classList.remove('locked');
+  } else {
+    setTimeout(function() { input && input.focus(); }, 50);
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (input.value === PASSWORD) {
+      sessionStorage.setItem(STORAGE_KEY, '1');
+      error.textContent = '';
+      body.classList.remove('locked');
+      if (typeof window.__bootDashboard === 'function') {
+        window.__bootDashboard();
+      }
+    } else {
+      error.textContent = 'Incorrect password.';
+      input.value = '';
+      input.focus();
+    }
+  });
+})();
+</script>
+<script>
+// =================== DATA INJECTION POINT ===================
+window.DATA = /*__DATA_INJECTION__*/ null /*__END_DATA__*/;
+// ============================================================
+</script>
+<script src="dashboard.js"></script>
+</body>
+</html>

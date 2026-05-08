@@ -24,6 +24,7 @@ const NAV: NavSection[] = [
     heading: 'Core',
     items: [
       { key: 'exec', href: '/executive', icon: '🎯', label: 'Executive Summary', badge: 'Live', badgeClass: 'g' },
+      { key: 'sop', href: '/sop', icon: '📋', label: 'S&OP Dashboard', badge: 'New', badgeClass: 'b' },
       { key: 'overview', href: '/overview', icon: '📊', label: 'Overview' },
       { key: 'demand', href: '/demand-plan', icon: '📈', label: 'Demand Plan' },
       { key: 'daily', href: '/daily', icon: '📅', label: 'Daily Performance', badge: 'Live', badgeClass: 'g' },
