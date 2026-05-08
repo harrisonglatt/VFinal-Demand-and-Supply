@@ -1,6 +1,23 @@
 /* ── Reset, Body, Scrollbar ─────────────────────────────────── */
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Mulish',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;}
+html,body{
+  font-family:'Mulish',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);
+  color:var(--tx);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
 
-::-webkit-scrollbar{width:5px;height:5px;}
-::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px;}
+a{color:inherit;text-decoration:none;}
+
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:5px;border:2px solid transparent;background-clip:content-box;}
+::-webkit-scrollbar-thumb:hover{background:var(--bd-strong);background-clip:content-box;border:2px solid transparent;}
+
+/* Tabular nums for any element marked with .tabular */
+.tabular,.tr,.num{font-variant-numeric:tabular-nums;}
+
+/* Selection */
+::selection{background:var(--ac-soft);color:var(--tx);}

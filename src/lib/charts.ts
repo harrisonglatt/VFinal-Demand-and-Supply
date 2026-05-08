@@ -1,32 +1,50 @@
-// ─── Chart.js Utilities ───────────────────────────────────────────────
-// Adapted for react-chartjs-2. Provides brand defaults and config builders.
+// ─── Chart.js Utilities · Little Spoon Retail OS ──────────────────
+// Brand defaults + helpers for react-chartjs-2 / Chart.js.
 
 import type { ChartOptions, ChartData } from 'chart.js';
+import { LS } from './colors';
 
-// ─── Brand Font Config ────────────────────────────────────────────────
+// ─── Brand Font Config ────────────────────────────────────────────
+const FAMILY_UI = "'Mulish', -apple-system, BlinkMacSystemFont, sans-serif";
 
-const BRAND_FONT_FAMILY = "'Roboto', sans-serif";
-
-const BRAND_COLORS = {
-  text: '#7b97c8',
-  tickText: '#44608a',
-  gridLine: 'rgba(30,45,80,.4)',
-  tooltipBg: 'rgba(13,22,38,0.95)',
-  tooltipBorder: '#00E3CD',
-  borderColor: 'rgba(30,48,84,0.5)',
+const COLORS = {
+  text: LS.gray700,        // body text
+  tickText: LS.gray400,    // axis ticks
+  axisLabel: LS.gray500,   // axis labels
+  gridLine: LS.gray100,    // chart gridlines
+  tooltipBg: 'rgba(20,20,20,0.95)',
+  borderColor: LS.gray200,
 } as const;
 
-// ─── Chart.js Global Defaults ─────────────────────────────────────────
+// ─── Number formatting (chart-internal) ───────────────────────────
+/** Compact number — no decimals, K/M/B suffix per brief. */
+export function fmtCompact(n: number): string {
+  if (n == null || isNaN(n)) return '';
+  const abs = Math.abs(n);
+  if (abs >= 1_000_000_000) return Math.round(n / 1_000_000_000) + 'B';
+  if (abs >= 1_000_000) return Math.round(n / 1_000_000) + 'M';
+  if (abs >= 1_000) return Math.round(n / 1_000) + 'K';
+  return Math.round(n).toLocaleString();
+}
+/** Compact dollar — adds $ prefix. */
+export function fmtDollarCompact(n: number): string {
+  if (n == null || isNaN(n)) return '';
+  return '$' + fmtCompact(n);
+}
+/** Rounded percent — value already as fraction (0.12 → "12%"). */
+export function fmtPercentRound(v: number): string {
+  if (v == null || isNaN(v)) return '';
+  return Math.round(v * 100) + '%';
+}
+/** Rounded multiplier — "2x", "5x". */
+export function fmtMultiplier(v: number): string {
+  if (v == null || isNaN(v)) return '';
+  return Math.round(v) + 'x';
+}
 
-/**
- * Apply Little Spoon brand defaults to Chart.js global config.
- * Call once after Chart.js is registered (e.g. in _app.tsx or layout).
- *
- * In Next.js with react-chartjs-2, import Chart from 'chart.js/auto'
- * and call this before rendering any chart components.
- */
+// ─── Chart.js Global Defaults ─────────────────────────────────────
+
 export function initChartDefaults(): void {
-  // Dynamic import to avoid SSR issues
   let Chart: typeof import('chart.js')['Chart'] | undefined;
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -36,35 +54,93 @@ export function initChartDefaults(): void {
   }
   if (!Chart) return;
 
-  Chart.defaults.font.family = BRAND_FONT_FAMILY;
+  Chart.defaults.font.family = FAMILY_UI;
   Chart.defaults.font.size = 12;
-  Chart.defaults.color = BRAND_COLORS.text;
-  Chart.defaults.borderColor = BRAND_COLORS.borderColor;
+  Chart.defaults.color = COLORS.text;
+  Chart.defaults.borderColor = COLORS.borderColor;
 
+  // Legend
   Chart.defaults.plugins.legend.labels.font = {
-    family: BRAND_FONT_FAMILY,
-    size: 11,
-    weight: 500,
-  };
-  Chart.defaults.plugins.tooltip.titleFont = {
-    family: BRAND_FONT_FAMILY,
+    family: FAMILY_UI,
     size: 12,
-    weight: 'bold' as const,
+    weight: 600,
+  };
+  Chart.defaults.plugins.legend.labels.color = LS.gray700;
+  Chart.defaults.plugins.legend.labels.usePointStyle = true;
+  Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
+  Chart.defaults.plugins.legend.labels.boxWidth = 8;
+  Chart.defaults.plugins.legend.labels.boxHeight = 8;
+  Chart.defaults.plugins.legend.labels.padding = 16;
+
+  // Tooltip
+  Chart.defaults.plugins.tooltip.titleFont = {
+    family: FAMILY_UI,
+    size: 12,
+    weight: 700,
   };
   Chart.defaults.plugins.tooltip.bodyFont = {
-    family: BRAND_FONT_FAMILY,
-    size: 11,
+    family: FAMILY_UI,
+    size: 12,
+    weight: 400,
   };
-  Chart.defaults.plugins.tooltip.backgroundColor = BRAND_COLORS.tooltipBg;
-  Chart.defaults.plugins.tooltip.borderColor = BRAND_COLORS.tooltipBorder;
-  Chart.defaults.plugins.tooltip.borderWidth = 1;
-  Chart.defaults.plugins.tooltip.padding = 10;
+  Chart.defaults.plugins.tooltip.titleColor = '#fff';
+  Chart.defaults.plugins.tooltip.bodyColor = '#fff';
+  Chart.defaults.plugins.tooltip.backgroundColor = COLORS.tooltipBg;
+  Chart.defaults.plugins.tooltip.borderColor = 'transparent';
+  Chart.defaults.plugins.tooltip.borderWidth = 0;
+  Chart.defaults.plugins.tooltip.padding = 12;
+  Chart.defaults.plugins.tooltip.cornerRadius = 10;
+  Chart.defaults.plugins.tooltip.displayColors = true;
+  Chart.defaults.plugins.tooltip.boxPadding = 4;
 
-  Chart.defaults.scale.grid.color = BRAND_COLORS.gridLine;
+  // Scales
+  Chart.defaults.scale.grid.color = COLORS.gridLine;
   Chart.defaults.scale.grid.lineWidth = 1;
+  Chart.defaults.scale.border.display = false;
+
+  // Element defaults
+  Chart.defaults.elements.bar.borderRadius = 4;
+  Chart.defaults.elements.bar.borderWidth = 0;
+  Chart.defaults.elements.line.borderWidth = 2;
+  Chart.defaults.elements.line.tension = 0.32;
+  Chart.defaults.elements.point.radius = 0;
+  Chart.defaults.elements.point.hoverRadius = 5;
+  Chart.defaults.elements.point.hoverBorderWidth = 2;
+  Chart.defaults.elements.point.hoverBorderColor = '#fff';
 }
 
-// ─── Dataset Config Interface ─────────────────────────────────────────
+// ─── Standard scale presets ────────────────────────────────────────
+
+export function brandXScale() {
+  return {
+    grid: { display: false },
+    border: { display: false },
+    ticks: {
+      color: LS.gray500,
+      font: { family: FAMILY_UI, size: 11, weight: 500 },
+      maxTicksLimit: 14,
+      autoSkip: true,
+    },
+  };
+}
+
+export function brandYScale(opts?: { format?: (v: number) => string; gridDisplay?: boolean }) {
+  return {
+    grid: {
+      display: opts?.gridDisplay ?? true,
+      color: LS.gray100,
+      drawTicks: false,
+    },
+    border: { display: false },
+    ticks: {
+      color: LS.gray400,
+      font: { family: FAMILY_UI, size: 11 },
+      callback: (v: string | number) => (opts?.format ? opts.format(Number(v)) : fmtCompact(Number(v))),
+    },
+  };
+}
+
+// ─── Brand Line Chart Options Builder (legacy compatibility) ──────
 
 export interface LineDatasetConfig {
   label: string;
@@ -74,12 +150,6 @@ export interface LineDatasetConfig {
   dash?: number[];
 }
 
-// ─── Brand Line Chart Options Builder ─────────────────────────────────
-
-/**
- * Returns a react-chartjs-2 compatible config object for a branded line chart.
- * Use with <Line data={data} options={options} /> from react-chartjs-2.
- */
 export function brandLineChartOptions(config: {
   labels: string[];
   datasets: LineDatasetConfig[];
@@ -96,10 +166,13 @@ export function brandLineChartOptions(config: {
       label: d.label,
       data: d.data,
       borderColor: d.bc,
-      backgroundColor: d.bg || d.bc + '18',
+      backgroundColor: d.bg || d.bc + '33', // ~20% alpha per brief
       fill: !!d.bg,
-      tension: 0.4,
-      pointRadius: 3,
+      tension: 0.32,
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      pointHoverBorderColor: '#fff',
+      pointHoverBorderWidth: 2,
       pointBackgroundColor: d.bc,
       borderWidth: 2,
       borderDash: d.dash || [],
@@ -113,24 +186,82 @@ export function brandLineChartOptions(config: {
     plugins: {
       legend: {
         display: datasets.length > 1,
-        labels: { color: BRAND_COLORS.text, font: { size: 11 } },
-      },
-    },
-    scales: {
-      x: { ticks: { color: BRAND_COLORS.tickText, font: { size: 10 } } },
-      y: {
-        ticks: {
-          color: BRAND_COLORS.tickText,
-          font: { size: 10 },
-          callback: yTickFormat
-            ? (v) => yTickFormat(v as number)
-            : (v) =>
-                (v as number) >= 1000
-                  ? ((v as number) / 1000).toFixed(0) + 'k'
-                  : String(v),
+        position: 'bottom',
+        labels: {
+          color: LS.gray700,
+          font: { family: FAMILY_UI, size: 12, weight: 600 },
+          usePointStyle: true,
+          pointStyle: 'circle',
+          padding: 16,
         },
       },
     },
+    scales: {
+      x: brandXScale(),
+      y: brandYScale({ format: yTickFormat }),
+    },
+  };
+
+  return { data, options };
+}
+
+// ─── Brand Bar Chart Options Builder ───────────────────────────────
+
+export interface BarDatasetConfig {
+  label: string;
+  data: number[];
+  color: string;
+  stack?: string;
+}
+
+export function brandBarChartOptions(config: {
+  labels: string[];
+  datasets: BarDatasetConfig[];
+  yFormat?: (v: number) => string;
+  stacked?: boolean;
+  horizontal?: boolean;
+}): { data: ChartData<'bar'>; options: ChartOptions<'bar'> } {
+  const { labels, datasets, yFormat, stacked, horizontal } = config;
+
+  const data: ChartData<'bar'> = {
+    labels,
+    datasets: datasets.map((d) => ({
+      label: d.label,
+      data: d.data,
+      backgroundColor: d.color,
+      borderColor: d.color,
+      borderWidth: 0,
+      borderRadius: stacked ? 0 : 4,
+      stack: d.stack,
+    })),
+  };
+
+  const options: ChartOptions<'bar'> = {
+    responsive: true,
+    indexAxis: horizontal ? 'y' : 'x',
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: {
+        display: datasets.length > 1,
+        position: 'bottom',
+        labels: {
+          color: LS.gray700,
+          font: { family: FAMILY_UI, size: 12, weight: 600 },
+          usePointStyle: true,
+          pointStyle: 'circle',
+          padding: 16,
+        },
+      },
+    },
+    scales: stacked
+      ? {
+          x: { ...brandXScale(), stacked: true },
+          y: { ...brandYScale({ format: yFormat }), stacked: true },
+        }
+      : {
+          x: brandXScale(),
+          y: brandYScale({ format: yFormat }),
+        },
   };
 
   return { data, options };

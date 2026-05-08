@@ -6,6 +6,7 @@ import {
   ArcElement, Tooltip, Legend,
 } from 'chart.js';
 import type { ChartData, ChartOptions } from 'chart.js';
+import { LS } from '@/lib/colors';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -23,7 +24,7 @@ export default function DoughnutChart({ labels, data, colors, height }: Doughnut
       {
         data,
         backgroundColor: colors,
-        borderColor: 'rgba(13,22,38,0.8)',
+        borderColor: '#fff',
         borderWidth: 2,
       },
     ],
@@ -32,12 +33,20 @@ export default function DoughnutChart({ labels, data, colors, height }: Doughnut
   const options: ChartOptions<'doughnut'> = {
     responsive: true,
     maintainAspectRatio: !height,
-    cutout: '60%',
+    cutout: '62%',
     plugins: {
       legend: {
         display: true,
         position: 'bottom' as const,
-        labels: { color: '#7b97c8', font: { size: 11 }, padding: 12 },
+        labels: {
+          color: LS.gray700,
+          font: { size: 12, weight: 600 },
+          padding: 14,
+          usePointStyle: true,
+          pointStyle: 'circle',
+          boxWidth: 8,
+          boxHeight: 8,
+        },
       },
     },
   };

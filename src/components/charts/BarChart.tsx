@@ -7,6 +7,8 @@ import {
   Title, Tooltip, Legend,
 } from 'chart.js';
 import type { ChartData, ChartOptions } from 'chart.js';
+import { LS } from '@/lib/colors';
+import { fmtCompact } from '@/lib/charts';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -33,7 +35,7 @@ export default function BarChart({ labels, datasets, horizontal = false, height 
       data: d.data,
       backgroundColor: d.backgroundColor,
       borderColor: d.borderColor || d.backgroundColor,
-      borderWidth: d.borderWidth ?? 1,
+      borderWidth: d.borderWidth ?? 0,
       borderRadius: 4,
     })),
   };
@@ -46,19 +48,34 @@ export default function BarChart({ labels, datasets, horizontal = false, height 
     plugins: {
       legend: {
         display: datasets.length > 1,
-        labels: { color: '#7b97c8', font: { size: 11 } },
+        position: 'bottom',
+        labels: {
+          color: LS.gray700,
+          font: { size: 12, weight: 600 },
+          usePointStyle: true,
+          pointStyle: 'circle',
+          padding: 16,
+        },
       },
     },
     scales: {
-      x: { ticks: { color: '#44608a', font: { size: 10 } } },
-      y: {
+      x: {
+        grid: { display: false },
+        border: { display: false },
         ticks: {
-          color: '#44608a',
-          font: { size: 10 },
-          callback: (v) => {
-            const n = Number(v);
-            return n >= 1000 ? (n / 1000).toFixed(0) + 'k' : String(v);
-          },
+          color: LS.gray500,
+          font: { size: 11, weight: 500 },
+          maxTicksLimit: 14,
+          autoSkip: true,
+        },
+      },
+      y: {
+        grid: { color: LS.gray100, drawTicks: false },
+        border: { display: false },
+        ticks: {
+          color: LS.gray400,
+          font: { size: 11 },
+          callback: (v) => fmtCompact(Number(v)),
         },
       },
     },

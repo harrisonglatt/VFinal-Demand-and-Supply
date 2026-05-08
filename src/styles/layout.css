@@ -1,62 +1,148 @@
 /* ── Header ─────────────────────────────────────────────────── */
-.hdr{position:fixed;top:0;left:0;right:0;height:var(--hh);background:var(--s1);border-bottom:1px solid var(--bd);
-display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;}
-.hdr-logo{font-size:16px;font-weight:900;font-family:'Mulish',sans-serif;letter-spacing:-.3px;
-  background:linear-gradient(135deg,#00E3CD 0%,#00F9B8 60%,#C2FF7F 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hdr-logo span{-webkit-text-fill-color:transparent;}
-.hdr-sub-label{font-size:10px;font-weight:600;color:var(--tx3);letter-spacing:.6px;text-transform:uppercase;margin-left:2px;padding-top:1px;}
-.hdr-r{margin-left:auto;display:flex;align-items:center;gap:14px;}
+.hdr{
+  position:fixed;top:0;left:0;right:0;height:var(--hh);
+  background:#fff;
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;
+  padding:0 22px;gap:14px;z-index:100;
+  box-shadow:var(--shadow-sm);
+}
 
-/* ── LS Header Branding ────────────────────────────────────── */
-header.hdr{border-bottom:2px solid var(--ls-blue);}
-.hdr-brand{font-family:'Mulish',sans-serif;font-weight:900;font-size:15px;
-  background:linear-gradient(135deg,#00E3CD 0%,#00F9B8 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;letter-spacing:-.3px;}
-.hdr-sub{font-family:'Mulish',sans-serif;font-size:11px;font-weight:600;
-  color:var(--tx3);letter-spacing:.5px;text-transform:uppercase;}
-.ls-wordmark{display:flex;align-items:center;gap:6px;}
-.ls-spoon-icon{width:22px;height:22px;flex-shrink:0;}
+/* Brand mark — gradient pill with "LS" */
+.hdr-brand-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:var(--brand-gradient);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Mulish',sans-serif;font-weight:900;font-size:13px;
+  color:#063D38;letter-spacing:-0.02em;flex-shrink:0;
+}
+
+.hdr-logo{
+  font-family:'Mulish',sans-serif;
+  font-size:15px;font-weight:900;
+  color:var(--tx);letter-spacing:-0.02em;
+}
+.hdr-logo span{color:var(--tx);}
+
+.hdr-sub-label{
+  font-family:'Mulish',sans-serif;
+  font-size:10.5px;font-weight:700;
+  color:var(--tx2);letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:10px;}
+
+.hdr-brand,.hdr-sub{font-family:'Mulish',sans-serif;}
+.hdr-brand{font-size:15px;font-weight:900;color:var(--tx);letter-spacing:-0.02em;}
+.hdr-sub{font-size:11px;font-weight:700;color:var(--tx2);letter-spacing:.06em;text-transform:uppercase;}
+
+.ls-wordmark{display:flex;align-items:center;gap:8px;}
+.ls-spoon-icon{width:24px;height:24px;flex-shrink:0;}
 
 /* ── Sidebar ───────────────────────────────────────────────── */
-.sb{position:fixed;top:var(--hh);left:0;bottom:0;width:var(--sw);background:var(--s1);
-border-right:1px solid var(--bd);overflow-y:auto;z-index:90;padding:10px 0;}
-.sb::-webkit-scrollbar{width:3px;}.sb::-webkit-scrollbar-thumb{background:var(--bd);}
-.nav-sec{padding:10px 16px 3px;font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:1.2px;}
-.nav-it{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;color:var(--tx2);
-cursor:pointer;border-left:3px solid transparent;transition:.15s;user-select:none;}
-.nav-it:hover{background:rgba(0,227,205,.05);color:var(--ls-blue);}
-.nav-it.active{background:rgba(0,227,205,.1);color:var(--ls-blue);border-left-color:var(--ls-blue);}
-.nav-it.dim{opacity:.4;}
-.ni{font-size:14px;width:18px;text-align:center;}
-.nb{margin-left:auto;font-size:10px;padding:2px 6px;border-radius:10px;font-weight:700;font-family:'Mulish',sans-serif;
-background:rgba(239,68,68,.18);color:var(--rd);}
-.nb.y{background:rgba(255,199,17,.18);color:var(--ls-mango);}
-.nb.g{background:rgba(0,207,146,.18);color:var(--ls-spinach);}
-.nb.b{background:rgba(0,227,205,.18);color:var(--ls-blue);}
-.nb.r{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3);}
+.sb{
+  position:fixed;top:var(--hh);left:0;bottom:0;
+  width:var(--sw);background:#fff;
+  border-right:1px solid var(--bd);
+  overflow-y:auto;z-index:90;padding:14px 0 20px;
+}
+.sb::-webkit-scrollbar{width:4px;}
+.sb::-webkit-scrollbar-thumb{background:var(--bd);}
 
-/* ── LS Nav Branding ───────────────────────────────────────── */
-.sb{border-right:1px solid var(--bd);}
-.nav-it.active{color:var(--ls-blue);border-left:2px solid var(--ls-blue);
-  background:rgba(0,227,205,.08);}
-.nav-it:hover{color:var(--ls-blue);background:rgba(0,227,205,.05);}
-.nav-sec{font-family:'Mulish',sans-serif;font-weight:700;font-size:9.5px;
-  letter-spacing:1.2px;color:var(--ls-blue);opacity:.7;text-transform:uppercase;}
+.nav-sec{
+  font-family:'Mulish',sans-serif;
+  padding:14px 18px 6px;
+  font-size:10px;font-weight:800;
+  color:var(--tx2);
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
 
-/* nav badge upgrade */
-.nav-it{position:relative;}
-.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--gr);
-position:absolute;left:8px;top:50%;transform:translateY(-50%);animation:pulse 2s infinite;}
+.nav-it{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 18px;
+  font-family:'Mulish',sans-serif;font-size:13px;font-weight:600;
+  color:var(--tx-label);
+  cursor:pointer;
+  border-left:3px solid transparent;
+  transition:.15s;user-select:none;
+  position:relative;
+}
+.nav-it:hover{
+  background:var(--ac-soft);
+  color:var(--tx);
+}
+.nav-it.active{
+  background:var(--ac-soft);
+  color:var(--tx);
+  border-left-color:var(--ac);
+  font-weight:700;
+}
+.nav-it.dim{opacity:.45;}
+
+.ni{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
+
+.nb{
+  margin-left:auto;
+  font-family:'Mulish',sans-serif;
+  font-size:9.5px;font-weight:800;
+  padding:2px 7px;border-radius:999px;
+  letter-spacing:.04em;
+  background:rgba(255,135,102,.16);color:#A33E1F;
+}
+.nb.y{background:rgba(255,199,17,.18);color:#8B6900;}
+.nb.g{background:rgba(0,207,146,.15);color:#067A56;}
+.nb.b{background:var(--ac-soft);color:var(--ls-blue-dark);}
+.nb.r{background:rgba(255,135,102,.18);color:#A33E1F;border:none;}
+
+.nav-sep{height:1px;background:var(--bd);margin:8px 14px;}
+
+/* nav badge dot */
+.nav-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gr);
+  position:absolute;left:8px;top:50%;
+  transform:translateY(-50%);
+  animation:pulse 2s infinite;
+}
 
 /* ── Header Sign-Out ──────────────────────────────────────── */
-.hdr-sign-out{font-size:11px;color:var(--tx3);background:none;border:1px solid var(--bd);border-radius:6px;
-  padding:3px 10px;cursor:pointer;font-family:'Mulish',sans-serif;font-weight:600;transition:.15s;margin-left:8px;}
-.hdr-sign-out:hover{color:var(--ls-blue);border-color:rgba(0,227,205,.4);background:rgba(0,227,205,.08);}
+.hdr-sign-out{
+  font-family:'Mulish',sans-serif;
+  font-size:11.5px;font-weight:600;
+  color:var(--tx-label);
+  background:#fff;
+  border:1px solid var(--bd);
+  border-radius:var(--radius-sm);
+  padding:6px 12px;cursor:pointer;
+  transition:.15s;margin-left:6px;
+}
+.hdr-sign-out:hover{
+  color:var(--tx);background:var(--s2);
+  border-color:var(--bd-strong);
+}
 
 /* ── Main Container ────────────────────────────────────────── */
-.main{margin-left:var(--sw);padding-top:var(--hh);}
-.pg{display:none;padding:24px;}.pg.active{display:block;}
-.ph{margin-bottom:22px;}.pt{font-size:21px;font-weight:700;letter-spacing:-.4px;}
-.ps{font-size:12px;color:var(--tx2);margin-top:3px;}
+.main{
+  margin-left:var(--sw);
+  padding-top:var(--hh);
+  min-height:100vh;
+  background:var(--bg);
+}
+
+.pg{display:none;padding:28px 32px;max-width:1700px;}
+.pg.active{display:block;}
+
+.ph{margin-bottom:24px;}
+.pt{
+  font-family:'Mulish',sans-serif;
+  font-size:20px;font-weight:800;
+  letter-spacing:-0.02em;
+  color:var(--tx);
+}
+.ps{
+  font-family:'Mulish',sans-serif;
+  font-size:12.5px;color:var(--tx2);
+  margin-top:4px;font-weight:500;
+}
