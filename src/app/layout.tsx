@@ -5,6 +5,7 @@ import { OverridesProvider } from '@/context/OverridesContext';
 import { PromoProvider } from '@/context/PromoContext';
 import { NewSkuProvider } from '@/context/NewSkuContext';
 import { CalibrationProvider } from '@/context/CalibrationContext';
+import { PlannedPOsProvider } from '@/context/PlannedPOsContext';
 import { AppShell } from '@/components/layout/AppShell';
 
 const mulish = Mulish({
@@ -37,7 +38,9 @@ export default function RootLayout({
           <PromoProvider>
             <NewSkuProvider>
               <CalibrationProvider>
-                <AppShell>{children}</AppShell>
+                <PlannedPOsProvider>
+                  <AppShell>{children}</AppShell>
+                </PlannedPOsProvider>
               </CalibrationProvider>
             </NewSkuProvider>
           </PromoProvider>

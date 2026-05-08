@@ -13,6 +13,8 @@ import BarChart from '@/components/charts/BarChart';
 import { DATA_DP } from '@/data/index';
 import { usePromo } from '@/context/PromoContext';
 import { useCalibration } from '@/context/CalibrationContext';
+import { usePlannedPOs } from '@/context/PlannedPOsContext';
+import SkuPlanner from '@/components/supply/SkuPlanner';
 import { SC_MULT, SC_COL } from '@/lib/computations/scenario';
 import { buildSupplySkus, buildLots, buildManufacturers } from '@/lib/supply/mock-data';
 import {
@@ -35,6 +37,7 @@ const VIEW_OPTS = [
   { value: 'tower',     label: 'Control Tower' },
   { value: 'states',    label: 'Inventory States' },
   { value: 'sim',       label: 'WOC Simulation' },
+  { value: 'planner',   label: 'SKU Planner' },
   { value: 'po',        label: 'PO Recommendations' },
   { value: 'po-create', label: 'PO Creator' },
   { value: 'risk',      label: 'Risk Center' },
@@ -97,6 +100,28 @@ function WocBadge({ woc, min, target }: { woc: number; min: number; target: numb
   );
 }
 
+/** Convert engine "Apr 12" date strings to ISO. Falls back to today + 6 weeks if unparseable. */
+function engineDateToIso(short: string): string {
+  if (!short) return new Date(Date.now() + 6 * 7 * 86400000).toISOString().slice(0, 10);
+  // Already ISO
+  if (/^\d{4}-\d{2}-\d{2}$/.test(short)) return short;
+  const m = short.match(/^([A-Z][a-z]{2})\s+(\d+)$/);
+  if (m) {
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const mi = months.indexOf(m[1]);
+    const day = parseInt(m[2], 10);
+    const today = new Date('2026-04-06');
+    let year = today.getFullYear();
+    if (mi < today.getMonth()) year += 1;
+    const d = new Date(year, mi, day);
+    return d.toISOString().slice(0, 10);
+  }
+  const d = new Date(short);
+  return isNaN(d.getTime())
+    ? new Date(Date.now() + 6 * 7 * 86400000).toISOString().slice(0, 10)
+    : d.toISOString().slice(0, 10);
+}
+
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function SupplyPlanningPage() {
@@ -140,6 +165,7 @@ export default function SupplyPlanningPage() {
 
   const promoCtx    = usePromo();
   const calibration = useCalibration();
+  const plannedPOs  = usePlannedPOs();
 
   // ── Static data (computed once) ──────────────────────────────────────────
   const supplySkus = useMemo(() => buildSupplySkus(), []);
@@ -155,33 +181,56 @@ export default function SupplyPlanningPage() {
         }),
   []);
 
-  // ── Per-SKU simulations (recomputed on scenario/promo change) ─────────────
-  const simBySku = useMemo(() => {
-    const map = new Map<string, ReturnType<typeof runWeeklySimulation>>();
+  // ── Per-SKU calibrated forecast (used by sims + SkuPlanner) ──────────────
+  const fcastByDpci = useMemo(() => {
+    const map: Record<string, number[]> = {};
     supplySkus.forEach(sku => {
       const dpSku = DATA_DP.skus.find(s => s.dpci === sku.dpci);
       if (!dpSku) return;
       const calFactor = calibration.getCalibrationFactor(sku.dpci, sku.category);
-      const baseFcast = dpSku.fcast.map(v => Math.round(sf(v) * calFactor));
+      map[sku.dpci] = dpSku.fcast.map(v => Math.round(sf(v) * calFactor));
+    });
+    return map;
+  }, [supplySkus, calibration]);
+
+  // ── Per-SKU planned PO inbound series (length 52, units per week) ────────
+  const plannedSeriesByDpci = useMemo(() => {
+    const map: Record<string, number[]> = {};
+    supplySkus.forEach(sku => {
+      map[sku.dpci] = plannedPOs.inboundSeries(sku.dpci, 52);
+    });
+    return map;
+  }, [supplySkus, plannedPOs]);
+
+  // ── Per-SKU simulations (recomputed on scenario/promo/planned-PO change) ─
+  const simBySku = useMemo(() => {
+    const map = new Map<string, ReturnType<typeof runWeeklySimulation>>();
+    supplySkus.forEach(sku => {
+      const baseFcast = fcastByDpci[sku.dpci];
+      if (!baseFcast) return;
       const lots = allLots[sku.dpci] || [];
+      const planned = plannedSeriesByDpci[sku.dpci];
       map.set(sku.dpci, runWeeklySimulation(
-        sku, baseFcast, lots, scenario, weekLabels, promoCtx.getLift,
+        sku, baseFcast, lots, scenario, weekLabels, promoCtx.getLift, planned,
       ));
     });
     return map;
-  }, [supplySkus, allLots, weekLabels, scenario, calibration, promoCtx.getLift]);
+  }, [supplySkus, allLots, weekLabels, scenario, fcastByDpci, plannedSeriesByDpci, promoCtx.getLift]);
 
-  // ── Recommendations (depend on scenario) ─────────────────────────────────
+  // ── Recommendations (depend on scenario + planned POs) ───────────────────
   const recommendations = useMemo(() =>
     supplySkus.flatMap(sku => {
-      const dpSku = DATA_DP.skus.find(s => s.dpci === sku.dpci);
-      if (!dpSku) return [];
-      const calFactor = calibration.getCalibrationFactor(sku.dpci, sku.category);
-      const baseFcast = dpSku.fcast.map(v => Math.round(sf(v) * calFactor));
+      const baseFcast = fcastByDpci[sku.dpci];
+      if (!baseFcast) return [];
       const sim = simBySku.get(sku.dpci) || [];
-      return [computeReorderRecommendation(sku, sim, baseFcast, scenario, weekLabels)];
+      // Sum planned PO units landing inside the lead-time window so the engine
+      // doesn't double-recommend on top of pending POs.
+      const leadWeeks = sku.productionLeadTimeWeeks + sku.transitLeadTimeWeeks + sku.receiptLagWeeks;
+      const planned = plannedSeriesByDpci[sku.dpci] || [];
+      const plannedInLead = planned.slice(0, leadWeeks).reduce((a, b) => a + b, 0);
+      return [computeReorderRecommendation(sku, sim, baseFcast, scenario, weekLabels, 1, plannedInLead)];
     }).sort((a, b) => SEV_ORDER[a.severity] - SEV_ORDER[b.severity]),
-  [supplySkus, simBySku, scenario, weekLabels, calibration]);
+  [supplySkus, simBySku, scenario, weekLabels, fcastByDpci, plannedSeriesByDpci]);
 
   // ── All risks ─────────────────────────────────────────────────────────────
   const allRisks = useMemo(() =>
@@ -667,6 +716,18 @@ export default function SupplyPlanningPage() {
             </>
           )}
         </>
+      )}
+
+      {/* ── VIEW: SKU Planner (per-SKU what-if PO planning) ──────────── */}
+      {view === 'planner' && (
+        <SkuPlanner
+          skus={supplySkus}
+          lotsByDpci={allLots}
+          fcastByDpci={fcastByDpci}
+          scenario={scenario}
+          weekLabels={weekLabels}
+          getPromoLift={promoCtx.getLift}
+        />
       )}
 
       {/* ── VIEW: PO Recommendations ──────────────────────────────────── */}
@@ -1168,12 +1229,18 @@ export default function SupplyPlanningPage() {
 
       {/* ═══════════════ PO CREATOR ═══════════════════════════════════ */}
       {view === 'po-create' && (() => {
-        // Recs grouped by selected manufacturer
+        // Recs grouped by selected manufacturer — match by the SKU's co-packer field
+        // (the CM `categories` array holds co-packer keywords like "IFI", "Frankies").
         const activeCm = manufacturers.find(m => m.id === poMfr) || manufacturers[0];
         const cmRecs = recommendations.filter(r => {
           if (!activeCm) return false;
+          if (r.severity === 'none' || r.recommendedCases <= 0) return false;
+          const sku = supplySkus.find(s => s.dpci === r.dpci);
+          const coPacker = (sku?.coPacker || '').toLowerCase();
+          if (coPacker && activeCm.categories.some(c => coPacker.includes(c.toLowerCase()))) return true;
+          // Fallback for SKUs without a coPacker — match on product category
           const catLower = r.category.toLowerCase();
-          return activeCm.categories.some(c => catLower.includes(c.toLowerCase())) && r.severity !== 'none' && r.recommendedCases > 0;
+          return !coPacker && activeCm.categories.some(c => catLower.includes(c.toLowerCase()));
         });
 
         const toggleLine = (dpci: string) => {
@@ -1218,6 +1285,29 @@ export default function SupplyPlanningPage() {
           }
           setPoGenerated(po);
           setPoSendStatus('idle');
+
+          // Persist each line as a PlannedPO so the supply simulation reflects this PO
+          // immediately. We strip any prior entries with this PO number so re-generating
+          // doesn't double-stage.
+          plannedPOs.dispatch({ type: 'REMOVE_BY_PO', payload: { poNumber: po.poNumber } });
+          const today = new Date().toISOString().slice(0, 10);
+          const entries = selectedRecs.map(rec => {
+            const sku = supplySkus.find(s => s.dpci === rec.dpci);
+            const arrivalIso = engineDateToIso(rec.arrivalDate);
+            return {
+              poNumber: po.poNumber,
+              dpci: rec.dpci,
+              cases: rec.recommendedCases,
+              units: rec.recommendedUnits,
+              supplier: activeCm.name,
+              placedDate: today,
+              arrivalDate: arrivalIso,
+              source: 'generated' as const,
+              status: 'staged' as const,
+              note: `${activeCm.shortName} · ${rec.severity}`,
+            };
+          });
+          plannedPOs.dispatch({ type: 'ADD_MANY', payload: entries });
         };
 
         const handleDownload = () => {
@@ -1232,8 +1322,13 @@ export default function SupplyPlanningPage() {
           const cm = manufacturers.find(m => m.id === id);
           if (cm) {
             const recs = recommendations.filter(r => {
+              if (r.severity !== 'critical' && r.severity !== 'high') return false;
+              if (r.recommendedCases <= 0) return false;
+              const sku = supplySkus.find(s => s.dpci === r.dpci);
+              const coPacker = (sku?.coPacker || '').toLowerCase();
+              if (coPacker && cm.categories.some(c => coPacker.includes(c.toLowerCase()))) return true;
               const catLower = r.category.toLowerCase();
-              return cm.categories.some(c => catLower.includes(c.toLowerCase())) && (r.severity === 'critical' || r.severity === 'high') && r.recommendedCases > 0;
+              return !coPacker && cm.categories.some(c => catLower.includes(c.toLowerCase()));
             });
             setPoSelected(new Set(recs.map(r => r.dpci)));
             setPoShipTo(`FOB ${cm.location}`);
@@ -1342,6 +1437,44 @@ export default function SupplyPlanningPage() {
               </div>
             </div>
 
+            {/* WOC Impact Preview — shown only when lines are selected, before Generate */}
+            {selectedRecs.length > 0 && (() => {
+              // For each selected rec, compute "would post-PO WOC clear target?" indicators
+              let movedToHealthy = 0;
+              let stillBelowMin = 0;
+              let alreadyHealthy = 0;
+              for (const rec of selectedRecs) {
+                const sku = supplySkus.find(s => s.dpci === rec.dpci);
+                if (!sku) continue;
+                const wasBelowMin = rec.currentWOC < sku.minWOC;
+                const isHealthyAfter = rec.postDeliveryWOC >= sku.targetWOC;
+                if (isHealthyAfter && wasBelowMin) movedToHealthy += 1;
+                else if (!isHealthyAfter && rec.postDeliveryWOC < sku.minWOC) stillBelowMin += 1;
+                else if (!wasBelowMin) alreadyHealthy += 1;
+              }
+              return (
+                <div style={{
+                  marginBottom: 12, padding: '12px 16px', borderRadius: 10,
+                  background: 'var(--ac-soft)', border: '1px solid rgba(0,181,162,.25)',
+                  display: 'flex', flexWrap: 'wrap', gap: 18, alignItems: 'center', fontSize: 12.5,
+                }}>
+                  <strong style={{ color: 'var(--tx)' }}>WOC impact preview</strong>
+                  {movedToHealthy > 0 && (
+                    <span><strong style={{ color: '#067A56' }}>{movedToHealthy}</strong> SKUs move from below-min → healthy</span>
+                  )}
+                  {alreadyHealthy > 0 && (
+                    <span><strong>{alreadyHealthy}</strong> SKUs build buffer above target</span>
+                  )}
+                  {stillBelowMin > 0 && (
+                    <span style={{ color: '#A33E1F' }}><strong>{stillBelowMin}</strong> SKUs remain below min — increase quantity</span>
+                  )}
+                  <span style={{ marginLeft: 'auto', color: 'var(--tx2)' }}>
+                    Hit <strong>Generate PO</strong> to stage these for the simulation.
+                  </span>
+                </div>
+              );
+            })()}
+
             {/* Send confirmation banner */}
             {poSendStatus === 'confirm' && poGenerated && activeCm && (
               <div style={{
@@ -1395,12 +1528,14 @@ export default function SupplyPlanningPage() {
                     <th className="tr">Unit Price</th>
                     <th className="tr">Line Total</th>
                     <th>Ship Date</th>
+                    <th>Arrival</th>
                     <th className="tr">Current WOC</th>
+                    <th className="tr">Post-PO WOC</th>
                   </tr>
                 </thead>
                 <tbody>
                   {cmRecs.length === 0 ? (
-                    <tr><td colSpan={11} style={{ textAlign: 'center', color: 'var(--tx3)', padding: 24 }}>No actionable PO recommendations for this manufacturer.</td></tr>
+                    <tr><td colSpan={13} style={{ textAlign: 'center', color: 'var(--tx3)', padding: 24 }}>No actionable PO recommendations for this manufacturer.</td></tr>
                   ) : cmRecs.map(rec => {
                     const sku = supplySkus.find(s => s.dpci === rec.dpci);
                     const isChecked = poSelected.has(rec.dpci);
@@ -1424,8 +1559,15 @@ export default function SupplyPlanningPage() {
                         <td className="tr">${sku?.unitPrice.toFixed(2) ?? '—'}</td>
                         <td className="tr" style={{ fontWeight: 700, color: 'var(--ac)' }}>{fmtDol(Math.round(lineTotal))}</td>
                         <td>{rec.shipDate}</td>
+                        <td>{rec.arrivalDate}</td>
                         <td className="tr">
                           <WocBadge woc={rec.currentWOC} min={sku?.minWOC ?? 2} target={sku?.targetWOC ?? 6} />
+                        </td>
+                        <td className="tr">
+                          <WocBadge woc={rec.postDeliveryWOC} min={sku?.minWOC ?? 2} target={sku?.targetWOC ?? 6} />
+                          <span style={{ marginLeft: 4, fontSize: 10, color: rec.postDeliveryWOC > rec.currentWOC ? '#067A56' : 'var(--tx2)' }}>
+                            ({rec.postDeliveryWOC > rec.currentWOC ? '+' : ''}{(rec.postDeliveryWOC - rec.currentWOC).toFixed(1)})
+                          </span>
                         </td>
                       </tr>
                     );

@@ -195,6 +195,10 @@ export function computeSafetyStock(sku: SupplySku, avgWeeklyDemand: number): num
  * fcast: base calibrated demand (units/week, before scenario).
  * Scenario multiplier + promo lift applied inside.
  * Uses simplified FEFO lot consumption for expiry overlay.
+ *
+ * Optional `plannedInboundByWeek` is a length-≥52 array where index = weeks-from-today
+ * and value = additional inbound units (e.g. user-staged POs). These add to the existing
+ * inTransit / onOrder inbound and shift WOC / ending inventory accordingly.
  */
 export function runWeeklySimulation(
   sku: SupplySku,
@@ -203,6 +207,7 @@ export function runWeeklySimulation(
   scenario: ScenarioKey,
   weekLabels: string[],
   getPromoLift: (weekIdx: number, category: string) => number,
+  plannedInboundByWeek?: number[],
 ): WeekSimRow[] {
   const scenMult = SC_MULT[scenario];
 
@@ -227,6 +232,7 @@ export function runWeeklySimulation(
     let inbound = 0;
     if (w === sku.transitLeadTimeWeeks) inbound += sku.inTransitUnits;
     if (w === sku.totalLeadTimeWeeks && sku.onOrderUnits > 0) inbound += sku.onOrderUnits;
+    if (plannedInboundByWeek && plannedInboundByWeek[w] > 0) inbound += plannedInboundByWeek[w];
 
     const beginning = inventory;
     inventory = Math.max(0, inventory + inbound - demand);
@@ -285,6 +291,10 @@ export function runWeeklySimulation(
  * Derives a replenishment recommendation for one SKU.
  * Uses forward-looking demand, not trailing, for reorder math.
  * Backsolves all key dates from a "need by" week.
+ *
+ * Optional `plannedInboundUnits` is the sum of any user-staged POs landing
+ * inside the lead-time window — these are added to the current inventory
+ * position so the engine doesn't double-recommend on top of pending POs.
  */
 export function computeReorderRecommendation(
   sku: SupplySku,
@@ -293,6 +303,7 @@ export function computeReorderRecommendation(
   scenario: ScenarioKey,
   weekLabels: string[],
   poApprovalLeadTimeWeeks = 1,
+  plannedInboundUnits = 0,
 ): PORecommendation {
   const scenMult = SC_MULT[scenario];
   const avgWeeklyDemand = fcast.slice(0, 8).reduce((a, b) => a + b, 0) / 8 * scenMult;
@@ -301,8 +312,8 @@ export function computeReorderRecommendation(
   const safetyStock = computeSafetyStock(sku, avgWeeklyDemand);
   const reorderPoint = demandDuringLeadTime + safetyStock;
 
-  // Total reachable inventory today
-  const currentPosition = sku.availableToSellUnits + sku.inTransitUnits + sku.onOrderUnits;
+  // Total reachable inventory today (incl. user-staged POs in the lead-time window)
+  const currentPosition = sku.availableToSellUnits + sku.inTransitUnits + sku.onOrderUnits + plannedInboundUnits;
   const currentWOC = computeWOC(currentPosition, avgWeeklyDemand);
 
   // First sim week where inventory < reorder point
