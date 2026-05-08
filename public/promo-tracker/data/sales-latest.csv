@@ -1,0 +1,964 @@
+Date: Week,Product,Product → Target DPCI,Product → Muffin Product Line,Sales Dollars,Sales Units,Stores Scanning,PODs Scanning,Promo Sales Dollars,Promo Sales Units
+"Jul 14, 2025 - Jul 20, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Green Dream,211-34-0232,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 14, 2025 - Jul 20, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jul 21, 2025 - Jul 27, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$5.00 ,1,1,1,$0.00 ,0
+"Jul 28, 2025 - Aug 3, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$6.00 ,1,1,1,$0.00 ,0
+"Jul 28, 2025 - Aug 3, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$5.00 ,1,1,1,$0.00 ,0
+"Aug 11, 2025 - Aug 17, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$5.00 ,1,1,1,$0.00 ,0
+"Aug 18, 2025 - Aug 24, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$12.00 ,2,1,1,$0.00 ,0
+"Aug 18, 2025 - Aug 24, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$35.00 ,7,2,2,$0.00 ,0
+"Aug 18, 2025 - Aug 24, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$6.00 ,1,1,1,$0.00 ,0
+"Aug 18, 2025 - Aug 24, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$34.00 ,7,3,3,$4.00 ,1
+"Aug 18, 2025 - Aug 24, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$25.00 ,5,3,3,$8.00 ,2
+"Aug 25, 2025 - Aug 31, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$2384.00 ,197,133,133,$182.00 ,17
+"Aug 25, 2025 - Aug 31, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$50.00 ,8,6,6,$0.00 ,0
+"Aug 25, 2025 - Aug 31, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$696.00 ,135,59,59,$37.00 ,8
+"Aug 25, 2025 - Aug 31, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$31.00 ,5,4,4,$0.00 ,0
+"Aug 25, 2025 - Aug 31, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$12.00 ,1,1,1,$0.00 ,0
+"Aug 25, 2025 - Aug 31, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$703.00 ,135,60,60,$54.00 ,11
+"Aug 25, 2025 - Aug 31, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$17.00 ,3,2,2,$5.00 ,1
+"Aug 25, 2025 - Aug 31, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$161.00 ,26,20,20,$17.00 ,3
+"Aug 25, 2025 - Aug 31, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$10.00 ,3,1,1,$0.00 ,0
+"Aug 25, 2025 - Aug 31, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$17.00 ,3,2,2,$5.00 ,1
+"Aug 25, 2025 - Aug 31, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$483.00 ,148,65,65,$36.00 ,12
+"Aug 25, 2025 - Aug 31, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$2241.00 ,185,128,128,$210.00 ,19
+"Aug 25, 2025 - Aug 31, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$419.00 ,127,59,59,$52.00 ,17
+"Sep 1, 2025 - Sep 7, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$12.00 ,4,2,2,$0.00 ,0
+"Sep 1, 2025 - Sep 7, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$7523.00 ,622,410,410,$320.00 ,29
+"Sep 1, 2025 - Sep 7, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$1615.00 ,271,119,119,$147.00 ,30
+"Sep 1, 2025 - Sep 7, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$6242.00 ,1213,443,443,$368.00 ,81
+"Sep 1, 2025 - Sep 7, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$520.00 ,161,49,49,$9.00 ,3
+"Sep 1, 2025 - Sep 7, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$689.00 ,60,36,36,$31.00 ,3
+"Sep 1, 2025 - Sep 7, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$1873.00 ,314,127,127,$231.00 ,45
+"Sep 1, 2025 - Sep 7, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$584.00 ,65,37,37,$213.00 ,27
+"Sep 1, 2025 - Sep 7, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$30.00 ,6,0,0,$11.00 ,3
+"Sep 1, 2025 - Sep 7, 2025",Green Dream,211-34-0232,Smoothie Pouches,$487.00 ,152,52,52,$15.00 ,5
+"Sep 1, 2025 - Sep 7, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$839.00 ,72,45,45,$21.00 ,2
+"Sep 1, 2025 - Sep 7, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$6451.00 ,1254,433,433,$407.00 ,92
+"Sep 1, 2025 - Sep 7, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$1024.00 ,176,107,107,$134.00 ,27
+"Sep 1, 2025 - Sep 7, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$1064.00 ,116,51,51,$318.00 ,40
+"Sep 1, 2025 - Sep 7, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$2996.00 ,502,276,276,$247.00 ,51
+"Sep 1, 2025 - Sep 7, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$695.00 ,216,64,64,$38.00 ,13
+"Sep 1, 2025 - Sep 7, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$834.00 ,146,88,88,$130.00 ,27
+"Sep 1, 2025 - Sep 7, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$729.00 ,225,57,57,$24.00 ,8
+"Sep 1, 2025 - Sep 7, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$811.00 ,70,42,42,$21.00 ,2
+"Sep 1, 2025 - Sep 7, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$2421.00 ,727,260,260,$108.00 ,34
+"Sep 1, 2025 - Sep 7, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$9450.00 ,783,467,467,$539.00 ,49
+"Sep 1, 2025 - Sep 7, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$532.00 ,60,38,38,$222.00 ,28
+"Sep 1, 2025 - Sep 7, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$571.00 ,179,53,53,$12.00 ,4
+"Sep 1, 2025 - Sep 7, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$2076.00 ,621,251,251,$90.00 ,28
+"Sep 8, 2025 - Sep 14, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Sep 8, 2025 - Sep 14, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$14403.00 ,1218,642,642,$824.00 ,78
+"Sep 8, 2025 - Sep 14, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$11183.00 ,1948,683,683,$2965.00 ,600
+"Sep 8, 2025 - Sep 14, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$27172.00 ,5340,1463,1463,$1815.00 ,405
+"Sep 8, 2025 - Sep 14, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$2101.00 ,657,187,187,$119.00 ,40
+"Sep 8, 2025 - Sep 14, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$3076.00 ,262,133,133,$167.00 ,16
+"Sep 8, 2025 - Sep 14, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$13669.00 ,2370,712,712,$3459.00 ,699
+"Sep 8, 2025 - Sep 14, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$4212.00 ,540,255,255,$4212.00 ,540
+"Sep 8, 2025 - Sep 14, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$927.00 ,184,26,26,$652.00 ,139
+"Sep 8, 2025 - Sep 14, 2025",Green Dream,211-34-0232,Smoothie Pouches,$2237.00 ,701,199,199,$132.00 ,43
+"Sep 8, 2025 - Sep 14, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3253.00 ,280,140,140,$259.00 ,25
+"Sep 8, 2025 - Sep 14, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$27896.00 ,5486,1463,1463,$2154.00 ,484
+"Sep 8, 2025 - Sep 14, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$5687.00 ,1010,517,517,$1505.00 ,307
+"Sep 8, 2025 - Sep 14, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$5962.00 ,765,290,290,$5963.00 ,765
+"Sep 8, 2025 - Sep 14, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$16832.00 ,2947,1149,1149,$3941.00 ,805
+"Sep 8, 2025 - Sep 14, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2804.00 ,868,187,187,$136.00 ,45
+"Sep 8, 2025 - Sep 14, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$5162.00 ,923,500,500,$1534.00 ,314
+"Sep 8, 2025 - Sep 14, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$3214.00 ,994,216,216,$204.00 ,66
+"Sep 8, 2025 - Sep 14, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$3879.00 ,329,172,172,$210.00 ,20
+"Sep 8, 2025 - Sep 14, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$5145.00 ,1581,446,446,$312.00 ,102
+"Sep 8, 2025 - Sep 14, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$17319.00 ,1467,702,702,$1095.00 ,103
+"Sep 8, 2025 - Sep 14, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$3745.00 ,479,252,252,$3745.00 ,479
+"Sep 8, 2025 - Sep 14, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$2495.00 ,778,187,187,$153.00 ,50
+"Sep 8, 2025 - Sep 14, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4517.00 ,1392,456,456,$307.00 ,100
+"Sep 15, 2025 - Sep 21, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$18475.00 ,1582,826,826,$1364.00 ,129
+"Sep 15, 2025 - Sep 21, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$16942.00 ,3199,897,897,$10562.00 ,2145
+"Sep 15, 2025 - Sep 21, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$36470.00 ,7421,1640,1640,$6105.00 ,1487
+"Sep 15, 2025 - Sep 21, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$4221.00 ,1323,338,338,$338.00 ,113
+"Sep 15, 2025 - Sep 21, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$4484.00 ,385,190,190,$334.00 ,33
+"Sep 15, 2025 - Sep 21, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$20922.00 ,3891,939,939,$11672.00 ,2368
+"Sep 15, 2025 - Sep 21, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$15216.00 ,1964,815,815,$15222.00 ,1964
+"Sep 15, 2025 - Sep 21, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$5020.00 ,938,324,324,$2825.00 ,576
+"Sep 15, 2025 - Sep 21, 2025",Green Dream,211-34-0232,Smoothie Pouches,$3865.00 ,1210,315,315,$305.00 ,105
+"Sep 15, 2025 - Sep 21, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$4307.00 ,374,157,157,$369.00 ,36
+"Sep 15, 2025 - Sep 21, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$38648.00 ,7889,1653,1653,$7149.00 ,1744
+"Sep 15, 2025 - Sep 21, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$8808.00 ,1670,700,700,$5216.00 ,1066
+"Sep 15, 2025 - Sep 21, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$21798.00 ,2808,1021,1021,$21817.00 ,2808
+"Sep 15, 2025 - Sep 21, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$22772.00 ,4082,1367,1367,$8307.00 ,1681
+"Sep 15, 2025 - Sep 21, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3483.00 ,1084,207,207,$292.00 ,101
+"Sep 15, 2025 - Sep 21, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$7829.00 ,1489,670,670,$4744.00 ,969
+"Sep 15, 2025 - Sep 21, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$5633.00 ,1752,369,369,$397.00 ,136
+"Sep 15, 2025 - Sep 21, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$6450.00 ,545,262,262,$535.00 ,50
+"Sep 15, 2025 - Sep 21, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$5458.00 ,1688,447,447,$436.00 ,143
+"Sep 15, 2025 - Sep 21, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$20907.00 ,1794,890,890,$1462.00 ,139
+"Sep 15, 2025 - Sep 21, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$14208.00 ,1829,855,855,$14209.00 ,1829
+"Sep 15, 2025 - Sep 21, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$3400.00 ,1067,232,232,$278.00 ,96
+"Sep 15, 2025 - Sep 21, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4804.00 ,1500,460,460,$422.00 ,139
+"Sep 22, 2025 - Sep 28, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$7.00 ,2,1,1,$0.00 ,0
+"Sep 22, 2025 - Sep 28, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$23113.00 ,2042,979,979,$7351.00 ,701
+"Sep 22, 2025 - Sep 28, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$20862.00 ,3972,1273,1273,$14464.00 ,2923
+"Sep 22, 2025 - Sep 28, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$44703.00 ,10401,1707,1707,$31374.00 ,7805
+"Sep 22, 2025 - Sep 28, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$13101.00 ,4139,1060,1060,$3662.00 ,1230
+"Sep 22, 2025 - Sep 28, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$7051.00 ,610,279,279,$2251.00 ,210
+"Sep 22, 2025 - Sep 28, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$29628.00 ,5590,1402,1402,$19482.00 ,3922
+"Sep 22, 2025 - Sep 28, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$25365.00 ,3208,1091,1091,$24740.00 ,3138
+"Sep 22, 2025 - Sep 28, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$21354.00 ,3977,1263,1263,$13419.00 ,2673
+"Sep 22, 2025 - Sep 28, 2025",Green Dream,211-34-0232,Smoothie Pouches,$10503.00 ,3325,977,977,$2998.00 ,1006
+"Sep 22, 2025 - Sep 28, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$4731.00 ,421,172,172,$1230.00 ,119
+"Sep 22, 2025 - Sep 28, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$49121.00 ,11500,1709,1709,$35718.00 ,8899
+"Sep 22, 2025 - Sep 28, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$10874.00 ,2083,838,838,$7373.00 ,1494
+"Sep 22, 2025 - Sep 28, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$38681.00 ,4877,1367,1367,$37761.00 ,4784
+"Sep 22, 2025 - Sep 28, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$25696.00 ,4705,1455,1455,$12493.00 ,2522
+"Sep 22, 2025 - Sep 28, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$4279.00 ,1356,221,221,$1267.00 ,429
+"Sep 22, 2025 - Sep 28, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$10217.00 ,1971,856,856,$7132.00 ,1454
+"Sep 22, 2025 - Sep 28, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$15456.00 ,4869,1095,1095,$4150.00 ,1395
+"Sep 22, 2025 - Sep 28, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$15290.00 ,1296,655,655,$5104.00 ,465
+"Sep 22, 2025 - Sep 28, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$6864.00 ,2536,467,467,$778.00 ,260
+"Sep 22, 2025 - Sep 28, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$26591.00 ,2341,1058,1058,$8529.00 ,809
+"Sep 22, 2025 - Sep 28, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$24413.00 ,3075,1198,1198,$23886.00 ,3023
+"Sep 22, 2025 - Sep 28, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$4673.00 ,1475,363,363,$1278.00 ,430
+"Sep 22, 2025 - Sep 28, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$6564.00 ,2394,512,512,$858.00 ,287
+"Sep 29, 2025 - Oct 5, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$34338.00 ,3220,1236,1236,$30014.00 ,2847
+"Sep 29, 2025 - Oct 5, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$27395.00 ,5179,1449,1449,$23155.00 ,4491
+"Sep 29, 2025 - Oct 5, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$50300.00 ,11365,1721,1721,$42672.00 ,9920
+"Sep 29, 2025 - Oct 5, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$23918.00 ,7925,1383,1383,$19466.00 ,6594
+"Sep 29, 2025 - Oct 5, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$11178.00 ,1021,393,393,$9665.00 ,893
+"Sep 29, 2025 - Oct 5, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$43463.00 ,8179,1607,1607,$37589.00 ,7229
+"Sep 29, 2025 - Oct 5, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$46521.00 ,5222,1295,1295,$40141.00 ,4574
+"Sep 29, 2025 - Oct 5, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$38628.00 ,7309,1539,1539,$33883.00 ,6537
+"Sep 29, 2025 - Oct 5, 2025",Green Dream,211-34-0232,Smoothie Pouches,$19764.00 ,6558,1359,1359,$16427.00 ,5550
+"Sep 29, 2025 - Oct 5, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$5890.00 ,561,203,203,$5071.00 ,489
+"Sep 29, 2025 - Oct 5, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$58340.00 ,13181,1727,1727,$49894.00 ,11576
+"Sep 29, 2025 - Oct 5, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$13011.00 ,2531,941,941,$11259.00 ,2238
+"Sep 29, 2025 - Oct 5, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$66496.00 ,7440,1523,1523,$57130.00 ,6500
+"Sep 29, 2025 - Oct 5, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$28112.00 ,5355,1559,1559,$23151.00 ,4546
+"Sep 29, 2025 - Oct 5, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$4739.00 ,1594,226,226,$4075.00 ,1389
+"Sep 29, 2025 - Oct 5, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$13819.00 ,2680,963,963,$11810.00 ,2344
+"Sep 29, 2025 - Oct 5, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$25833.00 ,8541,1403,1403,$20769.00 ,7027
+"Sep 29, 2025 - Oct 5, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$29485.00 ,2612,1057,1057,$24844.00 ,2243
+"Sep 29, 2025 - Oct 5, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$6750.00 ,2547,519,519,$2924.00 ,982
+"Sep 29, 2025 - Oct 5, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$40409.00 ,3781,1295,1295,$35139.00 ,3335
+"Sep 29, 2025 - Oct 5, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$53103.00 ,5916,1504,1504,$45402.00 ,5153
+"Sep 29, 2025 - Oct 5, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6858.00 ,2285,450,450,$5858.00 ,1984
+"Sep 29, 2025 - Oct 5, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$6959.00 ,2581,538,538,$3570.00 ,1191
+"Oct 6, 2025 - Oct 12, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$12.77 ,4,3,3,$5.79 ,2
+"Oct 6, 2025 - Oct 12, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$35336.93 ,3633,1289,1289,$31833.36 ,3334
+"Oct 6, 2025 - Oct 12, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$32760.22 ,6606,1548,1548,$27470.86 ,5733
+"Oct 6, 2025 - Oct 12, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$51000.00 ,12304,1730,1730,$42425.98 ,10650
+"Oct 6, 2025 - Oct 12, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$28783.27 ,10141,1474,1474,$23938.00 ,8714
+"Oct 6, 2025 - Oct 12, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12077.86 ,1217,440,440,$10688.90 ,1098
+"Oct 6, 2025 - Oct 12, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$49875.89 ,10055,1657,1657,$42178.52 ,8788
+"Oct 6, 2025 - Oct 12, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$42171.98 ,5199,1311,1311,$26952.15 ,3645
+"Oct 6, 2025 - Oct 12, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$46725.15 ,9432,1632,1632,$38872.89 ,8132
+"Oct 6, 2025 - Oct 12, 2025",Green Dream,211-34-0232,Smoothie Pouches,$24565.47 ,8651,1471,1471,$20643.53 ,7496
+"Oct 6, 2025 - Oct 12, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$4868.58 ,518,196,196,$4484.04 ,484
+"Oct 6, 2025 - Oct 12, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$59142.34 ,14323,1721,1721,$50015.27 ,12562
+"Oct 6, 2025 - Oct 12, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$13572.14 ,2779,984,984,$11133.29 ,2366
+"Oct 6, 2025 - Oct 12, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$60971.58 ,7387,1534,1534,$35689.06 ,4805
+"Oct 6, 2025 - Oct 12, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$28226.08 ,5757,1576,1576,$22005.96 ,4706
+"Oct 6, 2025 - Oct 12, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$4552.97 ,1614,226,226,$3807.74 ,1383
+"Oct 6, 2025 - Oct 12, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$14141.39 ,2907,992,992,$11917.26 ,2531
+"Oct 6, 2025 - Oct 12, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$30413.00 ,10595,1485,1485,$24040.63 ,8729
+"Oct 6, 2025 - Oct 12, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$35657.02 ,3525,1231,1231,$31499.89 ,3194
+"Oct 6, 2025 - Oct 12, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$5362.82 ,1943,508,508,$3688.95 ,1316
+"Oct 6, 2025 - Oct 12, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$39645.58 ,4069,1318,1318,$35155.04 ,3686
+"Oct 6, 2025 - Oct 12, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$50984.57 ,6124,1565,1565,$27996.09 ,3774
+"Oct 6, 2025 - Oct 12, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$7715.72 ,2746,472,472,$6811.32 ,2476
+"Oct 6, 2025 - Oct 12, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$5738.70 ,2076,518,518,$4205.54 ,1501
+"Oct 13, 2025 - Oct 19, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$16.57 ,5,3,3,$6.10 ,2
+"Oct 13, 2025 - Oct 19, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$33236.34 ,3326,1272,1272,$31243.55 ,3156
+"Oct 13, 2025 - Oct 19, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$35590.56 ,6955,1576,1576,$25020.11 ,5107
+"Oct 13, 2025 - Oct 19, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$50600.00 ,11908,1697,1697,$33178.39 ,8399
+"Oct 13, 2025 - Oct 19, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$27909.75 ,9168,1511,1511,$20321.56 ,6941
+"Oct 13, 2025 - Oct 19, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12618.14 ,1282,459,459,$11794.15 ,1213
+"Oct 13, 2025 - Oct 19, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$50589.83 ,9776,1639,1639,$32834.38 ,6706
+"Oct 13, 2025 - Oct 19, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$38188.12 ,4000,1244,1244,$6425.24 ,744
+"Oct 13, 2025 - Oct 19, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$47537.62 ,9045,1612,1612,$28365.23 ,5791
+"Oct 13, 2025 - Oct 19, 2025",Green Dream,211-34-0232,Smoothie Pouches,$22778.31 ,7483,1504,1504,$17278.96 ,5879
+"Oct 13, 2025 - Oct 19, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$4090.90 ,420,184,184,$3869.74 ,399
+"Oct 13, 2025 - Oct 19, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$55193.24 ,13133,1668,1668,$39041.05 ,9892
+"Oct 13, 2025 - Oct 19, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$14646.77 ,2776,962,962,$8534.16 ,1735
+"Oct 13, 2025 - Oct 19, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$55990.79 ,5855,1491,1491,$9093.65 ,1054
+"Oct 13, 2025 - Oct 19, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$29500.63 ,5511,1502,1502,$13339.57 ,2711
+"Oct 13, 2025 - Oct 19, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3905.18 ,1305,218,218,$3118.90 ,1069
+"Oct 13, 2025 - Oct 19, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$13215.00 ,2522,957,957,$8081.72 ,1649
+"Oct 13, 2025 - Oct 19, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$28238.12 ,9146,1517,1517,$18082.93 ,6174
+"Oct 13, 2025 - Oct 19, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$37338.44 ,3743,1291,1291,$33594.00 ,3438
+"Oct 13, 2025 - Oct 19, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$4303.86 ,1404,411,411,$3098.28 ,1040
+"Oct 13, 2025 - Oct 19, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$37611.62 ,3750,1289,1289,$34860.33 ,3518
+"Oct 13, 2025 - Oct 19, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$44574.95 ,4670,1457,1457,$7663.06 ,890
+"Oct 13, 2025 - Oct 19, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6605.98 ,2213,457,457,$5550.98 ,1901
+"Oct 13, 2025 - Oct 19, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4826.45 ,1591,406,406,$3759.80 ,1263
+"Oct 20, 2025 - Oct 26, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$17.82 ,6,1,1,$17.82 ,6
+"Oct 20, 2025 - Oct 26, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$35899.26 ,3363,1259,1259,$26313.58 ,2557
+"Oct 20, 2025 - Oct 26, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$32215.93 ,5997,1535,1535,$17990.39 ,3515
+"Oct 20, 2025 - Oct 26, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$51018.95 ,11083,1686,1686,$25705.79 ,5989
+"Oct 20, 2025 - Oct 26, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$28540.46 ,9229,1519,1519,$19567.73 ,6613
+"Oct 20, 2025 - Oct 26, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12474.94 ,1195,443,443,$9380.13 ,933
+"Oct 20, 2025 - Oct 26, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Oct 20, 2025 - Oct 26, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$48480.48 ,8946,1641,1641,$25065.64 ,4898
+"Oct 20, 2025 - Oct 26, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$41425.02 ,4753,1295,1295,$30245.20 ,3614
+"Oct 20, 2025 - Oct 26, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$44528.24 ,8187,1608,1608,$21084.47 ,4127
+"Oct 20, 2025 - Oct 26, 2025",Green Dream,211-34-0232,Smoothie Pouches,$23283.91 ,7550,1496,1496,$16558.43 ,5592
+"Oct 20, 2025 - Oct 26, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$4087.19 ,401,181,181,$2997.33 ,301
+"Oct 20, 2025 - Oct 26, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$53223.60 ,11700,1612,1612,$31153.74 ,7257
+"Oct 20, 2025 - Oct 26, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$13533.46 ,2467,913,913,$6625.17 ,1296
+"Oct 20, 2025 - Oct 26, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$62164.14 ,7083,1531,1531,$42619.05 ,5098
+"Oct 20, 2025 - Oct 26, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$30582.46 ,5610,1583,1583,$11036.44 ,2208
+"Oct 20, 2025 - Oct 26, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3606.14 ,1177,217,217,$2548.86 ,864
+"Oct 20, 2025 - Oct 26, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$12365.34 ,2265,906,906,$6632.54 ,1294
+"Oct 20, 2025 - Oct 26, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$28396.29 ,9081,1514,1514,$16640.17 ,5659
+"Oct 20, 2025 - Oct 26, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$38068.93 ,3501,1218,1218,$25578.52 ,2486
+"Oct 20, 2025 - Oct 26, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$4740.80 ,1530,419,419,$3401.04 ,1127
+"Oct 20, 2025 - Oct 26, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$40693.78 ,3812,1302,1302,$29354.67 ,2857
+"Oct 20, 2025 - Oct 26, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$47525.51 ,5424,1496,1496,$32824.11 ,3931
+"Oct 20, 2025 - Oct 26, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6686.14 ,2190,450,450,$5125.72 ,1728
+"Oct 20, 2025 - Oct 26, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4847.94 ,1561,412,412,$3562.51 ,1184
+"Oct 27, 2025 - Nov 2, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$3.49 ,1,1,1,$0.00 ,0
+"Oct 27, 2025 - Nov 2, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$33722.28 ,3435,1273,1273,$33810.50 ,3441
+"Oct 27, 2025 - Nov 2, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$22068.90 ,3818,1371,1371,$1654.90 ,314
+"Oct 27, 2025 - Nov 2, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$43038.89 ,8761,1639,1639,$2629.76 ,589
+"Oct 27, 2025 - Nov 2, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$28559.67 ,9419,1514,1514,$20979.79 ,7197
+"Oct 27, 2025 - Nov 2, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12508.56 ,1407,473,473,$12307.11 ,1387
+"Oct 27, 2025 - Nov 2, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Oct 27, 2025 - Nov 2, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$34262.64 ,5899,1556,1556,$2284.85 ,436
+"Oct 27, 2025 - Nov 2, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$37100.25 ,4598,1255,1255,$31068.61 ,3983
+"Oct 27, 2025 - Nov 2, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$32442.71 ,5599,1512,1512,$2391.37 ,459
+"Oct 27, 2025 - Nov 2, 2025",Green Dream,211-34-0232,Smoothie Pouches,$24020.89 ,7953,1510,1510,$18188.12 ,6243
+"Oct 27, 2025 - Nov 2, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3976.23 ,453,184,184,$3950.46 ,449
+"Oct 27, 2025 - Nov 2, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$46610.03 ,9487,1592,1592,$3070.36 ,691
+"Oct 27, 2025 - Nov 2, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$7933.89 ,1362,647,647,$455.55 ,86
+"Oct 27, 2025 - Nov 2, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$56262.20 ,6986,1519,1519,$46632.10 ,6003
+"Oct 27, 2025 - Nov 2, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$27744.69 ,4859,1478,1478,$1488.85 ,292
+"Oct 27, 2025 - Nov 2, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3512.09 ,1181,222,222,$2775.06 ,956
+"Oct 27, 2025 - Nov 2, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$7718.78 ,1326,622,622,$499.37 ,95
+"Oct 27, 2025 - Nov 2, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$28535.95 ,9294,1535,1535,$18054.97 ,6225
+"Oct 27, 2025 - Nov 2, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$38617.08 ,4362,1340,1340,$37537.71 ,4261
+"Oct 27, 2025 - Nov 2, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$4442.75 ,1460,405,405,$3296.51 ,1110
+"Oct 27, 2025 - Nov 2, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$35959.92 ,3669,1254,1254,$36017.84 ,3673
+"Oct 27, 2025 - Nov 2, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$43801.46 ,5481,1514,1514,$37443.69 ,4831
+"Oct 27, 2025 - Nov 2, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6690.27 ,2235,475,475,$5521.38 ,1887
+"Oct 27, 2025 - Nov 2, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4960.15 ,1638,407,407,$4079.32 ,1377
+"Nov 3, 2025 - Nov 9, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Nov 3, 2025 - Nov 9, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$30739.97 ,3059,1206,1206,$25959.19 ,2655
+"Nov 3, 2025 - Nov 9, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$19903.98 ,3441,1315,1315,$2214.89 ,425
+"Nov 3, 2025 - Nov 9, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$42008.87 ,8543,1617,1617,$3571.75 ,797
+"Nov 3, 2025 - Nov 9, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$28504.83 ,9347,1538,1538,$21498.37 ,7303
+"Nov 3, 2025 - Nov 9, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12156.78 ,1224,457,457,$11616.64 ,1176
+"Nov 3, 2025 - Nov 9, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Nov 3, 2025 - Nov 9, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$31145.46 ,5382,1494,1494,$3729.53 ,721
+"Nov 3, 2025 - Nov 9, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$35411.26 ,3643,1198,1198,$3782.41 ,430
+"Nov 3, 2025 - Nov 9, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$29433.14 ,5085,1473,1473,$3368.05 ,647
+"Nov 3, 2025 - Nov 9, 2025",Green Dream,211-34-0232,Smoothie Pouches,$23593.60 ,7770,1546,1546,$18072.44 ,6152
+"Nov 3, 2025 - Nov 9, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3764.21 ,384,178,178,$3467.08 ,353
+"Nov 3, 2025 - Nov 9, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$49844.27 ,10130,1616,1616,$4328.19 ,966
+"Nov 3, 2025 - Nov 9, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$5440.37 ,934,467,467,$493.50 ,94
+"Nov 3, 2025 - Nov 9, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$55719.63 ,5739,1464,1464,$5747.43 ,652
+"Nov 3, 2025 - Nov 9, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$29595.23 ,5177,1499,1499,$2032.10 ,391
+"Nov 3, 2025 - Nov 9, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3769.65 ,1255,223,223,$3010.68 ,1024
+"Nov 3, 2025 - Nov 9, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$5318.96 ,920,443,443,$657.26 ,125
+"Nov 3, 2025 - Nov 9, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$28958.66 ,9383,1545,1545,$19558.51 ,6639
+"Nov 3, 2025 - Nov 9, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$38280.01 ,3854,1315,1315,$35999.25 ,3652
+"Nov 3, 2025 - Nov 9, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3832.91 ,1224,369,369,$2356.50 ,795
+"Nov 3, 2025 - Nov 9, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$32851.53 ,3254,1237,1237,$27159.23 ,2775
+"Nov 3, 2025 - Nov 9, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$42887.22 ,4423,1430,1430,$4659.21 ,529
+"Nov 3, 2025 - Nov 9, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6891.37 ,2288,474,474,$5764.90 ,1948
+"Nov 3, 2025 - Nov 9, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4149.57 ,1331,369,369,$2627.25 ,886
+"Nov 10, 2025 - Nov 16, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$10.71 ,3,3,3,$0.00 ,0
+"Nov 10, 2025 - Nov 16, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$32559.54 ,2882,1185,1185,$6029.56 ,647
+"Nov 10, 2025 - Nov 16, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$20728.95 ,3549,1335,1335,$1477.49 ,285
+"Nov 10, 2025 - Nov 16, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$43109.62 ,9082,1609,1609,$6469.28 ,1672
+"Nov 10, 2025 - Nov 16, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$28541.64 ,9283,1562,1562,$22681.70 ,7589
+"Nov 10, 2025 - Nov 16, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12858.78 ,1216,465,465,$10420.75 ,998
+"Nov 10, 2025 - Nov 16, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Nov 10, 2025 - Nov 16, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$30971.38 ,5320,1483,1483,$2603.28 ,497
+"Nov 10, 2025 - Nov 16, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$34974.38 ,3672,1178,1178,$5250.00 ,663
+"Nov 10, 2025 - Nov 16, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$28667.22 ,4922,1474,1474,$2510.65 ,485
+"Nov 10, 2025 - Nov 16, 2025",Green Dream,211-34-0232,Smoothie Pouches,$23306.48 ,7609,1545,1545,$18922.10 ,6337
+"Nov 10, 2025 - Nov 16, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3484.04 ,340,174,174,$3016.50 ,292
+"Nov 10, 2025 - Nov 16, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$53716.42 ,11325,1637,1637,$8475.15 ,2192
+"Nov 10, 2025 - Nov 16, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4628.24 ,790,402,402,$406.69 ,75
+"Nov 10, 2025 - Nov 16, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$53031.32 ,5562,1454,1454,$7774.27 ,979
+"Nov 10, 2025 - Nov 16, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$30450.90 ,5326,1493,1493,$1843.08 ,351
+"Nov 10, 2025 - Nov 16, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3347.42 ,1097,218,218,$2705.14 ,907
+"Nov 10, 2025 - Nov 16, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4611.48 ,788,423,423,$354.31 ,67
+"Nov 10, 2025 - Nov 16, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$27278.51 ,8846,1543,1543,$20880.24 ,6993
+"Nov 10, 2025 - Nov 16, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$39138.66 ,3647,1298,1298,$32222.23 ,3053
+"Nov 10, 2025 - Nov 16, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$4431.74 ,1328,382,382,$595.33 ,216
+"Nov 10, 2025 - Nov 16, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$34845.24 ,3086,1213,1213,$6676.55 ,715
+"Nov 10, 2025 - Nov 16, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$42348.88 ,4463,1426,1426,$6782.73 ,860
+"Nov 10, 2025 - Nov 16, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5995.39 ,1950,462,462,$4913.23 ,1636
+"Nov 10, 2025 - Nov 16, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4343.35 ,1314,382,382,$699.67 ,256
+"Nov 17, 2025 - Nov 23, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$17.16 ,4,1,1,$0.00 ,0
+"Nov 17, 2025 - Nov 23, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$40417.88 ,4099,1322,1322,$27110.27 ,2976
+"Nov 17, 2025 - Nov 23, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$19196.83 ,3328,1324,1324,$2703.54 ,530
+"Nov 17, 2025 - Nov 23, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$53093.24 ,13047,1670,1670,$32153.99 ,8810
+"Nov 17, 2025 - Nov 23, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$23933.18 ,8433,1552,1552,$14009.59 ,5542
+"Nov 17, 2025 - Nov 23, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$10944.55 ,1113,432,432,$6007.25 ,683
+"Nov 17, 2025 - Nov 23, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Nov 17, 2025 - Nov 23, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$29866.52 ,5192,1514,1514,$4745.89 ,931
+"Nov 17, 2025 - Nov 23, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$36324.55 ,4375,1231,1231,$22765.78 ,3004
+"Nov 17, 2025 - Nov 23, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$27883.19 ,4836,1438,1438,$4411.77 ,866
+"Nov 17, 2025 - Nov 23, 2025",Green Dream,211-34-0232,Smoothie Pouches,$19262.52 ,6873,1526,1526,$12136.08 ,4801
+"Nov 17, 2025 - Nov 23, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3847.43 ,396,184,184,$2127.83 ,242
+"Nov 17, 2025 - Nov 23, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$63654.80 ,15841,1650,1650,$41069.86 ,11263
+"Nov 17, 2025 - Nov 23, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4304.21 ,741,395,395,$544.88 ,106
+"Nov 17, 2025 - Nov 23, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$51901.21 ,6151,1463,1463,$29495.27 ,3881
+"Nov 17, 2025 - Nov 23, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$30901.04 ,5482,1520,1520,$3475.24 ,692
+"Nov 17, 2025 - Nov 23, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3034.32 ,1093,222,222,$1818.13 ,725
+"Nov 17, 2025 - Nov 23, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4053.61 ,699,366,366,$521.85 ,102
+"Nov 17, 2025 - Nov 23, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$24508.30 ,8315,1558,1558,$11430.60 ,4504
+"Nov 17, 2025 - Nov 23, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$34412.48 ,3379,1220,1220,$17001.58 ,1899
+"Nov 17, 2025 - Nov 23, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$4630.79 ,1603,430,430,$2876.04 ,1093
+"Nov 17, 2025 - Nov 23, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$44811.30 ,4522,1339,1339,$28889.68 ,3181
+"Nov 17, 2025 - Nov 23, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$45920.45 ,5479,1494,1494,$26862.90 ,3547
+"Nov 17, 2025 - Nov 23, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5454.57 ,1964,474,474,$3556.57 ,1403
+"Nov 17, 2025 - Nov 23, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4846.06 ,1684,415,415,$3138.78 ,1191
+"Nov 24, 2025 - Nov 30, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$9.78 ,2,1,1,$0.00 ,0
+"Nov 24, 2025 - Nov 30, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$33609.64 ,3321,1235,1235,$18132.68 ,2015
+"Nov 24, 2025 - Nov 30, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$16466.83 ,3008,1293,1293,$4403.32 ,967
+"Nov 24, 2025 - Nov 30, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$42979.62 ,9076,1643,1643,$9225.61 ,2225
+"Nov 24, 2025 - Nov 30, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$20690.80 ,7007,1492,1492,$10166.17 ,3956
+"Nov 24, 2025 - Nov 30, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$10221.81 ,1002,402,402,$4787.84 ,535
+"Nov 24, 2025 - Nov 30, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Nov 24, 2025 - Nov 30, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$25161.82 ,4547,1455,1455,$6143.78 ,1329
+"Nov 24, 2025 - Nov 30, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$29117.66 ,3419,1164,1164,$14297.43 ,1919
+"Nov 24, 2025 - Nov 30, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$22199.66 ,4026,1383,1383,$5509.75 ,1196
+"Nov 24, 2025 - Nov 30, 2025",Green Dream,211-34-0232,Smoothie Pouches,$16608.64 ,5684,1430,1430,$8520.39 ,3324
+"Nov 24, 2025 - Nov 30, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2821.47 ,287,152,152,$1412.28 ,162
+"Nov 24, 2025 - Nov 30, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$54524.51 ,11531,1633,1633,$11751.18 ,2841
+"Nov 24, 2025 - Nov 30, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$3385.90 ,596,336,336,$565.17 ,119
+"Nov 24, 2025 - Nov 30, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$42314.98 ,4896,1432,1432,$18563.78 ,2487
+"Nov 24, 2025 - Nov 30, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$28105.45 ,5239,1469,1469,$7455.74 ,1621
+"Nov 24, 2025 - Nov 30, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2400.47 ,821,206,206,$1190.26 ,464
+"Nov 24, 2025 - Nov 30, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$3417.12 ,603,348,348,$597.31 ,125
+"Nov 24, 2025 - Nov 30, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$21345.35 ,7043,1511,1511,$8326.91 ,3247
+"Nov 24, 2025 - Nov 30, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$27117.29 ,2560,1088,1088,$10667.23 ,1163
+"Nov 24, 2025 - Nov 30, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3724.87 ,1280,388,388,$2155.09 ,824
+"Nov 24, 2025 - Nov 30, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$37524.32 ,3691,1272,1272,$19471.09 ,2171
+"Nov 24, 2025 - Nov 30, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$36141.39 ,4189,1403,1403,$16053.78 ,2152
+"Nov 24, 2025 - Nov 30, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$4591.44 ,1593,434,434,$2646.02 ,1024
+"Nov 24, 2025 - Nov 30, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4178.36 ,1418,391,391,$2268.70 ,868
+"Dec 1, 2025 - Dec 7, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$4.89 ,1,1,1,$0.00 ,0
+"Dec 1, 2025 - Dec 7, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$30912.03 ,2623,1155,1155,$1714.71 ,165
+"Dec 1, 2025 - Dec 7, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$28447.41 ,5935,1532,1532,$20516.65 ,4595
+"Dec 1, 2025 - Dec 7, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$47314.24 ,9699,1642,1642,$3163.83 ,730
+"Dec 1, 2025 - Dec 7, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$24990.21 ,7470,1492,1492,$3726.69 ,1267
+"Dec 1, 2025 - Dec 7, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$10561.25 ,913,416,416,$475.59 ,48
+"Dec 1, 2025 - Dec 7, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 1, 2025 - Dec 7, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$39826.25 ,8195,1599,1599,$26676.33 ,5971
+"Dec 1, 2025 - Dec 7, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$35945.30 ,3683,1220,1220,$2192.60 ,260
+"Dec 1, 2025 - Dec 7, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$39500.45 ,8075,1560,1560,$25451.95 ,5697
+"Dec 1, 2025 - Dec 7, 2025",Green Dream,211-34-0232,Smoothie Pouches,$20550.95 ,6152,1458,1458,$3112.66 ,1062
+"Dec 1, 2025 - Dec 7, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2823.39 ,247,141,141,$91.79 ,9
+"Dec 1, 2025 - Dec 7, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$60452.14 ,12382,1634,1634,$4148.46 ,965
+"Dec 1, 2025 - Dec 7, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4903.20 ,958,425,425,$2381.74 ,530
+"Dec 1, 2025 - Dec 7, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$58536.23 ,6005,1492,1492,$3990.03 ,475
+"Dec 1, 2025 - Dec 7, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$37257.65 ,7697,1561,1561,$19538.95 ,4604
+"Dec 1, 2025 - Dec 7, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3151.51 ,961,219,219,$521.59 ,181
+"Dec 1, 2025 - Dec 7, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4794.69 ,941,404,404,$2403.21 ,536
+"Dec 1, 2025 - Dec 7, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$27045.92 ,8042,1539,1539,$3513.10 ,1196
+"Dec 1, 2025 - Dec 7, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$25450.45 ,2195,1019,1019,$1392.01 ,139
+"Dec 1, 2025 - Dec 7, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3830.26 ,1134,382,382,$498.97 ,168
+"Dec 1, 2025 - Dec 7, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$36490.30 ,3094,1187,1187,$1617.56 ,158
+"Dec 1, 2025 - Dec 7, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$43819.82 ,4500,1459,1459,$2853.11 ,338
+"Dec 1, 2025 - Dec 7, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5962.86 ,1807,452,452,$1016.93 ,350
+"Dec 1, 2025 - Dec 7, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4044.03 ,1192,377,377,$512.17 ,173
+"Dec 8, 2025 - Dec 14, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$6.98 ,2,1,1,$0.00 ,0
+"Dec 8, 2025 - Dec 14, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$30836.66 ,2679,1162,1162,$4595.36 ,465
+"Dec 8, 2025 - Dec 14, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$25739.22 ,5072,1495,1495,$18205.48 ,3795
+"Dec 8, 2025 - Dec 14, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$49671.47 ,10374,1661,1661,$6838.82 ,1655
+"Dec 8, 2025 - Dec 14, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$27194.07 ,8728,1503,1503,$14140.04 ,4890
+"Dec 8, 2025 - Dec 14, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$10993.39 ,995,422,422,$1625.71 ,168
+"Dec 8, 2025 - Dec 14, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 8, 2025 - Dec 14, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$36437.21 ,7098,1580,1580,$23602.48 ,4920
+"Dec 8, 2025 - Dec 14, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$36755.15 ,3888,1217,1217,$7017.86 ,859
+"Dec 8, 2025 - Dec 14, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$35188.79 ,6813,1525,1525,$21670.75 ,4519
+"Dec 8, 2025 - Dec 14, 2025",Green Dream,211-34-0232,Smoothie Pouches,$23120.97 ,7461,1522,1522,$12889.00 ,4459
+"Dec 8, 2025 - Dec 14, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2878.98 ,265,144,144,$441.95 ,45
+"Dec 8, 2025 - Dec 14, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$61363.39 ,12825,1649,1649,$8716.54 ,2112
+"Dec 8, 2025 - Dec 14, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4437.30 ,849,410,410,$2444.26 ,511
+"Dec 8, 2025 - Dec 14, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$56899.53 ,6017,1481,1481,$10600.87 ,1313
+"Dec 8, 2025 - Dec 14, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$34969.16 ,7199,1520,1520,$16202.86 ,3909
+"Dec 8, 2025 - Dec 14, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3705.13 ,1265,225,225,$2395.33 ,838
+"Dec 8, 2025 - Dec 14, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4636.82 ,889,404,404,$2541.80 ,534
+"Dec 8, 2025 - Dec 14, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$31793.11 ,10119,1546,1546,$14915.48 ,5170
+"Dec 8, 2025 - Dec 14, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$21529.41 ,1915,921,921,$3202.64 ,335
+"Dec 8, 2025 - Dec 14, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$4275.93 ,1333,373,373,$1890.90 ,641
+"Dec 8, 2025 - Dec 14, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$36279.83 ,3152,1240,1240,$5304.17 ,539
+"Dec 8, 2025 - Dec 14, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$48779.32 ,5142,1488,1488,$8298.32 ,1026
+"Dec 8, 2025 - Dec 14, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$8054.55 ,2653,472,472,$4983.14 ,1728
+"Dec 8, 2025 - Dec 14, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4219.47 ,1332,370,370,$2197.17 ,748
+"Dec 15, 2025 - Dec 21, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$-27.92 ,-8,0,0,$0.00 ,0
+"Dec 15, 2025 - Dec 21, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$32342.16 ,2732,1166,1166,$981.04 ,89
+"Dec 15, 2025 - Dec 21, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$19446.01 ,3370,1320,1320,$2446.27 ,484
+"Dec 15, 2025 - Dec 21, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$58162.23 ,12011,1676,1676,$5288.17 ,1268
+"Dec 15, 2025 - Dec 21, 2025","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 15, 2025 - Dec 21, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$26237.64 ,7680,1479,1479,$604.63 ,195
+"Dec 15, 2025 - Dec 21, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12430.00 ,1082,433,433,$182.41 ,17
+"Dec 15, 2025 - Dec 21, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$976.22 ,211,40,40,$215.82 ,55
+"Dec 15, 2025 - Dec 21, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$32590.10 ,5623,1520,1520,$3425.33 ,674
+"Dec 15, 2025 - Dec 21, 2025",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 15, 2025 - Dec 21, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$33881.25 ,3455,1199,1199,$1099.17 ,123
+"Dec 15, 2025 - Dec 21, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$27960.74 ,4827,1449,1449,$2932.88 ,571
+"Dec 15, 2025 - Dec 21, 2025",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 15, 2025 - Dec 21, 2025",Green Dream,211-34-0232,Smoothie Pouches,$21333.12 ,6255,1476,1476,$495.23 ,158
+"Dec 15, 2025 - Dec 21, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3678.92 ,337,164,164,$110.08 ,10
+"Dec 15, 2025 - Dec 21, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$69528.38 ,14382,1661,1661,$6582.38 ,1588
+"Dec 15, 2025 - Dec 21, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$3908.26 ,664,360,360,$160.65 ,28
+"Dec 15, 2025 - Dec 21, 2025","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 15, 2025 - Dec 21, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$51301.63 ,5223,1450,1450,$1602.52 ,178
+"Dec 15, 2025 - Dec 21, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$35492.63 ,6288,1529,1529,$2744.27 ,534
+"Dec 15, 2025 - Dec 21, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3120.85 ,931,212,212,$111.68 ,35
+"Dec 15, 2025 - Dec 21, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$3949.17 ,675,367,367,$134.52 ,25
+"Dec 15, 2025 - Dec 21, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$25430.69 ,7455,1483,1483,$555.41 ,181
+"Dec 15, 2025 - Dec 21, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$31919.71 ,2739,1142,1142,$911.75 ,87
+"Dec 15, 2025 - Dec 21, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3235.28 ,934,321,321,$38.35 ,11
+"Dec 15, 2025 - Dec 21, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$36302.27 ,3060,1189,1189,$902.49 ,82
+"Dec 15, 2025 - Dec 21, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$42104.92 ,4291,1415,1415,$1449.30 ,162
+"Dec 15, 2025 - Dec 21, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6079.89 ,1801,454,454,$180.76 ,59
+"Dec 15, 2025 - Dec 21, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$3650.35 ,1052,332,332,$49.09 ,14
+"Dec 22, 2025 - Dec 28, 2025",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$3.49 ,1,1,1,$0.00 ,0
+"Dec 22, 2025 - Dec 28, 2025",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$27598.99 ,2364,1110,1110,$2177.64 ,203
+"Dec 22, 2025 - Dec 28, 2025",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$18855.00 ,3553,1344,1344,$9667.46 ,1967
+"Dec 22, 2025 - Dec 28, 2025",Banana Pitaya Rings,007-10-0291,Toddler Snack,$48941.13 ,10990,1671,1671,$17576.69 ,4448
+"Dec 22, 2025 - Dec 28, 2025","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 22, 2025 - Dec 28, 2025",Berry Banana Blast,211-34-0231,Smoothie Pouches,$23182.41 ,6862,1437,1437,$1423.01 ,460
+"Dec 22, 2025 - Dec 28, 2025",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$10664.09 ,927,423,423,$847.96 ,81
+"Dec 22, 2025 - Dec 28, 2025",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$5588.63 ,1286,151,151,$3013.90 ,766
+"Dec 22, 2025 - Dec 28, 2025",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$27181.52 ,5103,1479,1479,$12578.97 ,2554
+"Dec 22, 2025 - Dec 28, 2025",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 22, 2025 - Dec 28, 2025",Chicken Veggie Sliders,270-02-8577,Kids Meals,$27193.49 ,2833,1091,1091,$2613.53 ,299
+"Dec 22, 2025 - Dec 28, 2025",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$23051.13 ,4290,1385,1385,$9943.34 ,2021
+"Dec 22, 2025 - Dec 28, 2025",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 22, 2025 - Dec 28, 2025",Green Dream,211-34-0232,Smoothie Pouches,$19042.79 ,5648,1403,1403,$1252.22 ,410
+"Dec 22, 2025 - Dec 28, 2025",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2975.37 ,264,143,143,$273.23 ,26
+"Dec 22, 2025 - Dec 28, 2025",Kale Apple Curls,007-10-2035,Toddler Snack,$60856.67 ,13766,1666,1666,$23909.88 ,6044
+"Dec 22, 2025 - Dec 28, 2025",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$3366.24 ,579,337,337,$288.84 ,53
+"Dec 22, 2025 - Dec 28, 2025","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 22, 2025 - Dec 28, 2025",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$44731.41 ,4662,1434,1434,$4613.28 ,529
+"Dec 22, 2025 - Dec 28, 2025",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$29417.79 ,5528,1500,1500,$8257.80 ,1675
+"Dec 22, 2025 - Dec 28, 2025",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2499.84 ,749,196,196,$156.13 ,51
+"Dec 22, 2025 - Dec 28, 2025",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$2885.27 ,497,317,317,$290.23 ,53
+"Dec 22, 2025 - Dec 28, 2025",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$22699.00 ,6724,1475,1475,$1226.58 ,402
+"Dec 22, 2025 - Dec 28, 2025",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$32592.22 ,2827,1182,1182,$2794.07 ,263
+"Dec 22, 2025 - Dec 28, 2025",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$2278.71 ,663,256,256,$140.44 ,45
+"Dec 22, 2025 - Dec 28, 2025",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$31286.51 ,2677,1148,1148,$2389.49 ,223
+"Dec 22, 2025 - Dec 28, 2025",Super Chicken Dippers,270-02-0128,Kids Meals,$35992.94 ,3753,1374,1374,$3469.63 ,397
+"Dec 22, 2025 - Dec 28, 2025",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5152.54 ,1534,441,441,$378.50 ,123
+"Dec 22, 2025 - Dec 28, 2025",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$3360.36 ,982,321,321,$194.79 ,63
+"Dec 29, 2025 - Jan 4, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$-13.85 ,-4,2,2,$3.60 ,1
+"Dec 29, 2025 - Jan 4, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$35125.40 ,3179,1206,1206,$16395.98 ,1605
+"Dec 29, 2025 - Jan 4, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$25033.17 ,4770,1412,1412,$14888.85 ,3069
+"Dec 29, 2025 - Jan 4, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$56400.25 ,12556,1700,1700,$22034.74 ,5576
+"Dec 29, 2025 - Jan 4, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 29, 2025 - Jan 4, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$25311.39 ,7636,1479,1479,$7228.90 ,2381
+"Dec 29, 2025 - Jan 4, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12845.33 ,1155,434,434,$4918.50 ,476
+"Dec 29, 2025 - Jan 4, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$15485.90 ,3588,507,507,$9005.94 ,2278
+"Dec 29, 2025 - Jan 4, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$35726.37 ,6748,1532,1532,$20768.98 ,4246
+"Dec 29, 2025 - Jan 4, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 29, 2025 - Jan 4, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$39690.18 ,4349,1250,1250,$17609.16 ,2117
+"Dec 29, 2025 - Jan 4, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$32638.74 ,6113,1521,1521,$17872.53 ,3640
+"Dec 29, 2025 - Jan 4, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 29, 2025 - Jan 4, 2026",Green Dream,211-34-0232,Smoothie Pouches,$21165.78 ,6413,1454,1454,$6823.57 ,2249
+"Dec 29, 2025 - Jan 4, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3750.66 ,338,166,166,$1380.86 ,133
+"Dec 29, 2025 - Jan 4, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$72350.76 ,16187,1704,1704,$29833.59 ,7553
+"Dec 29, 2025 - Jan 4, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$3916.78 ,693,366,366,$1246.73 ,241
+"Dec 29, 2025 - Jan 4, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Dec 29, 2025 - Jan 4, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$65407.99 ,7167,1534,1534,$28860.83 ,3460
+"Dec 29, 2025 - Jan 4, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$39549.94 ,7262,1587,1587,$11601.67 ,2363
+"Dec 29, 2025 - Jan 4, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2493.50 ,764,181,181,$712.84 ,239
+"Dec 29, 2025 - Jan 4, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$3862.23 ,688,372,372,$1401.69 ,273
+"Dec 29, 2025 - Jan 4, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$24036.33 ,7213,1493,1493,$5806.53 ,1919
+"Dec 29, 2025 - Jan 4, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$39330.54 ,3490,1233,1233,$14833.10 ,1420
+"Dec 29, 2025 - Jan 4, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3376.85 ,1040,327,327,$931.92 ,336
+"Dec 29, 2025 - Jan 4, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$39899.96 ,3598,1279,1279,$17619.17 ,1726
+"Dec 29, 2025 - Jan 4, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$52873.18 ,5778,1541,1541,$22034.37 ,2659
+"Dec 29, 2025 - Jan 4, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5905.20 ,1793,434,434,$1885.09 ,618
+"Dec 29, 2025 - Jan 4, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4007.16 ,1247,352,352,$1288.09 ,463
+"Jan 5, 2026 - Jan 11, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$17.36 ,5,2,2,$3.40 ,1
+"Jan 5, 2026 - Jan 11, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$34664.06 ,3577,1254,1254,$34858.27 ,3591
+"Jan 5, 2026 - Jan 11, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$29616.50 ,5512,1491,1491,$14675.92 ,3009
+"Jan 5, 2026 - Jan 11, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$59801.55 ,13375,1720,1720,$24873.21 ,6294
+"Jan 5, 2026 - Jan 11, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 5, 2026 - Jan 11, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$24014.63 ,7831,1530,1530,$15650.11 ,5406
+"Jan 5, 2026 - Jan 11, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12775.92 ,1180,445,445,$9042.38 ,864
+"Jan 5, 2026 - Jan 11, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$34532.32 ,8078,852,852,$20838.29 ,5309
+"Jan 5, 2026 - Jan 11, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$39954.96 ,7396,1528,1528,$18801.32 ,3844
+"Jan 5, 2026 - Jan 11, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 5, 2026 - Jan 11, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$50983.25 ,6307,1329,1329,$37321.23 ,4928
+"Jan 5, 2026 - Jan 11, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$38196.01 ,7049,1558,1558,$17094.88 ,3506
+"Jan 5, 2026 - Jan 11, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 5, 2026 - Jan 11, 2026",Green Dream,211-34-0232,Smoothie Pouches,$20178.83 ,6604,1494,1494,$13611.62 ,4701
+"Jan 5, 2026 - Jan 11, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3492.13 ,327,161,161,$2471.78 ,236
+"Jan 5, 2026 - Jan 11, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$71060.75 ,16158,1703,1703,$33858.73 ,8613
+"Jan 5, 2026 - Jan 11, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4699.86 ,882,411,411,$2345.83 ,484
+"Jan 5, 2026 - Jan 11, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 5, 2026 - Jan 11, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$84862.00 ,10263,1588,1588,$54881.79 ,7227
+"Jan 5, 2026 - Jan 11, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$44214.90 ,8126,1615,1615,$13821.56 ,2818
+"Jan 5, 2026 - Jan 11, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2714.29 ,902,200,200,$1994.76 ,693
+"Jan 5, 2026 - Jan 11, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4624.21 ,880,401,401,$2664.08 ,548
+"Jan 5, 2026 - Jan 11, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$24268.60 ,7804,1543,1543,$13680.26 ,4738
+"Jan 5, 2026 - Jan 11, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$38839.32 ,3540,1263,1263,$25103.05 ,2380
+"Jan 5, 2026 - Jan 11, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3920.55 ,1485,370,370,$2979.50 ,1212
+"Jan 5, 2026 - Jan 11, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$41143.92 ,4244,1280,1280,$41233.59 ,4251
+"Jan 5, 2026 - Jan 11, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$69855.44 ,8545,1616,1616,$47859.40 ,6319
+"Jan 5, 2026 - Jan 11, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5433.71 ,1805,452,452,$4102.03 ,1419
+"Jan 5, 2026 - Jan 11, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$3291.07 ,1270,332,332,$2637.73 ,1076
+"Jan 12, 2026 - Jan 18, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Jan 12, 2026 - Jan 18, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$35474.43 ,3632,1262,1262,$33101.56 ,3431
+"Jan 12, 2026 - Jan 18, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$29823.91 ,5497,1481,1481,$14243.04 ,2887
+"Jan 12, 2026 - Jan 18, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$63344.81 ,14064,1732,1732,$25750.33 ,6465
+"Jan 12, 2026 - Jan 18, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 12, 2026 - Jan 18, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$23951.82 ,8818,1534,1534,$16363.52 ,6615
+"Jan 12, 2026 - Jan 18, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$11271.55 ,1049,416,416,$10102.07 ,949
+"Jan 12, 2026 - Jan 18, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$40763.19 ,9458,877,877,$24737.41 ,6230
+"Jan 12, 2026 - Jan 18, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$40959.82 ,7491,1573,1573,$18018.66 ,3645
+"Jan 12, 2026 - Jan 18, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 12, 2026 - Jan 18, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$48984.06 ,6053,1323,1323,$33901.62 ,4527
+"Jan 12, 2026 - Jan 18, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$38554.25 ,7030,1574,1574,$16465.58 ,3331
+"Jan 12, 2026 - Jan 18, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 12, 2026 - Jan 18, 2026",Green Dream,211-34-0232,Smoothie Pouches,$19834.22 ,7332,1530,1530,$13576.60 ,5483
+"Jan 12, 2026 - Jan 18, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2936.40 ,275,152,152,$2560.76 ,242
+"Jan 12, 2026 - Jan 18, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$71768.70 ,16055,1709,1709,$33352.57 ,8363
+"Jan 12, 2026 - Jan 18, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4315.30 ,811,382,382,$2123.27 ,432
+"Jan 12, 2026 - Jan 18, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 12, 2026 - Jan 18, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$75126.85 ,9119,1556,1556,$47033.16 ,6280
+"Jan 12, 2026 - Jan 18, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$44010.52 ,8042,1639,1639,$13144.85 ,2660
+"Jan 12, 2026 - Jan 18, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2966.87 ,1134,194,194,$2365.52 ,959
+"Jan 12, 2026 - Jan 18, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4189.36 ,796,381,381,$2203.28 ,447
+"Jan 12, 2026 - Jan 18, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$24485.76 ,8701,1555,1555,$14209.50 ,5725
+"Jan 12, 2026 - Jan 18, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$35264.47 ,3255,1208,1208,$30850.02 ,2879
+"Jan 12, 2026 - Jan 18, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3451.97 ,1283,321,321,$2568.11 ,1028
+"Jan 12, 2026 - Jan 18, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$41993.58 ,4297,1296,1296,$38760.80 ,4025
+"Jan 12, 2026 - Jan 18, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$63341.35 ,7726,1581,1581,$40426.44 ,5409
+"Jan 12, 2026 - Jan 18, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5257.31 ,2017,448,448,$4244.90 ,1714
+"Jan 12, 2026 - Jan 18, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$2312.81 ,875,248,248,$1834.90 ,738
+"Jan 19, 2026 - Jan 25, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$3.49 ,1,1,1,$0.00 ,0
+"Jan 19, 2026 - Jan 25, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$37643.29 ,3819,1266,1266,$22973.97 ,2583
+"Jan 19, 2026 - Jan 25, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$31373.89 ,5755,1496,1496,$14249.02 ,2884
+"Jan 19, 2026 - Jan 25, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$64359.67 ,14274,1740,1740,$25154.31 ,6332
+"Jan 19, 2026 - Jan 25, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 19, 2026 - Jan 25, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$22162.24 ,7649,1458,1458,$12765.16 ,4927
+"Jan 19, 2026 - Jan 25, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$13373.10 ,1336,457,457,$7443.49 ,831
+"Jan 19, 2026 - Jan 25, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$37311.70 ,8688,870,870,$23034.17 ,5806
+"Jan 19, 2026 - Jan 25, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$41716.48 ,7590,1557,1557,$16974.22 ,3438
+"Jan 19, 2026 - Jan 25, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 19, 2026 - Jan 25, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$48565.10 ,6043,1331,1331,$32783.48 ,4449
+"Jan 19, 2026 - Jan 25, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$39461.08 ,7146,1566,1566,$15029.81 ,3043
+"Jan 19, 2026 - Jan 25, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 19, 2026 - Jan 25, 2026",Green Dream,211-34-0232,Smoothie Pouches,$18135.81 ,6318,1416,1416,$11236.69 ,4323
+"Jan 19, 2026 - Jan 25, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3273.48 ,327,157,157,$1769.53 ,198
+"Jan 19, 2026 - Jan 25, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$72139.83 ,16064,1684,1684,$31421.98 ,7910
+"Jan 19, 2026 - Jan 25, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4688.77 ,866,390,390,$2106.56 ,428
+"Jan 19, 2026 - Jan 25, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 19, 2026 - Jan 25, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$71260.88 ,8698,1542,1542,$43118.88 ,5852
+"Jan 19, 2026 - Jan 25, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$45317.15 ,8250,1681,1681,$12349.05 ,2499
+"Jan 19, 2026 - Jan 25, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2620.67 ,923,185,185,$1634.72 ,637
+"Jan 19, 2026 - Jan 25, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4283.98 ,799,384,384,$2170.68 ,439
+"Jan 19, 2026 - Jan 25, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$22208.97 ,7427,1477,1477,$10342.94 ,3997
+"Jan 19, 2026 - Jan 25, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$38179.39 ,3637,1225,1225,$16528.58 ,1806
+"Jan 19, 2026 - Jan 25, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3275.07 ,1143,291,291,$2120.57 ,811
+"Jan 19, 2026 - Jan 25, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$48485.37 ,4897,1341,1341,$28730.36 ,3233
+"Jan 19, 2026 - Jan 25, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$65418.87 ,7997,1597,1597,$40026.46 ,5425
+"Jan 19, 2026 - Jan 25, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$4295.16 ,1518,402,402,$2927.86 ,1121
+"Jan 19, 2026 - Jan 25, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$1962.86 ,702,213,213,$1379.38 ,531
+"Jan 26, 2026 - Feb 1, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$3.49 ,1,1,1,$0.00 ,0
+"Jan 26, 2026 - Feb 1, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$38341.20 ,3773,1242,1242,$19721.47 ,2207
+"Jan 26, 2026 - Feb 1, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$29248.44 ,5367,1492,1492,$13170.95 ,2666
+"Jan 26, 2026 - Feb 1, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$58140.07 ,12845,1698,1698,$21867.30 ,5492
+"Jan 26, 2026 - Feb 1, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 26, 2026 - Feb 1, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$23802.03 ,7961,1526,1526,$11068.65 ,4267
+"Jan 26, 2026 - Feb 1, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$11913.70 ,1149,431,431,$5262.31 ,581
+"Jan 26, 2026 - Feb 1, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$34675.70 ,8051,835,835,$21177.31 ,5329
+"Jan 26, 2026 - Feb 1, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$39189.59 ,7130,1522,1522,$15947.88 ,3226
+"Jan 26, 2026 - Feb 1, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 26, 2026 - Feb 1, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$49310.31 ,6026,1399,1399,$35669.29 ,4647
+"Jan 26, 2026 - Feb 1, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$37042.84 ,6749,1520,1520,$15003.39 ,3048
+"Jan 26, 2026 - Feb 1, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 26, 2026 - Feb 1, 2026",Green Dream,211-34-0232,Smoothie Pouches,$18432.71 ,6202,1455,1455,$9102.73 ,3493
+"Jan 26, 2026 - Feb 1, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3010.74 ,294,152,152,$1267.19 ,142
+"Jan 26, 2026 - Feb 1, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$60740.73 ,13528,1586,1586,$26646.32 ,6692
+"Jan 26, 2026 - Feb 1, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4186.01 ,790,385,385,$2224.23 ,456
+"Jan 26, 2026 - Feb 1, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Jan 26, 2026 - Feb 1, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$73212.49 ,8809,1606,1606,$48454.47 ,6298
+"Jan 26, 2026 - Feb 1, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$41933.64 ,7626,1658,1658,$11467.04 ,2310
+"Jan 26, 2026 - Feb 1, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2807.26 ,959,190,190,$1392.00 ,543
+"Jan 26, 2026 - Feb 1, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4214.09 ,804,386,386,$2393.26 ,493
+"Jan 26, 2026 - Feb 1, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$24142.84 ,7855,1554,1554,$8790.37 ,3390
+"Jan 26, 2026 - Feb 1, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$33775.75 ,3145,1166,1166,$11772.66 ,1282
+"Jan 26, 2026 - Feb 1, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$2972.69 ,1012,276,276,$1618.07 ,621
+"Jan 26, 2026 - Feb 1, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$44769.62 ,4382,1285,1285,$22047.17 ,2470
+"Jan 26, 2026 - Feb 1, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$68446.09 ,8281,1642,1642,$46020.34 ,6009
+"Jan 26, 2026 - Feb 1, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$4966.09 ,1705,417,417,$2693.01 ,1043
+"Jan 26, 2026 - Feb 1, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$1557.81 ,537,172,172,$914.66 ,348
+"Feb 2, 2026 - Feb 8, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Feb 2, 2026 - Feb 8, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$31220.80 ,2673,1113,1113,$3748.32 ,361
+"Feb 2, 2026 - Feb 8, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$29216.23 ,5404,1481,1481,$14349.26 ,2918
+"Feb 2, 2026 - Feb 8, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$66768.69 ,14834,1717,1717,$27330.70 ,6851
+"Feb 2, 2026 - Feb 8, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 2, 2026 - Feb 8, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$26856.59 ,7873,1520,1520,$1936.99 ,646
+"Feb 2, 2026 - Feb 8, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$11671.17 ,1009,407,407,$1396.51 ,138
+"Feb 2, 2026 - Feb 8, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$36625.60 ,8534,866,866,$22961.81 ,5775
+"Feb 2, 2026 - Feb 8, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$40900.08 ,7507,1569,1569,$18570.69 ,3767
+"Feb 2, 2026 - Feb 8, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 2, 2026 - Feb 8, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$70169.93 ,8042,1662,1662,$70202.64 ,8045
+"Feb 2, 2026 - Feb 8, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$37882.62 ,6929,1551,1551,$16494.23 ,3350
+"Feb 2, 2026 - Feb 8, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 2, 2026 - Feb 8, 2026",Green Dream,211-34-0232,Smoothie Pouches,$21287.37 ,6245,1467,1467,$1738.63 ,579
+"Feb 2, 2026 - Feb 8, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2014.16 ,172,108,108,$195.74 ,19
+"Feb 2, 2026 - Feb 8, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$71942.62 ,16081,1643,1643,$33028.91 ,8278
+"Feb 2, 2026 - Feb 8, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4087.60 ,846,395,395,$4026.96 ,836
+"Feb 2, 2026 - Feb 8, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 2, 2026 - Feb 8, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$110997.83 ,12748,1757,1757,$111067.07 ,12754
+"Feb 2, 2026 - Feb 8, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$46461.37 ,8509,1669,1669,$14090.27 ,2860
+"Feb 2, 2026 - Feb 8, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2849.43 ,844,181,181,$215.16 ,72
+"Feb 2, 2026 - Feb 8, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4089.38 ,846,398,398,$3996.69 ,830
+"Feb 2, 2026 - Feb 8, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$27286.32 ,7985,1546,1546,$1802.00 ,598
+"Feb 2, 2026 - Feb 8, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$36443.74 ,3144,1185,1185,$4811.07 ,469
+"Feb 2, 2026 - Feb 8, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$2267.41 ,667,245,245,$215.40 ,72
+"Feb 2, 2026 - Feb 8, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$31323.26 ,2675,1077,1077,$3439.63 ,330
+"Feb 2, 2026 - Feb 8, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$83332.47 ,9578,1742,1742,$83391.79 ,9582
+"Feb 2, 2026 - Feb 8, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5278.79 ,1554,404,404,$490.09 ,164
+"Feb 2, 2026 - Feb 8, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$1160.13 ,339,127,127,$75.16 ,25
+"Feb 9, 2026 - Feb 15, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Feb 9, 2026 - Feb 15, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$29928.54 ,2595,1092,1092,$5114.08 ,507
+"Feb 9, 2026 - Feb 15, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$28786.59 ,5276,1444,1444,$13346.47 ,2693
+"Feb 9, 2026 - Feb 15, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$84285.36 ,18483,1775,1775,$29930.08 ,7524
+"Feb 9, 2026 - Feb 15, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 9, 2026 - Feb 15, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$31138.60 ,9313,1567,1567,$6114.54 ,2077
+"Feb 9, 2026 - Feb 15, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12860.93 ,1124,430,430,$2529.28 ,251
+"Feb 9, 2026 - Feb 15, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$41738.00 ,9745,878,878,$26624.19 ,6698
+"Feb 9, 2026 - Feb 15, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$41451.01 ,7530,1600,1600,$17035.44 ,3435
+"Feb 9, 2026 - Feb 15, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 9, 2026 - Feb 15, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$76479.59 ,8636,1702,1702,$76497.60 ,8637
+"Feb 9, 2026 - Feb 15, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$36457.37 ,6591,1525,1525,$14101.94 ,2846
+"Feb 9, 2026 - Feb 15, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 9, 2026 - Feb 15, 2026",Green Dream,211-34-0232,Smoothie Pouches,$23468.08 ,7033,1497,1497,$4726.11 ,1606
+"Feb 9, 2026 - Feb 15, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2616.51 ,229,133,133,$520.90 ,51
+"Feb 9, 2026 - Feb 15, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$86683.90 ,19288,1763,1763,$37786.18 ,9485
+"Feb 9, 2026 - Feb 15, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$3768.32 ,749,381,381,$3252.58 ,660
+"Feb 9, 2026 - Feb 15, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 9, 2026 - Feb 15, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$119515.66 ,13498,1768,1768,$119523.85 ,13498
+"Feb 9, 2026 - Feb 15, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$46546.87 ,8444,1655,1655,$12236.03 ,2463
+"Feb 9, 2026 - Feb 15, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2135.93 ,652,160,160,$405.33 ,138
+"Feb 9, 2026 - Feb 15, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$3697.19 ,734,370,370,$3162.27 ,642
+"Feb 9, 2026 - Feb 15, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$29116.59 ,8708,1551,1551,$5319.68 ,1813
+"Feb 9, 2026 - Feb 15, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$37090.17 ,3232,1194,1194,$6723.21 ,662
+"Feb 9, 2026 - Feb 15, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$2161.83 ,649,252,252,$505.91 ,170
+"Feb 9, 2026 - Feb 15, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$37205.29 ,3236,1175,1175,$7067.12 ,699
+"Feb 9, 2026 - Feb 15, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$84117.03 ,9509,1774,1774,$84138.41 ,9510
+"Feb 9, 2026 - Feb 15, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$4865.48 ,1464,387,387,$1038.08 ,354
+"Feb 9, 2026 - Feb 15, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$1837.71 ,559,207,207,$548.39 ,186
+"Feb 16, 2026 - Feb 22, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$6.98 ,2,1,1,$0.00 ,0
+"Feb 16, 2026 - Feb 22, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$28314.13 ,2770,1108,1108,$24383.00 ,2439
+"Feb 16, 2026 - Feb 22, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$28563.98 ,5269,1466,1466,$13967.91 ,2827
+"Feb 16, 2026 - Feb 22, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$79676.41 ,17683,1766,1766,$33782.20 ,8496
+"Feb 16, 2026 - Feb 22, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 16, 2026 - Feb 22, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$33554.27 ,11211,1602,1602,$28991.20 ,9890
+"Feb 16, 2026 - Feb 22, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$13982.72 ,1359,470,470,$11528.40 ,1151
+"Feb 16, 2026 - Feb 22, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$42846.42 ,10175,882,882,$30442.93 ,7675
+"Feb 16, 2026 - Feb 22, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$41848.23 ,7623,1601,1601,$17707.14 ,3579
+"Feb 16, 2026 - Feb 22, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 16, 2026 - Feb 22, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$83073.42 ,9381,1719,1719,$83090.68 ,9382
+"Feb 16, 2026 - Feb 22, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$37901.51 ,6885,1548,1548,$15481.74 ,3127
+"Feb 16, 2026 - Feb 22, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 16, 2026 - Feb 22, 2026",Green Dream,211-34-0232,Smoothie Pouches,$26611.78 ,8891,1577,1577,$23038.84 ,7857
+"Feb 16, 2026 - Feb 22, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2796.77 ,273,143,143,$2394.05 ,239
+"Feb 16, 2026 - Feb 22, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$89568.02 ,20069,1762,1762,$41872.33 ,10517
+"Feb 16, 2026 - Feb 22, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4042.32 ,697,370,370,$459.68 ,90
+"Feb 16, 2026 - Feb 22, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 16, 2026 - Feb 22, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$128731.69 ,14561,1778,1778,$128753.45 ,14562
+"Feb 16, 2026 - Feb 22, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$49870.40 ,9076,1688,1688,$14834.72 ,2987
+"Feb 16, 2026 - Feb 22, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2181.99 ,733,141,141,$1845.35 ,634
+"Feb 16, 2026 - Feb 22, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$3912.61 ,674,366,366,$492.53 ,96
+"Feb 16, 2026 - Feb 22, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$31111.43 ,10377,1572,1572,$26615.23 ,9076
+"Feb 16, 2026 - Feb 22, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$41542.87 ,4044,1295,1295,$34721.24 ,3466
+"Feb 16, 2026 - Feb 22, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3886.72 ,1294,364,364,$3360.90 ,1143
+"Feb 16, 2026 - Feb 22, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$46069.93 ,4488,1311,1311,$38756.93 ,3872
+"Feb 16, 2026 - Feb 22, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$84984.16 ,9608,1751,1751,$84998.92 ,9609
+"Feb 16, 2026 - Feb 22, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5650.48 ,1899,400,400,$4952.65 ,1697
+"Feb 16, 2026 - Feb 22, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4702.71 ,1566,363,363,$3997.54 ,1363
+"Feb 23, 2026 - Mar 1, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Feb 23, 2026 - Mar 1, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$20007.08 ,1772,836,836,$4703.01 ,483
+"Feb 23, 2026 - Mar 1, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$30039.77 ,5588,1481,1481,$15382.62 ,3131
+"Feb 23, 2026 - Mar 1, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$80063.69 ,17936,1752,1752,$35667.70 ,9024
+"Feb 23, 2026 - Mar 1, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 23, 2026 - Mar 1, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$28824.89 ,8609,1535,1535,$5186.91 ,1750
+"Feb 23, 2026 - Mar 1, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$14039.27 ,1253,452,452,$3411.52 ,352
+"Feb 23, 2026 - Mar 1, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$45113.16 ,10786,884,884,$32458.19 ,8240
+"Feb 23, 2026 - Mar 1, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$44419.22 ,8191,1624,1624,$20708.94 ,4212
+"Feb 23, 2026 - Mar 1, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 23, 2026 - Mar 1, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$82424.12 ,9376,1724,1724,$82437.92 ,9377
+"Feb 23, 2026 - Mar 1, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$39199.02 ,7190,1558,1558,$17021.72 ,3468
+"Feb 23, 2026 - Mar 1, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 23, 2026 - Mar 1, 2026",Green Dream,211-34-0232,Smoothie Pouches,$22229.87 ,6641,1470,1470,$4133.10 ,1393
+"Feb 23, 2026 - Mar 1, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2945.75 ,264,144,144,$811.17 ,84
+"Feb 23, 2026 - Mar 1, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$94428.94 ,21342,1740,1740,$45727.34 ,11572
+"Feb 23, 2026 - Mar 1, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$3978.21 ,743,376,376,$1867.67 ,384
+"Feb 23, 2026 - Mar 1, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$0.00 ,0,0,0,$0.00 ,0
+"Feb 23, 2026 - Mar 1, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$125881.59 ,14348,1778,1778,$125914.93 ,14351
+"Feb 23, 2026 - Mar 1, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$49576.65 ,9117,1689,1689,$15919.99 ,3251
+"Feb 23, 2026 - Mar 1, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$1919.72 ,584,161,161,$484.17 ,166
+"Feb 23, 2026 - Mar 1, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4022.29 ,752,360,360,$2034.45 ,415
+"Feb 23, 2026 - Mar 1, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$27963.18 ,8322,1527,1527,$4562.25 ,1536
+"Feb 23, 2026 - Mar 1, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$40389.27 ,3597,1268,1268,$9970.23 ,1025
+"Feb 23, 2026 - Mar 1, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3576.14 ,1057,365,365,$512.55 ,172
+"Feb 23, 2026 - Mar 1, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$42994.42 ,3817,1240,1240,$10179.53 ,1047
+"Feb 23, 2026 - Mar 1, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$75222.49 ,8569,1722,1722,$75260.05 ,8572
+"Feb 23, 2026 - Mar 1, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$4813.77 ,1454,404,404,$1173.64 ,398
+"Feb 23, 2026 - Mar 1, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4154.22 ,1240,347,347,$806.30 ,273
+"Mar 2, 2026 - Mar 8, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$3.99 ,1,1,1,$0.00 ,0
+"Mar 2, 2026 - Mar 8, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$20377.79 ,2033,911,911,$16615.43 ,1714
+"Mar 2, 2026 - Mar 8, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$31090.32 ,5747,1517,1517,$15603.28 ,3152
+"Mar 2, 2026 - Mar 8, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$79647.89 ,17726,1733,1733,$34987.48 ,8765
+"Mar 2, 2026 - Mar 8, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$71.06 ,14,7,7,$0.00 ,0
+"Mar 2, 2026 - Mar 8, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$34689.23 ,11110,1603,1603,$21730.53 ,7342
+"Mar 2, 2026 - Mar 8, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$15384.36 ,1553,490,490,$12918.97 ,1336
+"Mar 2, 2026 - Mar 8, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$44390.33 ,10517,932,932,$31271.20 ,7870
+"Mar 2, 2026 - Mar 8, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$45799.91 ,8375,1616,1616,$20772.78 ,4181
+"Mar 2, 2026 - Mar 8, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$55.14 ,11,5,5,$0.00 ,0
+"Mar 2, 2026 - Mar 8, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$84054.73 ,9566,1726,1726,$83988.05 ,9552
+"Mar 2, 2026 - Mar 8, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$41209.57 ,7510,1579,1579,$17875.30 ,3597
+"Mar 2, 2026 - Mar 8, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$49.93 ,10,5,5,$0.00 ,0
+"Mar 2, 2026 - Mar 8, 2026",Green Dream,211-34-0232,Smoothie Pouches,$25242.84 ,8125,1535,1535,$16753.97 ,5658
+"Mar 2, 2026 - Mar 8, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3011.36 ,313,153,153,$2686.59 ,280
+"Mar 2, 2026 - Mar 8, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$92434.89 ,20803,1732,1732,$45162.59 ,11321
+"Mar 2, 2026 - Mar 8, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4695.51 ,920,450,450,$1412.59 ,286
+"Mar 2, 2026 - Mar 8, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$40.22 ,8,4,4,$0.00 ,0
+"Mar 2, 2026 - Mar 8, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$120431.26 ,13706,1763,1763,$120444.27 ,13705
+"Mar 2, 2026 - Mar 8, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$51602.88 ,9432,1662,1662,$15925.11 ,3210
+"Mar 2, 2026 - Mar 8, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2721.16 ,887,192,192,$1970.86 ,668
+"Mar 2, 2026 - Mar 8, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$4823.14 ,950,446,446,$1477.47 ,298
+"Mar 2, 2026 - Mar 8, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$32277.80 ,10190,1563,1563,$17544.61 ,5914
+"Mar 2, 2026 - Mar 8, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$44251.95 ,4412,1339,1339,$36280.41 ,3737
+"Mar 2, 2026 - Mar 8, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$4060.00 ,1290,359,359,$2524.58 ,847
+"Mar 2, 2026 - Mar 8, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$43224.54 ,4320,1325,1325,$36032.06 ,3709
+"Mar 2, 2026 - Mar 8, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$83057.95 ,9463,1723,1723,$83068.78 ,9463
+"Mar 2, 2026 - Mar 8, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6433.51 ,2097,448,448,$4653.03 ,1579
+"Mar 2, 2026 - Mar 8, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4026.16 ,1292,343,343,$2716.36 ,913
+"Mar 9, 2026 - Mar 15, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$7.09 ,2,2,2,$3.60 ,1
+"Mar 9, 2026 - Mar 15, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$25169.59 ,2122,932,932,$448.40 ,39
+"Mar 9, 2026 - Mar 15, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$30778.17 ,5586,1495,1495,$12823.85 ,2584
+"Mar 9, 2026 - Mar 15, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$80658.93 ,17648,1752,1752,$29497.64 ,7388
+"Mar 9, 2026 - Mar 15, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$5812.70 ,674,256,256,$152.62 ,20
+"Mar 9, 2026 - Mar 15, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$27295.93 ,8170,1516,1516,$2851.82 ,1069
+"Mar 9, 2026 - Mar 15, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$13320.40 ,1168,441,441,$1666.55 ,178
+"Mar 9, 2026 - Mar 15, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$51535.47 ,11726,1228,1228,$27417.56 ,6881
+"Mar 9, 2026 - Mar 15, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$46325.34 ,8313,1641,1641,$16658.75 ,3350
+"Mar 9, 2026 - Mar 15, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$5615.93 ,1116,356,356,$217.20 ,47
+"Mar 9, 2026 - Mar 15, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$74934.49 ,8530,1698,1698,$70665.05 ,8098
+"Mar 9, 2026 - Mar 15, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$40594.70 ,7286,1585,1585,$14407.45 ,2901
+"Mar 9, 2026 - Mar 15, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$6365.71 ,1270,369,369,$203.40 ,45
+"Mar 9, 2026 - Mar 15, 2026",Green Dream,211-34-0232,Smoothie Pouches,$20282.30 ,6043,1414,1414,$2178.19 ,809
+"Mar 9, 2026 - Mar 15, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2202.78 ,200,118,118,$470.27 ,53
+"Mar 9, 2026 - Mar 15, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$94606.44 ,20846,1753,1753,$37843.57 ,9474
+"Mar 9, 2026 - Mar 15, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$4903.92 ,967,453,453,$138.01 ,25
+"Mar 9, 2026 - Mar 15, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$5432.63 ,631,255,255,$199.28 ,26
+"Mar 9, 2026 - Mar 15, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$111443.76 ,12659,1768,1768,$103409.43 ,11847
+"Mar 9, 2026 - Mar 15, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$52394.01 ,9483,1678,1678,$13321.88 ,2669
+"Mar 9, 2026 - Mar 15, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$2517.70 ,765,188,188,$434.38 ,162
+"Mar 9, 2026 - Mar 15, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$5241.11 ,1039,471,471,$177.63 ,32
+"Mar 9, 2026 - Mar 15, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$24972.03 ,7435,1476,1476,$2373.36 ,881
+"Mar 9, 2026 - Mar 15, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$36107.78 ,3148,1203,1203,$4330.41 ,459
+"Mar 9, 2026 - Mar 15, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3157.18 ,914,325,325,$101.29 ,31
+"Mar 9, 2026 - Mar 15, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$40883.30 ,3453,1265,1265,$938.28 ,83
+"Mar 9, 2026 - Mar 15, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$85926.52 ,9768,1732,1732,$79897.60 ,9159
+"Mar 9, 2026 - Mar 15, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$5818.59 ,1756,441,441,$791.34 ,295
+"Mar 9, 2026 - Mar 15, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$3300.83 ,960,318,318,$117.66 ,36
+"Mar 16, 2026 - Mar 22, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Mar 16, 2026 - Mar 22, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$25628.05 ,2263,952,952,$6044.18 ,607
+"Mar 16, 2026 - Mar 22, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$25483.62 ,4303,1412,1412,$1504.71 ,281
+"Mar 16, 2026 - Mar 22, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$74074.80 ,14976,1809,1809,$3824.05 ,863
+"Mar 16, 2026 - Mar 22, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$31171.35 ,3501,1153,1153,$1655.43 ,206
+"Mar 16, 2026 - Mar 22, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$24226.83 ,8330,1425,1425,$15512.98 ,5812
+"Mar 16, 2026 - Mar 22, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$14862.42 ,1518,481,481,$10696.20 ,1163
+"Mar 16, 2026 - Mar 22, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$72261.60 ,14619,1738,1738,$4123.52 ,924
+"Mar 16, 2026 - Mar 22, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$41013.11 ,6933,1589,1589,$2303.59 ,433
+"Mar 16, 2026 - Mar 22, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$22422.55 ,4479,1236,1236,$977.17 ,219
+"Mar 16, 2026 - Mar 22, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$54651.01 ,6544,1546,1546,$30671.94 ,4118
+"Mar 16, 2026 - Mar 22, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$34749.31 ,5881,1545,1545,$1835.73 ,345
+"Mar 16, 2026 - Mar 22, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$25425.36 ,5099,1302,1302,$1295.27 ,291
+"Mar 16, 2026 - Mar 22, 2026",Green Dream,211-34-0232,Smoothie Pouches,$17872.87 ,6173,1378,1378,$11847.17 ,4432
+"Mar 16, 2026 - Mar 22, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3336.59 ,343,169,169,$2499.91 ,272
+"Mar 16, 2026 - Mar 22, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$92040.62 ,18588,1796,1796,$5205.20 ,1158
+"Mar 16, 2026 - Mar 22, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$3893.82 ,740,388,388,$435.13 ,84
+"Mar 16, 2026 - Mar 22, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$29979.63 ,3368,1135,1135,$1519.29 ,190
+"Mar 16, 2026 - Mar 22, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$82712.86 ,9790,1685,1685,$43578.22 ,5832
+"Mar 16, 2026 - Mar 22, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$49379.04 ,8668,1734,1734,$2438.77 ,472
+"Mar 16, 2026 - Mar 22, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3231.32 ,1136,216,216,$2324.23 ,871
+"Mar 16, 2026 - Mar 22, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$3878.86 ,737,402,402,$394.75 ,77
+"Mar 16, 2026 - Mar 22, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$21762.11 ,7357,1408,1408,$12395.86 ,4651
+"Mar 16, 2026 - Mar 22, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$45137.92 ,4510,1336,1336,$29707.07 ,3208
+"Mar 16, 2026 - Mar 22, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3071.47 ,915,314,314,$642.65 ,214
+"Mar 16, 2026 - Mar 22, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$44300.69 ,3899,1274,1274,$9512.18 ,960
+"Mar 16, 2026 - Mar 22, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$75398.12 ,8910,1706,1706,$39191.18 ,5247
+"Mar 16, 2026 - Mar 22, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6655.30 ,2329,486,486,$4917.16 ,1826
+"Mar 16, 2026 - Mar 22, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$3978.56 ,1190,321,321,$784.23 ,263
+"Mar 23, 2026 - Mar 29, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$6.98 ,2,1,1,$0.00 ,0
+"Mar 23, 2026 - Mar 29, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$29710.50 ,3050,1110,1110,$29776.89 ,3055
+"Mar 23, 2026 - Mar 29, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$25972.55 ,4464,1424,1424,$3005.89 ,593
+"Mar 23, 2026 - Mar 29, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$79111.69 ,16250,1815,1815,$7754.93 ,1869
+"Mar 23, 2026 - Mar 29, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$44678.31 ,5120,1472,1472,$4596.70 ,616
+"Mar 23, 2026 - Mar 29, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$26478.96 ,8589,1447,1447,$18753.49 ,6339
+"Mar 23, 2026 - Mar 29, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$15302.32 ,1575,494,494,$14963.60 ,1539
+"Mar 23, 2026 - Mar 29, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$80817.21 ,16613,1753,1753,$8228.77 ,1986
+"Mar 23, 2026 - Mar 29, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$40496.10 ,6950,1587,1587,$4514.41 ,890
+"Mar 23, 2026 - Mar 29, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$34462.80 ,7071,1550,1550,$3108.58 ,755
+"Mar 23, 2026 - Mar 29, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$48860.03 ,4978,1391,1391,$2254.43 ,257
+"Mar 23, 2026 - Mar 29, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$34742.17 ,5962,1522,1522,$3632.30 ,722
+"Mar 23, 2026 - Mar 29, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$37212.38 ,7633,1573,1573,$3183.17 ,775
+"Mar 23, 2026 - Mar 29, 2026",Green Dream,211-34-0232,Smoothie Pouches,$20266.52 ,6608,1412,1412,$14971.87 ,5070
+"Mar 23, 2026 - Mar 29, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3684.92 ,377,175,175,$3639.35 ,371
+"Mar 23, 2026 - Mar 29, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$98396.81 ,20197,1800,1800,$9924.07 ,2399
+"Mar 23, 2026 - Mar 29, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$3528.46 ,670,348,348,$1575.79 ,321
+"Mar 23, 2026 - Mar 29, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$39040.25 ,4480,1406,1406,$4168.73 ,560
+"Mar 23, 2026 - Mar 29, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$73046.79 ,7448,1594,1594,$3541.01 ,407
+"Mar 23, 2026 - Mar 29, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$51244.31 ,9064,1763,1763,$3968.17 ,779
+"Mar 23, 2026 - Mar 29, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3735.26 ,1240,219,219,$3051.62 ,1037
+"Mar 23, 2026 - Mar 29, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$3530.27 ,676,343,343,$1640.10 ,336
+"Mar 23, 2026 - Mar 29, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$23618.39 ,7584,1422,1422,$15016.82 ,5077
+"Mar 23, 2026 - Mar 29, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$48766.86 ,4978,1394,1394,$47035.94 ,4826
+"Mar 23, 2026 - Mar 29, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$2960.18 ,957,310,310,$2133.33 ,718
+"Mar 23, 2026 - Mar 29, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$43921.87 ,4502,1301,1301,$44037.10 ,4510
+"Mar 23, 2026 - Mar 29, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$75397.05 ,7683,1640,1640,$3316.48 ,380
+"Mar 23, 2026 - Mar 29, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$7424.25 ,2450,478,478,$5980.75 ,2028
+"Mar 23, 2026 - Mar 29, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4068.34 ,1335,358,358,$3213.81 ,1086
+"Mar 30, 2026 - Apr 5, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$15.96 ,4,1,1,$0.00 ,0
+"Mar 30, 2026 - Apr 5, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$30231.39 ,3160,1167,1167,$30240.56 ,3160
+"Mar 30, 2026 - Apr 5, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$26928.43 ,5043,1450,1450,$14077.29 ,2879
+"Mar 30, 2026 - Apr 5, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$89085.63 ,19915,1817,1817,$39151.40 ,9872
+"Mar 30, 2026 - Apr 5, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$52564.32 ,6702,1584,1584,$30458.16 ,4203
+"Mar 30, 2026 - Apr 5, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$27655.27 ,9070,1546,1546,$19892.84 ,6805
+"Mar 30, 2026 - Apr 5, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$12711.90 ,1336,460,460,$12509.31 ,1319
+"Mar 30, 2026 - Apr 5, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$85915.53 ,19412,1762,1762,$40994.07 ,10356
+"Mar 30, 2026 - Apr 5, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$40757.04 ,7554,1581,1581,$19599.93 ,4003
+"Mar 30, 2026 - Apr 5, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$42369.51 ,9488,1643,1643,$17901.29 ,4523
+"Mar 30, 2026 - Apr 5, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$44660.86 ,4668,1363,1363,$7570.65 ,902
+"Mar 30, 2026 - Apr 5, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$35001.78 ,6483,1514,1514,$16431.42 ,3362
+"Mar 30, 2026 - Apr 5, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$43897.72 ,9836,1670,1670,$18304.05 ,4639
+"Mar 30, 2026 - Apr 5, 2026",Green Dream,211-34-0232,Smoothie Pouches,$21024.68 ,6919,1461,1461,$15759.75 ,5386
+"Mar 30, 2026 - Apr 5, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$2936.32 ,312,154,154,$2921.93 ,310
+"Mar 30, 2026 - Apr 5, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$99570.82 ,22490,1809,1809,$47961.32 ,12102
+"Mar 30, 2026 - Apr 5, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$3222.72 ,616,324,324,$1703.02 ,348
+"Mar 30, 2026 - Apr 5, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$45856.80 ,5857,1547,1547,$27286.60 ,3759
+"Mar 30, 2026 - Apr 5, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$64962.88 ,6809,1574,1574,$11595.76 ,1393
+"Mar 30, 2026 - Apr 5, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$48592.45 ,9013,1723,1723,$16389.90 ,3360
+"Mar 30, 2026 - Apr 5, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3237.74 ,1089,204,204,$2758.13 ,948
+"Mar 30, 2026 - Apr 5, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$3557.39 ,681,336,336,$1991.39 ,408
+"Mar 30, 2026 - Apr 5, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$23819.10 ,7682,1476,1476,$15106.62 ,5143
+"Mar 30, 2026 - Apr 5, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$42256.11 ,4432,1360,1360,$40937.42 ,4317
+"Mar 30, 2026 - Apr 5, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3422.01 ,1116,339,339,$2541.78 ,860
+"Mar 30, 2026 - Apr 5, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$38682.77 ,4050,1257,1257,$38689.38 ,4050
+"Mar 30, 2026 - Apr 5, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$66394.70 ,6951,1622,1622,$10980.37 ,1321
+"Mar 30, 2026 - Apr 5, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6433.47 ,2152,463,463,$5484.08 ,1872
+"Mar 30, 2026 - Apr 5, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$3742.95 ,1233,346,346,$3071.25 ,1036
+"Apr 6, 2026 - Apr 12, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$0.00 ,0,0,0,$0.00 ,0
+"Apr 6, 2026 - Apr 12, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$36277.92 ,3151,1161,1161,$9806.54 ,922
+"Apr 6, 2026 - Apr 12, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$27083.05 ,5047,1440,1440,$13536.69 ,2780
+"Apr 6, 2026 - Apr 12, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$70284.08 ,15325,1805,1805,$23958.63 ,6030
+"Apr 6, 2026 - Apr 12, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$43082.27 ,5329,1548,1548,$21299.52 ,2875
+"Apr 6, 2026 - Apr 12, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$32362.06 ,9623,1551,1551,$6200.55 ,2026
+"Apr 6, 2026 - Apr 12, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$14818.42 ,1300,468,468,$3827.22 ,363
+"Apr 6, 2026 - Apr 12, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$63326.23 ,13949,1747,1747,$24173.37 ,6089
+"Apr 6, 2026 - Apr 12, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$40049.41 ,7392,1589,1589,$19282.30 ,3924
+"Apr 6, 2026 - Apr 12, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$34648.68 ,7571,1615,1615,$11214.15 ,2827
+"Apr 6, 2026 - Apr 12, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$77639.04 ,8789,1585,1585,$60888.77 ,7094
+"Apr 6, 2026 - Apr 12, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$35542.28 ,6560,1543,1543,$16820.12 ,3428
+"Apr 6, 2026 - Apr 12, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$35527.28 ,7777,1654,1654,$11799.30 ,2973
+"Apr 6, 2026 - Apr 12, 2026",Green Dream,211-34-0232,Smoothie Pouches,$23987.05 ,7133,1438,1438,$4802.75 ,1567
+"Apr 6, 2026 - Apr 12, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3299.35 ,288,151,151,$786.93 ,74
+"Apr 6, 2026 - Apr 12, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$89026.07 ,19558,1807,1807,$33292.16 ,8389
+"Apr 6, 2026 - Apr 12, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$2518.60 ,444,268,268,$560.47 ,107
+"Apr 6, 2026 - Apr 12, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$39641.58 ,4907,1501,1501,$19602.39 ,2649
+"Apr 6, 2026 - Apr 12, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$106475.67 ,12089,1669,1669,$82405.67 ,9652
+"Apr 6, 2026 - Apr 12, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$56592.14 ,10305,1720,1720,$14963.25 ,3030
+"Apr 6, 2026 - Apr 12, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3847.60 ,1148,207,207,$792.04 ,259
+"Apr 6, 2026 - Apr 12, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$2944.65 ,514,293,293,$627.83 ,118
+"Apr 6, 2026 - Apr 12, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$28638.68 ,8493,1515,1515,$4191.84 ,1384
+"Apr 6, 2026 - Apr 12, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$47075.60 ,4123,1308,1308,$13217.60 ,1258
+"Apr 6, 2026 - Apr 12, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3702.63 ,1097,331,331,$469.15 ,151
+"Apr 6, 2026 - Apr 12, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$51107.78 ,4440,1281,1281,$13887.94 ,1306
+"Apr 6, 2026 - Apr 12, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$97126.89 ,11021,1715,1715,$74609.25 ,8740
+"Apr 6, 2026 - Apr 12, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$7160.14 ,2136,453,453,$1457.35 ,477
+"Apr 6, 2026 - Apr 12, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4332.02 ,1274,337,337,$747.24 ,241
+"Apr 13, 2026 - Apr 19, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$6.84 ,2,2,2,$0.00 ,0
+"Apr 13, 2026 - Apr 19, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$36019.52 ,3107,1175,1175,$5920.25 ,566
+"Apr 13, 2026 - Apr 19, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$22955.69 ,3945,1393,1393,$3647.53 ,698
+"Apr 13, 2026 - Apr 19, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$68480.28 ,14008,1802,1802,$8834.59 ,2012
+"Apr 13, 2026 - Apr 19, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$38384.97 ,4397,1481,1481,$5547.79 ,702
+"Apr 13, 2026 - Apr 19, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$30151.48 ,8945,1531,1531,$3781.88 ,1258
+"Apr 13, 2026 - Apr 19, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$15465.16 ,1336,464,464,$2239.78 ,214
+"Apr 13, 2026 - Apr 19, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$64370.83 ,13204,1737,1737,$9501.49 ,2168
+"Apr 13, 2026 - Apr 19, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$36317.01 ,6216,1527,1527,$5075.17 ,966
+"Apr 13, 2026 - Apr 19, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$35047.49 ,7228,1596,1596,$4833.80 ,1108
+"Apr 13, 2026 - Apr 19, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$80094.03 ,8277,1583,1583,$11723.13 ,1352
+"Apr 13, 2026 - Apr 19, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$32673.07 ,5594,1499,1499,$4570.76 ,865
+"Apr 13, 2026 - Apr 19, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$35529.19 ,7332,1625,1625,$5029.86 ,1154
+"Apr 13, 2026 - Apr 19, 2026",Green Dream,211-34-0232,Smoothie Pouches,$23346.43 ,6913,1462,1462,$3223.34 ,1062
+"Apr 13, 2026 - Apr 19, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$3307.04 ,286,155,155,$482.34 ,46
+"Apr 13, 2026 - Apr 19, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$69241.01 ,14146,1690,1690,$8876.27 ,2015
+"Apr 13, 2026 - Apr 19, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$2191.96 ,378,247,247,$219.89 ,41
+"Apr 13, 2026 - Apr 19, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$35257.78 ,4041,1433,1433,$4983.63 ,630
+"Apr 13, 2026 - Apr 19, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$108338.71 ,11193,1645,1645,$15112.93 ,1746
+"Apr 13, 2026 - Apr 19, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$50142.57 ,8877,1721,1721,$4903.70 ,972
+"Apr 13, 2026 - Apr 19, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3575.02 ,1062,211,211,$485.82 ,161
+"Apr 13, 2026 - Apr 19, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$2776.21 ,479,293,293,$315.53 ,60
+"Apr 13, 2026 - Apr 19, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$30714.44 ,9059,1565,1565,$3043.23 ,1008
+"Apr 13, 2026 - Apr 19, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$47922.62 ,4127,1328,1328,$6168.41 ,587
+"Apr 13, 2026 - Apr 19, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3262.38 ,957,317,317,$356.40 ,118
+"Apr 13, 2026 - Apr 19, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$48895.11 ,4219,1267,1267,$7754.45 ,744
+"Apr 13, 2026 - Apr 19, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$93995.81 ,9727,1706,1706,$13314.45 ,1545
+"Apr 13, 2026 - Apr 19, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6684.84 ,1977,460,460,$894.64 ,293
+"Apr 13, 2026 - Apr 19, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4019.19 ,1185,346,346,$556.55 ,181
+"Apr 20, 2026 - Apr 26, 2026",Apple Berry Blast YoGos,284-10-4013,Smoothie Pouches,$3.32 ,1,1,1,$0.00 ,0
+"Apr 20, 2026 - Apr 26, 2026",Apple Berry Blast YoGos–4 count,284-10-8661,Smoothie Pouches,$41079.99 ,3826,1206,1206,$28794.53 ,2790
+"Apr 20, 2026 - Apr 26, 2026",Apple Pie Oat Bakes,071-20-0967,Kids Lunchbox,$26881.42 ,4976,1473,1473,$17659.70 ,3433
+"Apr 20, 2026 - Apr 26, 2026",Banana Pitaya Rings,007-10-0291,Toddler Snack,$79668.35 ,17512,1794,1794,$48424.85 ,11252
+"Apr 20, 2026 - Apr 26, 2026","Banana, Strawberry, Butternut Squash Minis",007-10-2732,Toddler Snack,$42461.71 ,5254,1530,1530,$30074.65 ,3866
+"Apr 20, 2026 - Apr 26, 2026",Berry Banana Blast,211-34-0231,Smoothie Pouches,$34657.73 ,11021,1599,1599,$21264.70 ,7116
+"Apr 20, 2026 - Apr 26, 2026",Berry Banana Blast–4 count,211-34-0239,Smoothie Pouches,$14223.56 ,1330,461,461,$9513.52 ,932
+"Apr 20, 2026 - Apr 26, 2026",Blueberry Carrot Puffs,007-10-3297,Toddler Snack,$78313.09 ,17381,1766,1766,$52648.19 ,12234
+"Apr 20, 2026 - Apr 26, 2026",Blueberry Muffin Oat Bakes,071-20-0966,Kids Lunchbox,$40933.48 ,7529,1563,1563,$25230.71 ,4904
+"Apr 20, 2026 - Apr 26, 2026",Cheesy White Cheddar Stellar Puffs,007-10-6435,Toddler Snack,$39315.40 ,8757,1658,1658,$26442.67 ,6154
+"Apr 20, 2026 - Apr 26, 2026",Chicken Veggie Sliders,270-02-8577,Kids Meals,$89232.62 ,9886,1604,1604,$55153.94 ,6440
+"Apr 20, 2026 - Apr 26, 2026",Chocolate Chip Oat Bakes,071-20-0965,Kids Lunchbox,$36194.40 ,6642,1533,1533,$20994.24 ,4094
+"Apr 20, 2026 - Apr 26, 2026",Cinna-Banana Twist Stellar Puffs,007-10-5166,Toddler Snack,$39674.19 ,8842,1676,1676,$26762.92 ,6234
+"Apr 20, 2026 - Apr 26, 2026",Green Dream,211-34-0232,Smoothie Pouches,$25925.01 ,8257,1559,1559,$16840.68 ,5622
+"Apr 20, 2026 - Apr 26, 2026",Green Dream–4 count,211-34-0240,Smoothie Pouches,$4104.59 ,382,184,184,$2799.52 ,271
+"Apr 20, 2026 - Apr 26, 2026",Kale Apple Curls,007-10-2035,Toddler Snack,$59420.02 ,13245,1546,1546,$41720.79 ,9706
+"Apr 20, 2026 - Apr 26, 2026",Mac + Cheesy Veggie Loops,071-06-0658,BFY Snacks,$2773.86 ,514,270,270,$1520.80 ,300
+"Apr 20, 2026 - Apr 26, 2026","Mango, Blueberry, Zucchini, Banana Minis",007-10-3137,Toddler Snack,$38163.40 ,4718,1510,1510,$27008.66 ,3466
+"Apr 20, 2026 - Apr 26, 2026",Mini Turkey Kale Meatballs,270-02-2902,Kids Meals,$123044.17 ,13572,1661,1661,$70402.70 ,8245
+"Apr 20, 2026 - Apr 26, 2026",Organic Oatmeal Baby Cereal,007-10-9801,Baby Cereal,$55225.17 ,10428,1737,1737,$28625.59 ,5784
+"Apr 20, 2026 - Apr 26, 2026",Pineapple Guava Punch,211-34-0236,Smoothie Pouches,$3997.70 ,1291,237,237,$2731.11 ,922
+"Apr 20, 2026 - Apr 26, 2026",Pizzalicious Veggie Loops,071-06-0659,BFY Snacks,$3696.05 ,681,322,322,$2013.33 ,395
+"Apr 20, 2026 - Apr 26, 2026",Strawberry Banana Shake,211-34-0230,Smoothie Pouches,$31076.30 ,9776,1580,1580,$16326.55 ,5494
+"Apr 20, 2026 - Apr 26, 2026",Strawberry Banana Shake–4 count,211-34-0238,Smoothie Pouches,$45415.92 ,4197,1329,1329,$28083.97 ,2725
+"Apr 20, 2026 - Apr 26, 2026",Strawberry Bananza YoGos,284-10-1821,Smoothie Pouches,$3366.81 ,1067,330,330,$2181.33 ,723
+"Apr 20, 2026 - Apr 26, 2026",Strawberry Bananza YoGos–4 count,284-10-4983,Smoothie Pouches,$54249.68 ,5016,1338,1338,$35322.88 ,3425
+"Apr 20, 2026 - Apr 26, 2026",Super Chicken Dippers,270-02-0128,Kids Meals,$115969.63 ,12846,1726,1726,$69512.02 ,8145
+"Apr 20, 2026 - Apr 26, 2026",Tropical Avocado Greens,211-34-0237,Smoothie Pouches,$6711.46 ,2163,461,461,$4838.58 ,1617
+"Apr 20, 2026 - Apr 26, 2026",Tropical Mango Twist YoGos,284-10-0310,Smoothie Pouches,$4452.10 ,1414,343,343,$2957.85 ,982

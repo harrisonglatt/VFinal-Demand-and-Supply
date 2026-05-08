@@ -46,6 +46,7 @@ const NAV: NavSection[] = [
     heading: 'Planning',
     items: [
       { key: 'promo', href: '/promo', icon: '🗓', label: 'Promo Calendar', badge: '35', badgeClass: 'g' },
+      { key: 'promotracker', href: '/promo-tracker', icon: '🎯', label: 'Promo Intel', badge: 'New', badgeClass: 'b' },
       { key: 'launch', href: '/launch', icon: '🚀', label: 'Launch Ramp', badge: '4 SKUs', badgeClass: 'b' },
       { key: 'historical', href: '/historical', icon: '📅', label: 'Historical S/T' },
     ],

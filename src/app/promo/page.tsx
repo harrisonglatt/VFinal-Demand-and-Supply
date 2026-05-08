@@ -129,6 +129,32 @@ export default function PromoCalendarPage() {
       subtitle={`${events.length} events · ${weeks.length} weeks · Feb 2026 → Jan 2027`}
       extra={<ButtonGroup options={VIEW_OPTS} active={view} onChange={setView} />}
     >
+      {/* ── Module callout — link to Promo Intel for measured-lift analysis ── */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 14,
+          padding: '12px 16px',
+          marginBottom: 16,
+          borderRadius: 12,
+          background: 'var(--ac-soft)',
+          border: '1px solid rgba(0,181,162,.25)',
+        }}
+      >
+        <span style={{ fontSize: 18 }}>🎯</span>
+        <div style={{ flex: 1, fontSize: 12.5, color: 'var(--tx)', lineHeight: 1.55 }}>
+          <strong style={{ color: 'var(--ls-blue-dark)' }}>This calendar drives the demand plan.</strong>
+          {' '}
+          Events here flow into <em>Demand Plan, Shipments, Supply Planning, Executive Summary</em> via the lift matrix.
+          For <strong>measured</strong> lift / ROI / incrementality / cannibalization on actual sales, open
+          {' '}
+          <a href="/promo-tracker" style={{ color: 'var(--ls-blue-dark)', fontWeight: 700 }}>
+            Promo Intel →
+          </a>
+        </div>
+      </div>
+
       <KpiGrid columns={4}>
         <KpiCard icon="✅" label="Confirmed / Approved" style="--cc:var(--gr)" value={String(confirmed)} delta={`${Math.round(confirmed / (filtered.length || 1) * 100)}% of events`} deltaClass="up" sub="" />
         <KpiCard icon="📩" label="Submitted" style="--cc:#818cf8" value={String(submitted)} delta="Awaiting approval" deltaClass="neu" sub="" />
